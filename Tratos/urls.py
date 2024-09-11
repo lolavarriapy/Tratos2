@@ -23,6 +23,7 @@ urlpatterns = [
     path('ModelosUnidad/eliminar/', views.modelosUnidad, name='modelosUnidad_eliminar'),    
     path('tratos/crear/', views.tratos_crear, name='tratos_crear'),
     path('tratos/actualizar/', views.tratos_actualizar, name='tratos_actualizar'),
+    path('tratos/estado/actualizar/', views.trato_estado_actualizar, name='trato_estado_actualizar'),
     path('tratos/buscar/', views.tratos_buscar, name='tratos_buscar'),
     path('tratos/modelos/obtener', views.trato_modelos_obtener, name='trato_modelos_obtener'),
     path('tratos/cuadrilla/actualizar', views.tratos_cuadrilla_actualizar, name='tratos_cuadrilla_actualizar'),
