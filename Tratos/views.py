@@ -178,6 +178,7 @@ def tratos_actualizar(request):
 def trato_estado_actualizar(request):
     
     if request.method == "POST":
+        
         idt = request.POST['idT']
         estado = request.POST['estado']
         rIdObra = request.POST['obra']
