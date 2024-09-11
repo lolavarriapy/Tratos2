@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tratos Obra</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+
+    <environment names="Development">
+        <link rel="stylesheet" href="{% static '/lib/bootstrap/dist/css/bootstrap.css' %}" />
+        <link rel="stylesheet" href="{% static '/lib/font-awesome/css/font-awesome.css' %}" />
+        <link rel="stylesheet" href="~/css/animate.css" />
+        <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="{% static '/lib/bootstrap/dist/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static '/lib/font-awesome/css/font-awesome.min.css %}" />
+        <link rel="stylesheet" href="{% static '/css/animate.css %}" />
+        <link rel="stylesheet" href="{% static '/css/style.css %}" asp-append-version="true" />
+    </environment>
+    <script type="text/javascript" src="https://kit.fontawesome.com/f23f4efc72.js"></script>
+
+</head>
+<body>
+
+
+    <!-- Wrapper-->
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <partial name="_Navigation" />
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg">
+
+            <!-- Top Navbar -->
+            <partial name="_TopNavbar" />
+
+            {% block content %}
+            {% endblock %}
+
+            <!-- Footer -->
+            <partial name="_Footer" />
+
+        </div>
+        <!-- End page wrapper-->
+
+    </div>
+    <!-- End wrapper-->
+
+
+        <script src="{% static '/lib/jquery/dist/jquery.js %}"></script>
+        <script src="{% static '/lib/Popper/popper.min.js %}"></script>
+        <script src="{% static '/lib/bootstrap/dist/js/bootstrap.js %}"></script>
+        <script src="{% static '/lib/metisMenu/dist/jquery.metisMenu.js %}"></script>
+        <script src="{% static '/lib/slimScroll/jquery.slimscroll.js %}"></script>
+        <script src="{% static '/lib/pace/pace.js %}"></script>
+        <script src="{% static '/js/script.js %}" asp-append-version="true"></script>
+
+        <!-- Only for demo purpose -->
+        <script src="{% static '/js/skin.config.js %}"></script>
+
+
+   
+</body>
+</html>

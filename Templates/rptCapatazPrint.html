@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte PDF</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 4px 4px; border: 1px solid #ddd; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h1>Reporte Capataz
+    </h1>
+    <table>
+        <thead>
+            <tr role="row">
+                <th>Trato</th>
+                <th>Cod. Familia</th>
+                <th style="width: 20%;">Partida</th>
+                
+                
+                
+                <th>Valor Trato</th>
+                <th>Unidad Medida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trato in tratos %}
+            <tr>
+                <td>{{trato.cod}}</td>
+                <td>{{trato.codFamilia}}</td>
+                <td>{{trato.partida}}</td>
+                
+                <td>
+                {% if trato.tratomodelo_set.all|length > 0 %}
+                
+                    {% for m in trato.tratomodelo_set.all %}
+                        {% if m.estado %}
+                            {{m.modelo.cod}} [ ${{m.valorTratoModelo_sep}} ] <br />
+                        {% endif %}    
+                    {% endfor %}    
+
+                {% endif %}  
+                </td>
+                <td>{{trato.unidadMedida.descripcion}}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

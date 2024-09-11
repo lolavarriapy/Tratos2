@@ -1,0 +1,46 @@
+﻿@using intrav2mvc.Helpers;
+@using Microsoft.AspNetCore.Identity;
+
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <a href="/home/index">  <img src="~/img/hipsubawb.png" width="100%" /><br /><br /></a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs" style="position: absolute; top: 91px; left: 0px; will-change: top, left;">
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="@Html.IsSelected(controller: "Home", action: "Index")">
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-diamond"></i> <span class="nav-label">Inicio</span> <span class="label label-primary float-right">Main</span></a>
+                </li>
+                <li class="@Html.IsSelected(controller: "Empresa", action: "Main")">
+                    <a href="@Url.Action("Index", "Empresa")"><i class="fa fa-users"></i> <span class="nav-label">Clientes</span> </a>
+                </li>
+                <li class="@Html.IsSelected(controller: "Contrato", action: "Main")">
+                    <a href="@Url.Action("Index", "Contrato")"><i class="fa fa-file-text"></i><span class="nav-label">Contratos</span></a>
+                </li>
+                <li class="@Html.IsSelected(controller: "Usuario", action: "Main")">
+                    <a href="@Url.Action("Index", "Usuario")"><i class="fa fa-user"></i><span class="nav-label">Usuarios</span></a>
+                </li>
+            }
+            else
+            {
+                <li class="@Html.IsSelected(controller: "Home", action: "Main")">
+                    <a href="@Url.Action("Main", "Home")"><i class="fa fa-diamond"></i> <span class="nav-label">Inicio</span> <span class="label label-primary float-right">Main</span></a>
+                </li>
+
+            }
+
+
+        </ul>
+    </div>
+</nav>

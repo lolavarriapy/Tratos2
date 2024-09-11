@@ -1,0 +1,16 @@
+{% extends '_Layout.html' %}
+
+{% block content %}
+<h1>signup</h1>
+{{error}}
+<form method="POST">
+{% csrf_token %}
+{{form}}
+
+<button>
+    Signup
+</button>
+</form>
+{% endblock %}
+
+

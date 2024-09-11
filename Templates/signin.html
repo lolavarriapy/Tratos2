@@ -1,0 +1,58 @@
+
+{% load static %}
+
+<html><head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tratos | Carran</title>
+
+
+   <link rel="stylesheet" href="{% static 'lib/bootstrap/dist/css/bootstrap.min.css' %}">
+
+   <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   <link rel="stylesheet" href="{% static 'lib/font-awesome/css/font-awesome.css' %}">
+
+
+</head>
+
+<body style="background-color: #414042;">
+
+    <div class="middle-box text-center loginscreen animated fadeInDown" style="margin-top: 8%;">
+        <div>
+            <div>
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+            </div>
+            <br />
+            <h3 style="color: white;">Bienvenido al sistema de Tratos FPY</h3>
+
+            {{error}}
+            
+            <form method="POST" action="/signin/">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="username" autofocus="" autocapitalize="none" class="form-control" maxlength="150" placeholder="Usuario" required id="id_username">
+                </div>
+                <div>
+                    <input type="password" name="password" autocomplete="current-password" class="form-control" placeholder="Contraseña" required id="id_password">
+                </div><br />
+                <button class="form-control" style="background-color: #ce9446; color: white; border-color: #ce9446;">
+                Iniciar sesión
+                </button>
+            </form>
+            
+            <p class="m-t"> <small>2024 FPY. Todos los derechos Reservados</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    
+
+</body></html>
+

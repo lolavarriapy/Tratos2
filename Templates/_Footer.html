@@ -1,0 +1,78 @@
+﻿<div class="footer">
+    <div class="float-right">
+        <small>Gerencia de tecnología & transformación digital</small>
+    </div>
+    <div>
+        
+        <strong>Copyright</strong> Empresas FPY &copy; 2024
+    </div>
+
+</div>
+
+<div style="position: fixed; top: 20px; right: 20px;">
+    <div class="toast toast-bootstrap hide" id="toastN" role="alert" aria-live="assertive" aria-atomic="true" style="color: white;">
+        <div class="row" style="padding:5px;">
+            <div class="col-3" style="text-align: center;">
+                <i class="vMiddle fa-3x" id="toasIcon"></i>
+            </div>
+            <div class="col-7">
+
+                <div class="row">
+                    <strong class="" id="tTitleMsj"></strong>
+                    <!--<small id="tSmallmsj"></small>-->
+                    <strong id="tBodymsj"></strong>
+                </div>
+            </div>
+            <div class="col-2" style="text-align: center;">
+                <i class="vMiddle fa-1x fa fa-times" data-dismiss="toast" aria-label="Close" style="cursor: pointer;" ></i>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        let toast1 = $('#toastN');
+        toast1.toast({
+            delay: 5000,
+            animation: true
+        });
+    })   
+
+    function showToast(title,subTitle,msje)
+    {
+        $("#tTitleMsj").html(title);
+        $("#tSmallmsj").html(subTitle);
+        $("#tBodymsj").html(msje);
+
+        if(title=="Exito")
+        {
+            bgColor ="#1ab394"
+            icon = "fa fa-check"
+        }
+        if(title=="Error")
+        {
+            bgColor ="#ED5565"
+            icon = "fa fa-exclamation-circle"
+        }
+        if(title=="Info"){
+            bgColor ="#1c84c6"
+            icon = "fa fa-info"
+        }
+
+        $("#toasIcon").addClass(icon)
+        $('#toastN').css("background-color",bgColor);
+        $(".toast-body").css("background-color",bgColor);
+        $('#toastN').toast("show");
+    }
+</script>
+<style>
+    .vMiddle{
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>

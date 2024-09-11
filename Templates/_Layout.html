@@ -1,0 +1,154 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tratos Obra</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+    <link rel="stylesheet" href="{% static 'lib/font-awesome/css/font-awesome.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'css/plugins/sweetalert/sweetalert.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/plugins/toastr/toastr.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/plugins/textSpinners/spinners.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/plugins/switchery/switchery.css' %}" >
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<style>
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+
+.btn-primary {
+  color: black;
+  background-color: #ff930085;
+  border-color: #d18829;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #CE9446;
+  border-color: #d18829;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+html{
+  zoom:0.9;
+}
+.modal-backdrop {
+  width: 100%!important;
+  height: 100%!important;
+}
+
+</style>
+
+
+        <script src="{% static 'lib/jquery/dist/jquery.js' %}"></script>
+        <script src="{% static 'lib/Popper/popper.min.js' %}"></script>
+        <script src="{% static 'lib/bootstrap/dist/js/bootstrap.js' %}"></script>
+        <script src="{% static 'lib/metisMenu/dist/jquery.metisMenu.js' %}"></script>
+        <script src="{% static 'lib/slimScroll/jquery.slimscroll.js' %}"></script>
+        <script src="{% static 'lib/pace/pace.js' %}"></script>
+        <script src="{% static 'js/script.js' %}" asp-append-version="true"></script>
+        <script src="{% static 'js/plugins/sweetalert/sweetalert.min.js' %}" asp-append-version="true"></script>
+        <script src="{% static 'js/plugins/sparkline/jquery.sparkline.min.js' %}" asp-append-version="true"></script>
+        <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+        
+         <!--Only for demo purpose -->
+        <script src="{% static 'js/skin.config.js' %}"></script>
+
+
+</head>
+<body class='pace-done mini-navbar'>
+  <script>
+      async function fetchS(url, options = {}) {
+
+          let sessionResponse = await fetch('/check-session/', {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+
+          let sessionData = await sessionResponse.json();
+
+          if (!sessionData.session_active) {
+              window.location.href = '/signin/';
+              return;
+          }
+
+          return fetch(url, options)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Error en la solicitud');
+                  }
+                  return response;
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
+      }
+  </script>
+  
+
+    <!-- Wrapper-->
+    <div id="wrapper" style="min-height: 100%;">
+
+        <!-- Navigation -->
+        {% include "_Navigation.html" %} 
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg" >
+
+            <!-- Top Navbar -->
+            {% include "_TopNavbar.html" %} 
+
+            {% block content %}
+            {% endblock %}
+
+            <!-- Footer -->
+     
+            {% include "_Footer.html" %} 
+        </div>
+        <!-- End page wrapper-->
+
+    </div>
+    <!-- End wrapper-->
+    
+
+        
+
+   
+</body>
+</html>

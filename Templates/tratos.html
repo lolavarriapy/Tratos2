@@ -1,0 +1,259 @@
+{% extends '_Layout.html' %}
+
+
+{% block content %}
+{% csrf_token %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox " id="iboxTratos">
+                <div class="ibox-title">
+                    <h5>Listado</h5>
+                    <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form id="frmBuscarTrato">
+                        <div class="row" style="border-bottom: 1px #dee2e6 solid;padding-bottom: 10px;">
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Folio</small>
+                                <input type="text" class="form-control inputNp" id="txtFolio" placeholder="Folio" value="">
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Categoría</small>
+                                <select id="selCategoria" class="form-control inputNp">
+                                    <option value="" selected>Categoria</option>
+                                    {% for categoria in categorias %}
+                                    <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+                                    {% endfor %}   
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Fecha inicio</small>
+                                <input type="date" class="form-control inputNp" id="txtFechaInicio" placeholder="Fecha Inicio" style="padding: 0px;" value="">
+                                
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Fecha termino</small>
+                                <input type="date" class="form-control inputNp" id="txtFechaTermino" placeholder="Fecha Termino" style="padding: 0px;" value="">
+                                
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Trato</small>
+                                <input type="text" class="form-control inputNp" id="txtTrato" placeholder="cod. Trato" value="">
+                            </div>      
+                            <div class="col-6 col-sm-3 col-md-3" style="padding-left:5px;padding-right: 5px;">
+                                <small>Partida</small>
+                                <input type="text" class="form-control inputNp" id="txtPartida" placeholder="Partida" value="">
+                            </div>                                                                                          
+                            <div class="col-6 col-sm-3 col-md-2" style="padding-left:5px;padding-right: 5px;">
+                                <small>Trabajador</small>
+                                <input type="text" class="form-control inputNp" id="txtTrabajador" placeholder="Trabajador Cuadrilla" value="">
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Estado</small>
+                                <select id="selEstado" class="form-control inputNp">
+                                    <option value="" selected>Estado</option>
+                                    {% for estado in estados %}
+                                    <option value="{{estado.id}}">{{estado.descripcion}}</option>
+                                    {% endfor %}  
+                                </select>
+                            </div>  
+                            <div class="col-12 col-sm-3 col-md-1" style="text-align: end;">
+                                <br />
+                                <button type="submit" id="btnBuscarTratos" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
+                                <a href="/Rebajes/informeTrabajo/crear" class="btn btn-sm btn-add" ><i class="fa fa-plus"></i></a> 
+                                
+                                
+                            </div>
+                        </div>
+                    </form><br />
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                    <div class="table-responsive">
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="html5buttons">
+                        <div class="dt-buttons btn-group flex-wrap">          
+                        
+                        
+                        </div>
+                    </div>
+                    <!--table-->
+                    <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="dtTratos" aria-describedby="dtTratos_info" role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th class="sorting">Folio</th>
+                        <th class="sorting">Obra</th>
+                        <th class="sorting">Fecha Inicio</th>
+                        
+                        <th class="sorting">Total</th>
+                        
+                        <th class="sorting">Rebajes</th>
+                        <th class="sorting">Estado</th>
+                        <th class="sorting" style="text-align:center;">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for informeTrabajo in informesTrabajo %}
+                        <tr>
+                            <td>{{informeTrabajo.folio}}</td>
+                            <td>{{informeTrabajo.obra.descripcion}}</td>
+                            <td>{{ informeTrabajo.fechaInicio|date:"d-m-Y" }}</td>
+                            
+                            <td>{{informeTrabajo.total}}</td>
+                            
+                            <td style="text-align: center;">
+                            {% if informeTrabajo.informetrabajo_detalle_set.all|length > 0 %}
+                                {% for m in informeTrabajo.informetrabajo_detalle_set.all %}
+                                    {% if m.trato.cod %}
+                                       {{m.trato.cod}} /
+                                    {% endif %}    
+                                {% endfor %}    
+                            {% else %}
+                                -
+                            {% endif %} 
+                            </td>
+                            <td>{{informeTrabajo.idEstado.descripcion}}</td>
+                            <td style="text-align:center;"><a href="{% url 'informeTrabajo_ver' informeTrabajo.id %}"><i class="fa fa-file-text" style="font-size: 1.3rem; color:#CE9446"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                    </table>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                        <ul class="pagination">
+                            <li class="paginate_button page-item prev" id="prev">
+                                <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link"><</a>
+                            </li>
+                                <li class="paginate_button page-item active">
+                                    <span id="page-info"> Página {{ informesTrabajo.number }} de {{ informesTrabajo.paginator.num_pages }} </span>
+                            </li>
+                            
+                            <li class="paginate_button page-item next" id="next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">></a></li></ul></div></div>
+                    </div>
+                    <div id="pagination">
+                        
+                        <input id="hCurrentPage" type="hidden" value="{{ informesTrabajo.number }}" />
+                        <input id="hTotalPage" type="hidden" value="{{ informesTrabajo.paginator.num_pages }}" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script>
+       $(document).ready(function(){
+
+            $('#prev').click(function(){
+                currentPage = $("#hCurrentPage").val();
+                if (currentPage > 1) {
+                    let folio = $("#txtFolio").val();
+                    let categoria =$("#selCategoria").val();
+                    let fechaInicio = $("#txtFechaInicio").val();
+                    let fechatermino = $("#txtFechaTermino").val();
+                    let codTrato = $("#txtTrato").val();
+                    let partida = $("#txtPartida").val();
+                    let trabajador = $("#txtTrabajador").val();
+                    let estado = $("#selEstado").val();
+                    let page = currentPage - 1;
+                    buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+                }
+            });
+
+            $('#next').click(function(){
+                currentPage = parseInt($("#hCurrentPage").val());
+                totalPages = parseInt($("#hTotalPage").val());
+                if (currentPage < totalPages) {
+                    let folio = $("#txtFolio").val();
+                    let categoria =$("#selCategoria").val();
+                    let fechaInicio = $("#txtFechaInicio").val();
+                    let fechatermino = $("#txtFechaTermino").val();
+                    let codTrato = $("#txtTrato").val();
+                    let partida = $("#txtPartida").val();
+                    let trabajador = $("#txtTrabajador").val();
+                    let estado = $("#selEstado").val();
+                    let page = currentPage + 1;
+                    buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+                }
+            });
+
+
+         
+        });
+
+
+    $("#frmBuscarTrato").on("submit", function( event ) {
+       
+       let folio = $("#txtFolio").val();
+       let categoria =$("#selCategoria").val();
+       let fechaInicio = $("#txtFechaInicio").val();
+       let fechatermino = $("#txtFechaTermino").val();
+       let codTrato = $("#txtTrato").val();
+       let partida = $("#txtPartida").val();
+       let trabajador = $("#txtTrabajador").val();
+       let estado = $("#selEstado").val();
+       let page = 1;
+       $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+       buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+       
+       return false;
+    });
+
+
+    function buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page)
+    {
+
+       let data = new FormData();
+       data.append('folio',folio);
+       data.append('categoria',categoria);
+       data.append('fechaInicio',fechaInicio);
+       data.append('fechaTermino',fechatermino);
+       data.append('codTrato',codTrato);
+       data.append('partida',partida);
+       data.append('trabajador',trabajador);
+       data.append('estado',estado);
+       data.append('page',page);
+       data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+       
+       fetch("{% url 'informeTrabajo_buscar' %}",{method:'POST',body: data})
+       .then((response) =>  response.json())
+       .then((data) => {
+
+        $('#dtTratos tbody').empty();
+        data.informes.forEach(function(informe) {
+            $('#dtTratos tbody').append('<tr>'
+                    +'<td>' + informe.folio + '</td>'
+                    +'<td>' + informe.obra + '</td>'
+                    +'<td>' + informe.fechaInicio + '</td>'
+                    +'<td>' + informe.total + '</td>'
+                    +'<td>' + informe.tratosRebajados + '</td>'
+                    +'<td>' + informe.estado + '</td>'
+                    +'<td style="text-align:center"><a href="/Rebajes/informeTrabajo/ver/' + informe.id + '/"><i class="fa fa-file-text" style="font-size: 1.3rem; color:#CE9446"></i></a></td></tr>');
+        });
+
+        $("#hCurrentPage").val(data.current_page);
+        $("#hTotalPage").val(data.num_pages);
+
+        $('#prev').prop('disabled', !data.has_previous);
+        $('#next').prop('disabled', !data.has_next);
+
+        $('#page-info').text('Página ' + data.current_page + ' de ' + data.num_pages);
+        $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+       })
+       .catch(function(error){console.log(error);$('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');});
+    }
+
+    </script>
+{% endblock %}

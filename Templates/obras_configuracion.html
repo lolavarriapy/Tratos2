@@ -1,0 +1,2539 @@
+{% extends '_Layout.html' %}
+
+{% block content %}
+    {% csrf_token %}
+    
+  <div class="wrapper wrapper-content animated fadeInRight">
+    
+        <div class="tabs-container" style="min-height: 100vh;">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a class="nav-link" data-toggle="tab" href="#tab-1" style="padding-top: 2px; padding-bottom: 2px">Configuración</a></li>
+                <li><a class="nav-link active" data-toggle="tab" href="#tab-2" style="padding-top: 2px; padding-bottom: 2px">Tratos</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" id="tab-1" class="tab-pane">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-6 col-lg-3">
+                                <div class="widget style1 navy-bg">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-3">
+                                            <i  class="fa fa-building fa-4x fah"></i>
+                                        </div>
+                                        <div class="col text-right">
+                                            <span class="fat"> OBRA: </span>
+                                            <h3 class="font-bold fax ">{{obra.descripcion}}</h3>
+                                            <input type="hidden" value="{{obra.id}}" id="idObra" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="widget style1 navy-bg">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <i class="fa fa-map-marker fa-4x fah"></i>
+                                        </div>
+                                        <div class="col-9 text-right">
+                                            <span class="fat"> Dirección: </span>
+                                            <h3 class="font-bold fax">{{obra.direccionCalle}} {{obra.direccionNumero}}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>        
+                            <div class="col-6 col-lg-3">
+                                <div class="widget style1 navy-bg">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <i class="fa fa-cube fa-4x fah"></i>
+                                        </div>
+                                        <div class="col-9 text-right">
+                                            <span> Total Unidades: </span>
+                                            <h3 class="font-bold">{{totalUnidades}}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="widget style1 navy-bg">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <i class="fa fa-handshake-o fa-4x fah"></i>
+                                        </div>
+                                        <div class="col-9 text-right">
+                                            <span> Total Tratos: </span>
+                                            <h3 class="font-bold">{{totalTratos}}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>        
+                             
+                        
+                        <div class="row">
+                            <!-- Tabs alineados horizontalmente en móvil y verticalmente en pantallas más grandes -->
+                            <div class="col-md-3" >
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tab0">
+                                        <div class="ibox " id="iBoxAntecedentesObra" style="margin: 0px;">      
+                                                    
+                                            <div class="ibox-content" style="padding-left: 0px;padding-right: 0px;">          
+                                                <nav class="nav nav-pills flex-row flex-md-column">
+                                                    <a class="nav-link active" id="tab4-tab" data-toggle="pill" href="#tab5">Antecedentes</a>
+                                                    <a class="nav-link" id="tab1-tab" data-toggle="pill" href="#tab1">Categorías</a>
+                                                    <a class="nav-link" id="tab2-tab" data-toggle="pill" href="#tab2">Tipos Unidad</a>
+                                                    <a class="nav-link" id="tab3-tab" data-toggle="pill" href="#tab3">Modelos Unidad</a>
+                                                    <a class="nav-link" id="tab4-tab" data-toggle="pill" href="#tab4">Unidades obra</a>
+                                                    
+                                                </nav>
+                                            </div>        
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                
+                            <!-- Contenido de los tabs -->
+                            <div class="col-md-9">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tab5">
+                                        <div class="ibox " id="iBoxAntecedentesObra">
+                                            <div class="ibox-title">
+                                                <h5>Antecedentes Obra</h5>
+                                                <input type="hidden" id="vmsj" value="{{mensaje}}" />
+            
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                                <div>
+                                                    <form id="frmAntecedentesObra">
+                                                        <h4 id="error">{{error}}</h4>
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-3 col-form-label">Código</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="number" id="txtObraCod" name="txtObraCod" placeholder="cód. obra" value="{{obra.cod}}" class="form-control"> 
+                                                                <!--<span class="form-text m-b-none">Example block-level help text here.</span>-->
+                                                            </div>
+                                                            <label class="col-lg-1 col-form-label">Tipo</label>
+                            
+                                                            <div class="col-lg-4">
+                                                                <select class="form-control" id="selObraTipo">
+                                                                    <option value="ED">Edificio</option>
+                                                                    <option value="CA">Casas</option>
+                                                                </select>
+                                                            </div>                                                    
+                                                        </div>
+                                                        <div class="form-group row"><label class="col-lg-3 col-form-label">Descripción</label>
+                            
+                                                            <div class="col-lg-9"><input type="text" id="txtObraDescripcion" name="txtObraDescripcion" value="{{obra.descripcion}}" placeholder="descripción de obra" class="form-control"></div>
+                                                        </div>                       
+                                                        <div class="form-group row"><label class="col-lg-3 col-form-label">Dirección</label>
+                                                            <div class="col-lg-6"><input type="text" id="txtObraDirCalle" name="txtObraDirCalle" placeholder="dirección calle" class="form-control" value="{{obra.direccionCalle}}"></div>
+                                                            <div class="col-lg-3"><input type="number" id="txtObraDirNumero" name="txtObraDirNumero" placeholder="número" class="form-control" value="{{obra.direccionNumero}}"></div>
+                                                        </div>
+                                                        <div class="form-group row"><label class="col-lg-3 col-form-label">URL google maps</label>
+                            
+                                                            <div class="col-lg-9"><input type="text" id="txtObraMaps" name="txtObraMaps" placeholder="URL Google maps" class="form-control"></div>
+                                                        </div> 
+                                                        <div class="row">
+                                                            <div class="col-lg-11"></div>
+                                                            <div class="col-lg-1">
+                                                                <button type="submit" class="btn btn-sm btn-save"><i style="font-size: 1.2rem;" class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                                                            </div>
+                                                        </div>                                                       
+                                                        <!--<div class="form-group row">
+                                                            <div class="col-lg-12" style="text-align: right;" >
+                                                                <button class="btn btn-sm btn-primary" type="submit">Guardar</button>
+                                                            </div>
+                                                        </div>-->
+                                                    </form>
+            
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab1">
+                                        <div class="ibox " id="iBoxCategoriaTrato">
+                                            <div class="ibox-title">
+                                                <h5>Categorias de tratos </h5>
+                                                <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                                                <!--<div class="ibox-tools">
+                                                    <a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                </div>-->
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                                <div>
+                                                    <form id="frmAddCategoria">
+                                                        <div class="row" style="display: none;">
+                                                            
+                                                            <div class="col-3" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtCAcodigo" placeholder="Código" required value="">
+                                                            </div>
+                                                            <div class="col-4" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtCADescripcion" placeholder="Descripción" required value="">
+                                                            </div>
+                                                            <div class="col-3" style="padding-left:5px;padding-right: 5px;">
+                                                            </div>
+                                                            <div class="col-1"></div>   
+                                                            <div class="col-1">
+                                                                <button type="submit" class="btn btn-sm btn-add"><i class="fa fa-plus"></i></button>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </form><br />
+                                                    <div class="row">
+                                                        <div class="table-responsive" style="overflow: auto; height:200px">
+                                                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbCategoriasObra">
+                                                            <thead style="position: sticky;top:0;background-color: white;">
+                                                            <tr role="row">
+                                                                <th class="sorting">Código</th>
+                                                                <th class="sorting">Descripción</th>
+                                                                <th class="sorting"></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+            
+                                                            </tbody>
+                            
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-11"></div>
+                                                        <div class="col-lg-1"><br />
+                                                            <button type="button" onclick="guardarCategorias()" class="btn btn-sm btn-save"><i style="font-size: 1.2rem;" class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                                                        </div>
+                                                    </div>   
+                                                </div>
+                            
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    <div class="tab-pane fade" id="tab2">
+                                        <div class="ibox " id="iBoxTiposUnidad">
+                                            <div class="ibox-title">
+                                                <h5>Tipos de unidad </h5>
+                                                <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                                <div>
+                                                    <form id="frmAddTipoUnidad">
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtTUcodigo" style="text-transform: uppercase;" placeholder="Código" required value="">
+                                                            </div>
+                                                            <div class="col-lg-4 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtTUDescripcion" style="text-transform: uppercase;" placeholder="Descripción" required value="">
+                                                            </div>
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <select id="selTUTipoMedicion" class="form-control">
+                                                                    <option value="" disabled="disabled" selected>Medición</option>
+                                                                    <option value="UNI">Unidad</option>
+                                                                    <option value="CAN">Cantidad</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-1"></div>   
+                                                            <div class="col-lg-1 col-12" style="text-align: end;">
+                                                                <button type="submit" class="btn btn-sm btn-add"><i  class="fa fa-plus"></i></button>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </form><br />
+                                                    <div class="row">
+                                                        <div class="table-responsive" style="overflow: auto; height:200px">
+                                                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbTipoUnidad">
+                                                            <thead style="position: sticky;top:0;background-color: white;">
+                                                            <tr role="row">
+                                                                <th class="sorting">Código</th>
+                                                                <th class="sorting">Descripción</th>
+                                                                <th class="sorting">Medición</th>
+                                                                <th class="sorting"></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% if tipoUnidad|length > 0 %}
+                                                                    {% for tipo in tipoUnidad %}
+                                                                    <tr id="trTipo_{{tipo.id}}">
+                                                                        <td>{{tipo.cod}}</td>
+                                                                        <td>{{tipo.descripcion}}</td>
+                        
+                                                                        {% if tipo.medicion == "UNI" %}
+                                                                            <td>Unidad</td>
+                                                                        {% else %}
+                                                                            <td>Cantidad</td>
+                                                                        {% endif %}
+                                                                        <td style="text-align: center;"><i class="fa fa-minus-circle" style="cursor: pointer;" onclick="removeTr(this,{{tipo.id}},'t')"  aria-hidden="true"></i></td>    
+                                                                    </tr>
+                                                                    {% endfor %} 
+                                                                {% else %}
+                                                                    <tr id="trTUVacio"><td colspan="4" style="text-align:center">No hay tipos de unidades registradas.</td></tr>
+                                                                {% endif %}
+                                                            </tbody>
+                            
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab3">
+                                        <div class="ibox " id="iBoxModeloUnidad">
+                                            <div class="ibox-title">
+                                                <h5>Modelos de unidad </h5>
+                                                <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                                <div>
+                                                    <form id="frmAddModeloUnidad">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <select class="form-control" id="selMOtipo">
+                                                                    <option value="" disabled="disabled" selected>Tipo</option>
+                                                                    {% if tipoUnidad|length > 0 %}
+                                                                        {% for tipo in tipoUnidad %}
+                                                                        <option value="{{tipo.id}}">
+                                                                            {{tipo.descripcion}}
+                                                                        </option>
+                                                                        {% endfor %} 
+                                                                    {% endif %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtMUcodigo" style="text-transform: uppercase;" placeholder="Código" required value="">
+                                                            </div>
+                                                            <div class="col-lg-3 col-12" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtMUDescripcion" style="text-transform: uppercase;" placeholder="Descripción" required value="">
+                                                            </div>
+                                                            <div class="col-lg-2 col-12"></div>
+                                                            <div class="col-lg-1 col-12" style="text-align: end;">
+                                                                <button type="submit" class="btn btn-sm btn-add" style="margin-top: 5px;"><i class="fa fa-plus"></i></button>
+                            
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </form><br />
+                                                    <div class="row">
+                                                        <div class="table-responsive" style="overflow: auto; height:200px">
+                                                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbModeloUnidad">
+                                                            <thead style="position: sticky;top:0;background-color: white;">
+                                                            <tr role="row">
+                                                                <th class="sorting">Código</th>
+                                                                <th class="sorting">Tipo</th>
+                                                                <th class="sorting">Descripción</th>
+                                                                <th class="sorting" ></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% if modeloUnidad|length > 0 %}
+                                                                {% for modelo in modeloUnidad %}
+                                                                <tr id="trModelo_{{modelo.id}}">
+                                                                    <td>{{modelo.cod}}</td>
+                                                                    <td>{{modelo.tipo.descripcion}}</td>
+                                                                    <td>{{modelo.descripcion}}</td>
+                                                                    <td style="text-align: center;"><i class="fa fa-minus-circle" style="cursor: pointer;" onclick="removeTr(this,{{modelo.id}},'m')"  aria-hidden="true"></i></td>    
+                                                                </tr>
+                                                                {% endfor %} 
+                                                            {% else %}
+                                                                <tr id="trMUVacio"><td colspan="3" style="text-align:center">No hay unidades registradas.</td></tr>
+                                                            {% endif %}
+                                                            
+                                                            </tbody>
+                            
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab4">
+                                        <div class="ibox " id="iBoxUnidades">
+                                            <div class="ibox-title">
+                                                <h5><i class="fas fa-cube fa-2x">&nbsp;&nbsp;</i>Unidades de Obra </h5>
+                                                <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                                <div>
+                                                    <form id="frmAddUnidad">
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-lg-2 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtNUcodigo" style="text-transform: uppercase;" placeholder="Código" required value="">
+                                                            </div>
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <input type="text" class="form-control" id="txtNUDescripcion" style="text-transform: uppercase;" placeholder="Descripción" required value="">
+                                                            </div>
+                                                            <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
+                                                                <select id="selNUtipo" class="form-control" required>
+                                                                    <option value="" disabled selected>Tipo unidad</option>
+                            
+                                                                        {% for tipo in tipoUnidad %}
+                                                                            <option value="{{tipo.id}}">{{tipo.descripcion}}</option>
+                                                                        {% endfor %} 
+                            
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-3 col-6" style="padding:0px">
+                                                                <select id="selNUmodelo" class="form-control" required>
+                                                                    <option value="" disabled selected>Modelo Unidad</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-1 col-12" style="text-align: end;">
+                                                                <button type="submit" class="btn btn-sm btn-add" style="margin-top: 5px;"><i class="fa fa-plus"></i></button>
+                            
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </form><br />
+                                                    <div class="row">
+                                                        <div class="table-responsive" style="overflow: auto; height:200px">
+                                                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbUnidades">
+                                                            <thead style="position: sticky;top:0;background-color: white;">
+                                                            <tr role="row">
+                                                                <th class="sorting">Código</th>
+                                                                <th class="sorting">Descripción</th>
+                                                                <th class="sorting">Tipo</th>
+                                                                <th class="sorting">Modelo</th>
+                                                                <th class="sorting"></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% if unidadesObra|length > 0 %}
+                                                                {% for unidad in unidadesObra %}
+                                                                <tr id="trUnidad_{{unidad.id}}">
+                                                                    <td>{{unidad.cod}}</td>
+                                                                    <td>{{unidad.descripcion}}</td>
+                                                                    <td>{{unidad.idModelo.tipo.descripcion}}</td>
+                                                                    <td>{{unidad.idModelo.descripcion}}</td>
+                                                                    <td style="text-align: center;"><i class="fa fa-minus-circle" style="cursor: pointer;" onclick="removeTr(this,{{unidad.id}},'u')"  aria-hidden="true"></i></td>
+                                                                </tr>
+                                                                {% endfor %} 
+                                                            {% else %}
+                                                                <tr id="trUnidadesVacio"><td colspan="4" style="text-align:center">No hay unidades registradas.</td></tr>
+                                                            {% endif %}
+                                                            </tbody>
+                            
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                          
+
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                            </div>
+                            <div class="col-lg-6">
+
+                            </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                            </div>
+                            <div class="col-lg-6">
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" id="tab-2" class="tab-pane active" style="padding: 0px;">
+                    <div class="panel-body" style="padding: 0px;">
+                        <div class="row">
+                            <div class="col-12">
+                                
+                                <div class="ibox" id="iboxTratos">
+                                    <div class="ibox-content">
+                                        <div class="sk-spinner sk-spinner-wave">
+                                            <div class="sk-rect1"></div>
+                                            <div class="sk-rect2"></div>
+                                            <div class="sk-rect3"></div>
+                                            <div class="sk-rect4"></div>
+                                            <div class="sk-rect5"></div>
+                                        </div>
+                                        <div>
+                                            
+                                            <form id="frmAddTrato">
+                                                <div class="row" style="border-bottom: 1px #dee2e6 solid;padding-bottom: 10px;">
+                                                    <div class="col-6 col-lg-1" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Cod. Familia</small>
+                                                        <input type="text" class="form-control inputNp" id="txtTRCodFam" placeholder="Cod.Familia" required value="">
+                                                    </div>
+                                                    <div class="col-6 col-lg-1" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Categoria</small>
+                                                        <select id="selTRcategoria" class="form-control inputNp" required>
+                                                            <option value="" selected>Categoria</option>
+
+                                                            {% for categoria in categorias %}
+                                                                <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+                                                            {% endfor %} 
+                                                        </select>
+                                                        
+                                                    </div>
+                                                    <div class="col-6 col-lg-1" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Especialidad</small>
+                                                        <div class="input-group-append">
+                                                            <select id="selTRespecialidad" class="form-control inputNp" required>
+                                                                <option value="" selected>Especialidad</option>
+                                                                {% for especialidad in especialidades %}
+                                                                    <option value="{{especialidad.id}}">{{especialidad.descripcion}}</option>
+                                                                {% endfor %} 
+                                                            </select>
+                                                            <!--<button tabindex="-1" class="btn btn-white" type="button" onclick="showAgregarPopup('E')"><i class="fa fa-plus" ></i></button>-->
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="col-6 col-lg-2" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Capataz</small>
+                                                        <div class="input-group-append">
+                                                            <select id="selTRcapataz" class="form-control inputNp" required>
+                                                                <option value="" selected>Capataz</option>
+    
+                                                                {% for capataz in capataces %}
+                                                                    <option value="{{capataz.id}}">{{capataz.nombre}} {{capataz.apellido}}</option>
+                                                                {% endfor %} 
+                                                            </select>
+                                                            <button tabindex="-1" class="btn btn-white" type="button" onclick="showAgregarPopup('C')"><i style="btn-primary" class="fa fa-plus"></i></button>
+                                                        </div>
+
+                                                    </div>                                                                
+                                                    <div class="col-6 col-lg-1" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Unidad Medida</small>
+                                                        <div class="input-group-append">
+                                                            <select id="selTRUnidadMedida" class="form-control inputNp" required>
+                                                                <option value="" selected>Seleccione</option>
+
+                                                                {% for unidadMedida in unidadesMedida %}
+                                                                <option value="{{unidadMedida.id}}">{{unidadMedida.descripcion}}</option>
+                                                            {% endfor %} 
+                                                            </select>
+                                                            <!--<button tabindex="-1" class="btn btn-white" type="button" onclick="showAgregarPopup('U')"><i style="btn-primary" class="fa fa-plus"></i></button>-->
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="col-12 col-lg-5" style="padding-left:5px;padding-right: 5px;">
+                                                        <small>Partida</small>
+                                                        <input type="text" class="form-control inputNp" id="txtTRpartida" style="text-transform: uppercase;" placeholder="Partida" required value="">
+                                                    </div>
+                                                    <div class="col-12 col-lg-1" style="text-align: end;">
+                                                        <br />
+                                                        <button type="submit" class="btn btn-sm btn-add"><i class="fa fa-plus"></i></button>
+                                                        <button type="button" id="btnBuscarTratos" class="btn btn-sm btn-primary"><i style="btn-primary" class="fa fa-search"></i></button>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                            
+                                            <br />
+                                            <div class="row">
+                                                <div class="table-responsive" >
+                                                    <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbTratos">
+                                                    <thead style="position: sticky;top:0;background-color: white;">
+                
+                                                    <tr  class="titleTratos" role="row">
+                                                        <th class="sorting">Cod. Trato</th>
+                                                        <th class="sorting">Partida</th>
+                                                        <th class="sorting" style="text-align: center;">Medida</th>
+                                                        <th class="sorting" style="text-align: center;">Maestro(s)</th>
+                                                        <th class="sorting" style="text-align: center;">Jornal(es)</th>
+                                                        <th class="sorting" style="text-align: center;">Ayudante(s)</th>
+                                                        <th class="sorting" style="text-align: center;">Valor (día)<br />Cuadrilla</th>  
+                                                        <th class="sorting" style="text-align: center;">Modelo(s)</th>
+                                                        
+                                                          
+                                                        <th class="sorting" style="text-align: center;">Cantidad<br />Total</th>        
+                                                        <th class="sorting" style="text-align: center;">Valor<br /> Partida</th>  
+                                                        <th class="sorting" style="text-align: center;">Bloqueo<br />Unidades</th>
+                                                        <th class="sorting" style="text-align: center;">Desactivar<br />Trato</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    
+                                                    {% if tratos|length > 0 %}
+                                                        {% for trato in tratos %}
+                                                            {% if trato.estado == 1 %}    
+                                                                <tr id="trTrato_{{trato.id}}">
+                                                                    
+                                                                    <td style="text-align: center;" class='celTratos'><button type="submit" class="btn btn-sm btn-primary btnTratos tCodPartida" onclick="showDetallePopup('{{trato.id}}')" id="btnCod_{{trato.id}}">{{trato.cod}}</button></td>
+                                                                    <td class="tPartida celTratos" id="tdPartida_{{trato.id}}">{{trato.partida}}</td>
+                                                                    <td class='celTratos' style="font-size: 11px;font-weight: bold;margin: 0;" id="tdMedida_{{trato.id}}">{{trato.unidadMedida.descripcion}}</td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%;" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroMaestros_{{trato.id}}">{{trato.nroMaestros}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtSueldoMaestro_{{trato.id}}">{{trato.sueldoMaestro_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroJornales_{{trato.id}}">{{trato.nroJornales}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtSueldoJornal_{{trato.id}}">{{trato.sueldoJornal_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroAyudantes_{{trato.id}}">{{trato.nroAyudantes}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtSueldoAyudante_{{trato.id}}">{{trato.sueldoAyudante_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos' id="tdVcuadrilla_{{trato.id}}" style="font-size: 13px;text-align: center;">${{trato.valorCuadrilla_sep}}</td>
+                                                                    <td class='celTratos' style="text-align: center;" id="modelos_{{trato.id}}">
+                                                                        
+                                                                        
+                                                                        {% if trato.tratomodelo_set.all|length > 0 %}
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnAddModel btnTratos" id='btnAddModels_{{ trato.id }}' onclick="mModelos(this)" style="margin:2px">
+                                                                            <small style="font-size: 12px;font-weight: 600;margin: 0;">
+                                                                        {% for m in trato.tratomodelo_set.all %}
+                                                                            {% if m.estado %}
+                                                                                        <!--<button type="submit" class="btn btn-sm btn-primary btnAddModel" onclick="mModelos(this)" style="margin:2px"><small style="font-size: 12px;font-weight: bold;margin: 0;">{{m.modelo.cod}}</small>|<small style="font-size: 12px;font-weight: bold;margin: 0;">R:{{m.rendimiento}}</small>|<small style="font-size: 12px;font-weight: bold;margin: 0;">${{m.valorTratoModelo_sep}}</small></button>
+                                                                                        <button type="submit" class="btn btn-sm btn-primary btnAddModel" onclick="mModelos(this)" style="margin:2px"><small style="font-size: 12px;font-weight: 600;margin: 0;">{{m.modelo.cod}}</small>|<small style="font-size: 12px;font-weight: 600;margin: 0;">${{m.valorTratoModelo_sep}}</small></button>-->
+                                                                                        {{m.modelo.cod}} /
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                            </small>
+                                                                        </button>
+                                                                        {% else %}
+                                                                            <button type="submit" class="btn btn-sm btn-add btnAddModel" onclick="mModelos(this)" id="btnAddModels_{{trato.id}}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                                        {% endif %}    
+                                                                
+                                                                    
+                                                                    </td>
+                                                                    
+                                                                    <td class='celTratos' id="txtCanTotal_{{trato.id}}" style="font-size: 13px;text-align: center;">{{trato.cantidad}}</td>
+                                                                    <td class='celTratos' id="txtValorTotal_{{trato.id}}" style="font-size: 13px;text-align: center;">${{trato.valorTrato_sep}}</td>
+
+                                                                    <td style="display: none;">
+                                                                        <input type="hidden" class="inputHidden" id="hId_{{trato.id}}" value="{{trato.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hcf_{{trato.id}}" value="{{trato.codFamilia}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hes_{{trato.id}}" value="{{trato.especialidad.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hca_{{trato.id}}" value="{{trato.categoria.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hcp_{{trato.id}}" value="{{trato.capataz.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hum_{{trato.id}}" value="{{trato.unidadMedida.id}}" />
+                                                                    </td>
+                                                                    <td class='celTratos' style="text-align: center;"><button type="submit" class="btn btn-sm btn-primary" onclick="showBloqueosPopup('{{trato.id}}')"><i style="btn-primary;" class="fa fa-ban" aria-hidden="true"></i></button></td>
+                                                                    <td class='celTratos' style="text-align: center;"><button type="submit" id="btnDesactivaTrato_{{trato.id}}" class="btn btn-sm btn-primary" onclick="showDesactivarTrato('{{trato.id}}')" style="background-color:rgb(253, 150, 150) ;" onclick=""><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                                                </tr>
+                                                            {% else %}
+                                                                <tr id="trTrato_{{trato.id}}" style="background-color: #b5b5b5;">
+                                                                        
+                                                                    <td style="text-align: center;" class='celTratos'><button type="submit" class="btn btn-sm btn-primary btnTratos tCodPartida" >{{trato.cod}}</button></td>
+                                                                    <td class="tPartida celTratos" >{{trato.partida}}</td>
+                                                                    <td class='celTratos' style="font-size: 11px;font-weight: bold;margin: 0;" >{{trato.unidadMedida.descripcion}}</td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%;" ><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroMaestros_{{trato.id}}">{{trato.nroMaestros}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" >{{trato.sueldoMaestro_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%" ><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroJornales_{{trato.id}}">{{trato.nroJornales}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" >{{trato.sueldoJornal_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos'>
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnTratos" style="margin:2px; width: 100%" ><small style="font-size: 12px;font-weight: 600;margin: 0;" id="txtNroAyudantes_{{trato.id}}">{{trato.nroAyudantes}}</small> | <small>$</small><small style="font-size: 12px;font-weight: 600;margin: 0;" >{{trato.sueldoAyudante_sep}}</small>
+                                                                    </td>
+                                                                    <td class='celTratos'  style="font-size: 13px;text-align: center;">${{trato.valorCuadrilla_sep}}</td>
+                                                                    <td class='celTratos' style="text-align: center;" >
+                                                                        
+                                                                        
+                                                                        {% if trato.tratomodelo_set.all|length > 0 %}
+                                                                        <button type="submit" class="btn btn-sm btn-primary btnAddModel btnTratos"  style="margin:2px">
+                                                                            <small style="font-size: 12px;font-weight: 600;margin: 0;">
+                                                                        {% for m in trato.tratomodelo_set.all %}
+                                                                            {% if m.estado %}
+                                                                                 {{m.modelo.cod}} /
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                            </small>
+                                                                        </button>
+                                                                        {% else %}
+                                                                            <button type="submit" class="btn btn-sm btn-add btnAddModel" onclick="mModelos(this)" id="btnAddModels_{{trato.id}}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                                        {% endif %}    
+                                                                
+                                                                    
+                                                                    </td>
+                                                                    
+                                                                    <td class='celTratos' id="txtCanTotal_{{trato.id}}" style="font-size: 13px;text-align: center;">{{trato.cantidad}}</td>
+                                                                    <td class='celTratos' id="txtValorTotal_{{trato.id}}" style="font-size: 13px;text-align: center;">${{trato.valorTrato_sep}}</td>
+
+                                                                    <td style="display: none;">
+                                                                        <input type="hidden" class="inputHidden" id="hId_{{trato.id}}" value="{{trato.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hcf_{{trato.id}}" value="{{trato.codFamilia}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hes_{{trato.id}}" value="{{trato.especialidad.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hca_{{trato.id}}" value="{{trato.categoria.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hcp_{{trato.id}}" value="{{trato.capataz.id}}" />
+                                                                        <input type="hidden" class="inputHidden" id="hum_{{trato.id}}" value="{{trato.unidadMedida.id}}" />
+                                                                    </td>
+                                                                    <td class='celTratos' style="text-align: center;"><button type="submit" class="btn btn-sm btn-primary"><i style="btn-primary;" class="fa fa-ban" aria-hidden="true"></i></button></td>
+                                                                    <td class='celTratos' style="text-align: center;"></td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %} 
+                                                    {% else %}
+                                                        <tr id="trTratosVacio"><td colspan="17" style="text-align:center">No hay tratos registrados.</td></tr>
+                                                    {% endif %}
+                                                    
+                                                    </tbody>
+                                                
+                                                    </table>
+                                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                    <ul class="pagination">
+                                                        <li class="paginate_button page-item prev" id="prev">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link"><</a>
+                                                        </li>
+                                                            <li class="paginate_button page-item active">
+                                                                <span id="page-info"> Página {{ tratos.number }} de {{ tratos.paginator.num_pages }} </span>
+                                                        </li>
+                                                        <li class="paginate_button page-item next" id="next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                
+                                                <div id="pagination">
+                                                    
+                                                    <input id="hCurrentPage" type="hidden" value="{{ tratos.number }}" />
+                                                    <input id="hTotalPage" type="hidden" value="{{ tratos.paginator.num_pages }}" />
+                                
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        
+
+        
+    </div>
+
+    <div class="modal inmodal" id="mModeloTrato" tabindex="-1" role="dialog" aria-hidden="true">
+        <form id="frmModelosTrato">
+            <div class="modal-dialog mPopup">
+                <div class="modal-content animated fadeIn d-flex flex-column" style="height: 100%;">
+                    <div class="modal-header" style="padding-bottom: 0px;">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                        <i class="fas fa-handshake fa-2x"></i>
+                        <h4 class="modal-title" id="mTitleCod"></h4>
+                        <h3 id="mTitlePartida"></h3>
+                        <small id="sMsjeModelos" style="color:red"></small>
+                    </div>
+                    <div class="modal-body flex-grow-1" style="overflow-y: auto;">
+                        <div class="table-responsive" style="height: 100%;">
+                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbModelosAdd">
+                                <thead style="position: sticky; top:0; background-color: white;">
+                                    <tr role="row"><th colspan="6" style="text-align: center;">Modelos</th></tr>
+                                    <tr role="row">
+                                        <th class="sorting"><input type="checkbox" id="checkAllModelos"/></th>
+                                        <th class="sorting">Código</th>
+                                        <th class="sorting" style="width: 30%;">Descripción</th>
+                                        <th class="sorting">Rendimiento día</th>
+                                        <th class="sorting">Cantidad</th>
+                                        <th class="sorting">Valor Trato($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="trLoad">
+                                        <td colspan="6" style="text-align:center">
+                                            <div class="spiner-example">
+                                                <div class="sk-spinner sk-spinner-wave">
+                                                    <div class="sk-rect1"></div>
+                                                    <div class="sk-rect2"></div>
+                                                    <div class="sk-rect3"></div>
+                                                    <div class="sk-rect4"></div>
+                                                    <div class="sk-rect5"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div id="spModelos" style="display: none;" class="sk-spinner sk-spinner-wave">
+                            <div class="sk-rect1"></div>
+                            <div class="sk-rect2"></div>
+                            <div class="sk-rect3"></div>
+                            <div class="sk-rect4"></div>
+                            <div class="sk-rect5"></div>
+                        </div>
+                        <button type="button" class="btn btn-white btnModelos" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" id="btnGuardarModelos" class="btn btn-primary btnModelos">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal inmodal" id="mCuadrillaTrato" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div id="iBoxCuadrilla">
+            <form id="frmCuadrillaTrato">
+                <div class="modal-dialog">
+                    <div class="modal-content animated fadeIn">
+                        <div class="modal-header" style="padding-bottom: 0px;">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        
+                                <i class="fas fa-handshake fa-2x"></i>
+                                <h4 class="modal-title" id="mTitleCodC"></h4>
+            
+                            <h3 id="mTitlePartidaC"></h3>
+                        </div>
+                        <div class="modal-body">
+                                <div class="table-responsive" style="overflow: auto; height:250px">
+                                <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbCuadrillaAdd">
+                                    <thead style="position: sticky;top:0;background-color: white;">
+                                    <tr role="row">
+                                        <th colspan="3" style="text-align: center;">Cuadrilla</th>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="sorting"></th>
+                                        <th class="sorting">Cantidad</th>
+                                        <th class="sorting">Sueldo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Maestro(s)</td>
+                                            <td><input type="number" id="txtMaestroNro" class="form-control btnCuadrilla" /></td>
+                                            <td><input type="number" id="txtMaestroSueldo" class="form-control btnCuadrilla" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jornal(es)</td>
+                                            <td><input type="number" id="txtJornalNro" class="form-control btnCuadrilla" /></td>
+                                            <td><input type="number" id="txtJornalSueldo" class="form-control btnCuadrilla" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ayudante(s)</td>
+                                            <td><input type="number" id="txtAyudanteNro" class="form-control btnCuadrilla" /></td>
+                                            <td><input type="number" id="txtAyudanteSueldo" class="form-control btnCuadrilla" /></td>
+                                        </tr>
+                                    </tbody>
+
+                                    </table>                                                                                      
+                                </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <div id="spCuadrilla" style="display: none;" class="sk-spinner sk-spinner-wave">
+                                <div class="sk-rect1"></div>
+                                <div class="sk-rect2"></div>
+                                <div class="sk-rect3"></div>
+                                <div class="sk-rect4"></div>
+                                <div class="sk-rect5"></div>
+                            </div>
+                            <button type="button" class="btn btn-white btnCuadrilla" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary btnCuadrilla">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="mAntecedentesTrato" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div id="iBoxAntecedentes">
+            <form id="frmAntecedentesTrato">
+                <div class="modal-dialog mPopup">
+                    <div class="modal-content animated fadeIn">
+                        <div class="modal-header" style="padding-bottom: 0px;">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        
+                                <i class="fas fa-handshake fa-2x"></i>
+                                <h4 class="modal-title" id="mTitleCodA"></h4>
+            
+                            <h3 id="mTitlePartidaA"></h3>
+                        </div>
+                        <div class="modal-body">
+                                <div class="table-responsive" style="overflow: auto; height:300px">
+                                <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbCuadrillaAdd">
+                                    <tbody>
+                                        <tr>
+                                            <td>Código Familia</td>
+                                            <td><input type="text" id="txtEDCodFam" class="form-control" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            
+                                            <td>Categoria</td>
+                                            <td>
+                                                <select id="selEDcategoria" disabled class="form-control inputNp" required>
+                                                    {% for categoria in categorias %}
+                                                        <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+                                                    {% endfor %} 
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Especialidad</td>
+                                            <td>
+                                                <select id="selEDespecialidad" class="form-control inputNp" required>
+                                                    {% for especialidad in especialidades %}
+                                                        <option value="{{especialidad.id}}">{{especialidad.descripcion}}</option>
+                                                    {% endfor %} 
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Capataz</td>
+                                            <td>
+                                                <select id="selEDcapataz" class="form-control inputNp" required>
+                                                    {% for capataz in capataces %}
+                                                        <option value="{{capataz.id}}">{{capataz.nombre}} {{capataz.apellido}}</option>
+                                                    {% endfor %} 
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unidad Medida</td>
+                                            <td>
+                                                <select id="selEDUnidadMedida" class="form-control inputNp" required>
+                                                    {% for unidadMedida in unidadesMedida %}
+                                                    <option value="{{unidadMedida.id}}">{{unidadMedida.descripcion}}</option>
+                                                {% endfor %} 
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Partida</td>
+                                            <td><input type="text" id="txtEDPartida" class="form-control" value="" />
+                                                
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+
+                                    </table>                                                                                      
+                                </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <div id="spAntecedentes" style="display: none;" class="sk-spinner sk-spinner-wave">
+                                    <div class="sk-rect1"></div>
+                                    <div class="sk-rect2"></div>
+                                    <div class="sk-rect3"></div>
+                                    <div class="sk-rect4"></div>
+                                    <div class="sk-rect5"></div>
+                                </div>
+                            </div>
+                            <div>
+                            <button type="button" id="btnCerrarAntecedentes" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" id="btnGuardarAntecedentes" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>    
+
+    <div class="modal inmodal" id="mUnidadesBloqueadas" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div id="iBoxBloqueos">
+            <form id="frmUnidadesBloqueadas">
+                <div class="modal-dialog mPopup">
+                    <div class="modal-content animated fadeIn">
+                        <div class="modal-header" style="padding-bottom: 0px;">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        
+                                <i class="fas fa-handshake fa-2x"></i>
+                                <h4 class="modal-title" id="mTitleCodU"></h4>
+            
+                            <h3 id="mTitlePartidaU"></h3>
+                        </div>
+                        <div class="modal-body">
+
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        <label style="padding-top: 8px;padding-bottom: 0px;">Unidad</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <select class="form-control" id="selBloqUnidad">
+                                            <option value="" selected disabled>Seleccione unidad</option>
+                                            {% if unidadesObra|length > 0 %}
+                                                {% for unidad in unidadesObra %}
+                                                    <option value="{{unidad.id}}">{{unidad.descripcion}}</option>
+                                                {% endfor %} 
+                                            {% endif %}
+                                                    
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <label style="padding-top: 8px;padding-bottom: 0px;">Motivo</label>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <input type="text" id="txtMotivoBloq" class="form-control" value="" required />
+                                    </div>                                    
+                                    <div  class="col-lg-2">
+                                        <input type="submit" class="btnTratos form-control btnBloq" value="Bloquear" />
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="row">
+                                    <div class="table-responsive" style="overflow: auto; height:300px">
+                                        <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="tbBloqueosAdd">
+                                            <thead style="position: sticky;top:0;background-color: white;">
+                                            <tr role="row"><th colspan="5" style="text-align: center;">Unidades Bloqueadas</th></tr>
+                                            <tr role="row">
+                                                <th class="sorting">código</th>
+                                                <th class="sorting">descripción</th>
+                                                <th class="sorting">motivo</th>
+                                                <th class="sorting"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr id="trLoadBloq"><td colspan="5" style="text-align:center">
+                                                            <div class="spiner-example">
+                                                                <div class="sk-spinner sk-spinner-wave">
+                                                                    <div class="sk-rect1"></div>
+                                                                    <div class="sk-rect2"></div>
+                                                                    <div class="sk-rect3"></div>
+                                                                    <div class="sk-rect4"></div>
+                                                                    <div class="sk-rect5"></div>
+                                                                </div>
+                                                            </div>
+                                                    </td>
+                                                    </tr>
+                                            </tbody>
+            
+                                            </table>                                                                                      
+                                        </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <div id="spBloqueos" style="display: none;" class="sk-spinner sk-spinner-wave">
+                                    <div class="sk-rect1"></div>
+                                    <div class="sk-rect2"></div>
+                                    <div class="sk-rect3"></div>
+                                    <div class="sk-rect4"></div>
+                                    <div class="sk-rect5"></div>
+                                </div>
+                            </div>
+                            <button type="button"  class="btn btn-white btnBloq" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>   
+    
+    <div class="modal inmodal" id="mAgregarItem" tabindex="-1" role="dialog" aria-hidden="true">
+        <form id="frmAgregarItem">
+            <div class="modal-dialog" style="max-width: 100%!important; width: 40%; height: 50vh;">
+                <div class="modal-content animated fadeIn d-flex flex-column" style="height: 100%;">
+                    <div class="modal-header" style="padding-bottom: 0px;">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                        <i class="fas fa-handshake fa-2x"></i>
+                        <h4 class="modal-title" id="mTitleItem"></h4>
+                        <small id="sMsjeModelos" style="color:red"></small>
+                    </div>
+                    <div class="modal-body flex-grow-1" style="overflow-y: auto;">
+                        <div class="table-responsive" style="height: 100%;">
+                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="">
+                                <tbody>
+                                    <tr>
+                                        <td id="tdTitleItem"></td>
+                                        <td><input type="text" id="txtValorItem" style="text-transform: uppercase;" class="form-control" value="" required /></td>
+                                    </tr>
+                                    <tr style="display: none;" id="trVal2">
+                                        <td id="tdTitleItem2"></td>
+                                        <td><input type="text" id="txtValorItem2" style="text-transform: uppercase;" class="form-control" value="" /></td>
+                                    </tr>                                  
+                                </tbody>
+
+                                </table>                 
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" id="btnGuardarItem" class="btn btn-primary">Agregar</button>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="hAddItem" value="" />
+        </form>
+    </div>
+
+    
+    <div class="modal inmodal" id="mConfirmEstadoTrato" tabindex="-1" role="dialog" aria-hidden="true">
+        <form id="frmAgregarItem">
+            <div class="modal-dialog" style="max-width: 100%!important; width: 40%; height: 50vh;">
+                <div class="modal-content animated fadeIn d-flex flex-column" style="height: 100%;">
+                    <div class="modal-header" style="padding-bottom: 0px;">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                        <i class="fas fa-handshake fa-2x"></i>
+                        <h4 class="modal-title" id="mTitleCodET"></h4>
+                        <h3 id="mTitlePartidaET"></h3>
+
+                    </div>
+                    <div class="modal-body flex-grow-1" style="overflow-y: auto;">
+                        <div class="row">
+                            <div class="col-12" style="text-align: center;">
+                                <h3>¿Esta seguro que quiere desactivar este trato?</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-3">
+                                <input type="hidden" id="idtET" value="" />
+                               <input type="button" class="form-control" value="SI" onclick="actualizarEstadoTrato(0)" style="background-color: #9df59d;" />
+                            </div>
+                            <div class="col-3">
+                                <input type="button" class="form-control" value="NO" style="background-color: #ff930085" />
+                            </div>    
+                            <div class="col-3"></div>                        
+                        </div>                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="hAddItem" value="" />
+        </form>
+    </div>
+
+    
+    <input type="hidden" id="hIdTrato" value="" />
+<script>
+
+
+    $(document).ready(function(){
+        if (window.innerWidth < 769) {
+            $(".fah").removeClass("fa-4x");
+            $(".fah").addClass("fa-2x");
+            $(".fat").hide();
+            $(".fax").css("font-size", "14px");
+        } else {
+            $('body').removeClass('body-small')
+            $(".fah").addClass("fa-4x");
+            $(".fah").removeClass("fa-2x");
+            $(".fat").show();
+        }
+
+
+        getObrasCategoria();
+        function loadPage(page) {
+
+            let codFam =$("#txtTRCodFam").val();
+            let idCategoria = $("#selTRcategoria").val();
+            let idEspecialidad = $("#selTRespecialidad").val();
+            let idCapataz = $("#selTRcapataz").val();
+            let idUnidadMedida = $("#selTRUnidadMedida").val();
+            let partida = $("#txtTRpartida").val().toUpperCase();    
+
+            buscarTrato(codFam,idCategoria,idEspecialidad,idCapataz,idUnidadMedida,partida,page);
+
+        }
+
+        $('#prev').click(function(){
+            currentPage = $("#hCurrentPage").val();
+            if (currentPage > 1) {
+                loadPage(currentPage - 1);
+            }
+        });
+
+        $('#next').click(function(){
+            currentPage = parseInt($("#hCurrentPage").val());
+            totalPages = parseInt($("#hTotalPage").val());
+            if (currentPage < totalPages) {
+                loadPage(currentPage + 1);
+            }
+        });
+
+
+
+    });
+
+    $("#selNUtipo").change(function(){
+
+        let data = new FormData();
+        let idTipo = this.value;
+        let obra = $("#idObra").val();
+        data.append('tipo',idTipo);
+        data.append('obra',obra);
+        data.append('mt','GXT');
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+        $("#selNUmodelo").empty();
+        fetchS("{% url 'modelosUnidad' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            $("#selNUmodelo").append('<option value="" disabled="" selected="">Modelo Unidad</option>');
+            $.each(data, function(i, item) {
+                $("#selNUmodelo").append("<option value='"+item.id+"'>"+item.descripcion+"</option>");
+            });
+            
+        })
+        .catch(function(error){console.log(error);});
+
+    });
+
+    $("#checkAllModelos").click(function(){
+        
+        if($(this).prop('checked') == true){
+            $("#tbModelosAdd").find(':checkbox').prop('checked', true);
+        }
+        else
+        {
+            $("#tbModelosAdd").find(':checkbox').prop('checked', false);
+        }
+    });
+
+    $("#btnBuscarTratos").click(function(){
+        let codFam =$("#txtTRCodFam").val();
+        let idCategoria = $("#selTRcategoria").val();
+        let idEspecialidad = $("#selTRespecialidad").val();
+        let idCapataz = $("#selTRcapataz").val();
+        let idUnidadMedida = $("#selTRUnidadMedida").val();
+        let partida = $("#txtTRpartida").val().toUpperCase();    
+        let currentPage = 1;
+          
+        buscarTrato(codFam,idCategoria,idEspecialidad,idCapataz,idUnidadMedida,partida);
+    });
+
+    function filtroCategoria(idc,input)
+    {
+        $(".filterCategoria").removeClass("filterActive");
+        $("#"+input.id).addClass("filterActive");
+        buscarTrato('',idc,'','','','');
+    }
+
+    function buscarTrato(codFam,idCategoria,idEspecialidad,idCapataz,idUnidadMedida,partida,pagina)
+    { 
+        $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+
+        let data = new FormData();
+        data.append('codFam',codFam);
+        data.append('idCategoria',idCategoria);
+        data.append('idUnidadMedida',idUnidadMedida);
+        data.append('idEspecialidad',idEspecialidad);
+        data.append('idCapataz',idCapataz);
+        data.append('partida',partida);
+        data.append('idObra',$("#idObra").val());
+        data.append('page',pagina)
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        fetchS("{% url 'tratos_buscar' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+            $("#tbTratos tbody").empty();
+            cargarTablaTratos(data);
+
+            $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+        })
+        .catch(function(error){console.log(error); $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+        
+        $("#tbTratos tbody").empty();
+    }
+
+    function cargarTablaTratos(data){
+        $.each(data.tratos, function(i, item) {
+        let Modelos = item.modelos_concatenados.split("|");
+
+                let row= "<tr>"+
+                "<td class='celTratos' style='text-align:center' ><button type='submit' class='btn btn-sm btn-primary btnTratos tCodPartida' onclick='showDetallePopup(\""+item.id+"\")' id='btnCod_"+item.id+"'>"+item.cod+"</button></td>"+
+                "<td class='tPartida celTratos' id='tdPartida_"+item.id+"'>"+item.partida+"</td><td id='tdMedida_"+item.id+"'>"+item.unidadMedida+"</td>"+
+                "<td class='celTratos'>"+'<button type="submit" class="btn btn-sm btn-primary" style="margin:2px; width: 100%" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtNroMaestros_'+item.id+'">'+item.nroMaestros+'</small> | <small>$</small><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtSueldoMaestro_'+item.id+'">'+Intl.NumberFormat("es-MX").format(item.sueldoMaestro)+'</small></td>'+
+                "<td class='celTratos'>"+'<button type="submit" class="btn btn-sm btn-primary" style="margin:2px; width: 100%" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtNroJornales_'+item.id+'">'+item.nroJornales+'</small> | <small>$</small><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtSueldoJornal_'+item.id+'">'+Intl.NumberFormat("es-MX").format(item.sueldoJornal)+'</small></td>'+
+                "<td class='celTratos'>"+'<button type="submit" class="btn btn-sm btn-primary" style="margin:2px; width: 100%" onclick="showCuadrillaPopup(this)"><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtNroAyudantes_'+item.id+'">'+item.nroAyudantes+'</small> | <small>$</small><small style="font-size: 12px;font-weight: bold;margin: 0;" id="txtSueldoAyudante_'+item.id+'">'+Intl.NumberFormat("es-MX").format(item.sueldoAyudante)+'</small></td>'+
+                "<td class='celTratos' id='tdVcuadrilla_"+item.id+"' style='font-size: 13px;text-align: center;'>$"+Intl.NumberFormat("es-MX").format(item.valorCuadrilla)+"</td>";
+
+                let models  = "";
+                if(Modelos.length>0){    
+                    for(i=0;i<Modelos.length;i++) {
+                        if(Modelos[i] != ""){
+                            dModel = Modelos[i].split("-");
+                            models += dModel[0] + ' / ';
+                        }
+                    };
+                }
+
+                if(models != "")
+                {
+                    row += '<td class="celTratos" style="text-align: center;"><button type="submit" class="btn btn-sm btn-primary btnAddModel" onclick="mModelos(this)" id="btnAddModels_'+item.id+'" style="margin:2px"><small style="font-size: 12px;font-weight: bold;margin: 0;">'+models+'</button></td>';
+                }
+                else
+                {
+                    row += "<td class='celTratos' style='text-align: center;' id='modelos_"+item.id+"'><button type='submit' class='btn btn-sm btn-add btnAddModel' onclick='mModelos(this)' id='btnAddModels_"+item.id+"'><i class='fa fa-plus' aria-hidden='true'></i></button></td>";
+                    
+                }
+            
+                
+                row += "<td class='celTratos' id='txtCanTotal_"+item.id+"' style='font-size: 13px;text-align: center;'>"+item.cantidad+"</td>"+
+                "<td class='celTratos' id='txtValorTotal_"+item.id+"' style='font-size: 13px;text-align: center;'>"+Intl.NumberFormat("es-MX").format(item.valorTrato)+"</td>"+
+                "<td style='display: none;'><input type='hidden' class='inputHidden' id='hId_"+item.id+"' value='"+item.id+"'>"+
+                    '<input type="hidden" class="inputHidden" id="hcf_'+item.id+'" value="'+item.codFamilia+'" />'+
+                    '<input type="hidden" class="inputHidden" id="hes_'+item.id+'" value="'+item.idEspecialidad+'" />'+
+                    '<input type="hidden" class="inputHidden" id="hca_'+item.id+'" value="'+item.idCategoria+'" />'+
+                    '<input type="hidden" class="inputHidden" id="hcp_'+item.id+'" value="'+item.idCapataz+'" />'+
+                    '<input type="hidden" class="inputHidden" id="hum_'+item.id+'" value="'+item.idUnidadMedida+'" />'+
+                "</td>";
+                row += "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary' onclick='showBloqueosPopup(\""+item.id+"\")'><i style='btn-primary;' class='fa fa-ban' aria-hidden='true'></i></button></td>"+
+                
+                "</td><td style='display: none;''><input type='hidden' class='inputHidden' id='hId_"+item.id+"' value='"+item.id+"'>"+
+                "</td></tr>";
+        $("#tbTratos tbody").append(row);
+        });  
+        $("#hCurrentPage").val(data.current_page);
+        $("#hTotalPage").val(data.num_pages);
+
+        $('#prev').prop('disabled', !data.has_previous);
+        $('#next').prop('disabled', !data.has_next);
+
+        $('#page-info').text('Página ' + data.current_page + ' de ' + data.num_pages);
+
+    }
+
+    function mModelos(input){
+
+        let id = input.id.split("_")[1]//$(input).parents('tr').find(".inputHidden").val();
+        let codTrato = $(input).parents('tr').find(".tCodPartida").html();
+        partida = $("#tdPartida_"+id).html();
+
+        $("#sMsjeModelos").empty();
+        $("#hIdTrato").val(id);
+        $("#mTitlePartida").html(partida);
+        $("#mTitleCod").html("Trato "+codTrato);
+        $("#mModeloTrato").modal("show");       
+        $(".btnModelos").removeAttr("disabled"); 
+        $("#spModelos").hide();
+        let data = new FormData();
+        data.append('idObra',$("#idObra").val());
+        data.append('idTrato',id);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+        $("#tbModelosAdd").find(':checkbox').prop('checked', false);
+        $("tr.rd").remove()
+        $("#trLoad").show();
+        fetchS("{% url 'trato_modelos_obtener' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            jData = JSON.parse(data)
+            
+            $("#trLoad").hide();
+            $.each(jData, function(i, item) {
+                let checked = (item.check == "1")?"checked":"";
+
+                let disabled = "";
+                if(item.med=="UNI")
+                {
+                    disabled = "disabled='disabled'";
+                }
+
+                row = "<tr class='rd'><td><input type='checkbox' class='btnModelos' id='"+item.id+"' "+checked+" /></td>"+
+                        "<td id='cod_"+item.id+"'>"+item.cod+"</td><td>"+item.desc+"</td>"+
+                        "<td><input type='decimal' id='txtRendimiento_"+item.id+"' class='form-control' value='"+item.rendimiento+"' /></td>"+
+                        "<td><input type='number' id='txtCantidad_"+item.id+"' "+disabled+" class='form-control' value='"+item.cantidad+"'  /></td>"+
+                        "<td style='width:20%'><label style='font-size:medium;padding:0px;margin-top:8px' id='txtValorTratoModelo_"+item.id+"'>"+Intl.NumberFormat("es-MX").format(item.valor)+"</label</td></tr>";
+                
+                $("#tbModelosAdd tbody").append(row);
+            });
+            
+        })
+        .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+
+    };
+
+    $("#frmAgregarItem").on("submit", function( event ) {
+
+        let item = $("#hAddItem").val();
+        let valor = $("#txtValorItem").val();
+        let obra = $("#idObra").val();
+        if(item != "" && valor != "")
+        {
+            if(item=="C")
+                valor = $("#txtValorItem").val()+"|"+$("#txtValorItem2").val();
+
+            let data = new FormData();
+            data.append('item',item);
+            data.append('valor',valor);
+            data.append('idObra',obra);
+            data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+            fetchS("{% url 'item_crear' %}",{method:'POST',body: data})
+            .then((response) =>  response.json())
+            .then((data) => {
+                let vItem = data.id
+                if(vItem >0)
+                {           
+                    let nSelect = (item == "E")?"selTRespecialidad":(item == "C")?"selTRcapataz":(item == "U")?"selTRUnidadMedida":"";
+                    if(nSelect != "")
+                    {
+                        $("#"+nSelect).append("<option value='"+vItem+"'>"+data.desc+"</option>");
+                        if(nSelect=="selTRcapataz"){$("#selEDcapataz").append("<option value='"+vItem+"'>"+data.desc+"</option>");}
+                        $("#mAgregarItem").modal("hide"); 
+                        showToast('Exito','Item registrado','Item agregado correctamente.');   
+                    }
+                    else
+                    {
+                        showToast('Error','Error','No fue posible registrar el item.');   
+                    }
+                }
+                else
+                {
+                    showToast('Error','Error','No fue posible registrar el item.');   
+                }
+            })
+            .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');})
+        }
+
+        return false;
+    });
+
+    $("#frmModelosTrato").on("submit", function( event ) {
+       
+       $("#tbModelosAdd tr input[type=number]").removeAttr("style");
+
+       let idTrato = $("#hIdTrato").val();
+       let val = "[";
+       let error = 0;
+       $("#spModelos").show();
+       $(".btnModelos").attr("disabled","disabled");
+       $('#tbModelosAdd tr.rd').filter(':has(:checkbox)').each(function() {
+            let id = $(this).find("input[type=checkbox]").attr('id');
+            let checked = ($(this).find("input[type=checkbox]").is(":checked")) ? 1 : 0;
+            let rend = $("#txtRendimiento_"+id).val();
+            let cant = $("#txtCantidad_"+id).val();
+            let cod = $("#cod_"+id).html();
+
+            if(checked){
+                if(rend=="0" || rend==""){
+                    $("#txtRendimiento_"+id).css("border","red solid 1px");
+                    error =1;
+                }
+
+                if(cant=="0" || cant==""){
+                    $("#txtCantidad_"+id).css("border","red solid 1px");  
+                    error=1;
+                }
+            }
+
+            if(rend != undefined)
+                val +='{"idm":"'+id+'","rend":"'+rend+'","cant":"'+cant+'","checked":"'+checked+'","cod":"'+cod+'"},';
+       });
+       val = val.substring(0,val.length - 1)
+       val += "]";
+
+       if(error == 1){
+            $("#sMsjeModelos").html("El rendimiento y/o la cantidad debe ser mayor a cero en los módelos seleccionados");
+            $("#spModelos").hide();
+            $(".btnModelos").removeAttr("disabled");
+       }
+       else 
+       {
+            let data = new FormData();
+            data.append('idTrato',idTrato);
+            data.append('modelos',val);
+            data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+            
+            fetchS("{% url 'tratos_modelos_actualizar' %}",{method:'POST',body: data})
+            .then((response) =>  response.json())
+            .then((data) => {
+                data = JSON.parse(data)
+                let vTrato = data.rsp;
+                if(vTrato =="OK")
+                {        
+                    vTrato=data.idTrato;
+                    $("#modelos_"+vTrato).find("button.btnAddModel").remove();
+                    let vModels = data.models; 
+
+                    let button = '';
+
+
+                    if(vModels.length>0){
+                        let modelos = "";
+                        button = '<button type="submit" class="btn btn-sm btn-primary btnAddModel" id="btnAddModels_'+vTrato+'" onclick="mModelos(this)" style="margin:2px">'+
+                        '<small style="font-size: 12px;font-weight: 600;margin: 0;">';
+                        $.each(vModels, function(i, item) {
+                            if(item.cod != "0"){
+                                button+= item.cod + " / ";/*'<small> $'+Intl.NumberFormat("es-MX").format(item.valorTrato)+'</small>*/'/ </small>'
+                            }
+                        });
+                        button+='</button>';
+                        $("#modelos_"+vTrato).append(button);
+                    }
+                    else
+                    {
+                        let button = '<button type="submit" class="btn btn-sm btn-add btnAddModel" id="btnAddModels_'+vTrato+'" onclick="mModelos(this)"><i class="fa fa-plus" aria-hidden="true"></i></button>';
+                        $("#modelos_"+vTrato).append(button);
+                    }
+                    showToast('Exito','Información Actualizada','Modelo(s) actualizado(s) correctamente.');   
+                    
+
+                    $("#txtCanTotal_"+vTrato).html(data.canTotal);
+                    $("#txtValorTotal_"+vTrato).html("$"+Intl.NumberFormat("es-MX").format(data.valorTotal));
+
+                    $("#spModelos").hide();
+                    $(".btnModelos").removeAttr("disabled");
+                    //$("#mModeloTrato").modal("hide");
+
+                    let btn = $("#btnAddModels_"+vTrato);
+                    mModelos(btn[0]);
+                }
+
+            })
+            .catch(function(error){
+                    console.log(error);
+                    showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');
+                    $("#spModelos").hide();
+                    $(".btnModelos").removeAttr("disabled");
+                })
+            
+        };
+        
+        return false;
+        
+   });
+
+    $("#frmCuadrillaTrato").on("submit", function( event ) {
+       
+        let nroMaestros = $("#txtMaestroNro").val();
+        let sueldoMaestros =$("#txtMaestroSueldo").val();
+
+        let nroJornales = $("#txtJornalNro").val();
+        let sueldoJornales = $("#txtJornalSueldo").val();
+
+        let nroAyudantes = $("#txtAyudanteNro").val();
+        let sueldoAyudantes = $("#txtAyudanteSueldo").val();
+        let idTrato = $("#hIdTrato").val();
+        $("#spCuadrilla").show();
+        $(".btnCuadrilla").attr("disabled","disabled");
+        let data = new FormData();
+        data.append('nroMaestros',nroMaestros);
+        data.append('sueldoMaestros',sueldoMaestros);
+        data.append('nroJornales',nroJornales);
+        data.append('sueldoJornales',sueldoJornales);
+        data.append('nroAyudantes',nroAyudantes);
+        data.append('sueldoAyudantes',sueldoAyudantes);
+        data.append('idTrato',idTrato);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        
+        fetchS("{% url 'tratos_cuadrilla_actualizar' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.rsp;
+            if(vIns == "OK" )
+            {           
+                vIns = data.id;
+                showToast('Exito','Información Actualizada','Cuadrilla actualizada correctamente.')   
+                
+                $("#txtNroMaestros_"+vIns).html($("#txtMaestroNro").val());
+                $("#txtSueldoMaestro_"+vIns).html($("#txtMaestroSueldo").val());
+                $("#txtNroJornales_"+vIns).html($("#txtJornalNro").val());
+                $("#txtSueldoJornal_"+vIns).html($("#txtJornalSueldo").val());
+                $("#txtNroAyudantes_"+vIns).html($("#txtAyudanteNro").val());
+                $("#txtSueldoAyudante_"+vIns).html($("#txtAyudanteSueldo").val());
+
+                $("#tdVcuadrilla_"+vIns).html("$"+data.vCuadrilla);
+                $("#mCuadrillaTrato").modal("hide");
+
+                $("#spCuadrilla").hide();
+                $(".btnCuadrilla").removeAttr("disabled");
+            }
+
+        })
+        .catch(function(error){
+                console.log(error);
+                showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');
+                $("#spCuadrilla").hide();
+                $(".btnCuadrilla").removeAttr("disabled");
+            });
+        
+        return false;
+
+    });
+   
+    $("#frmAddUnidad").on("submit", function( event ) {
+        $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');
+
+        let cod = $("#txtNUcodigo").val().toUpperCase();3
+        let desc =$("#txtNUDescripcion").val().toUpperCase();
+        let idTipo = $("#selNUtipo").val();
+        let idModelo = $("#selNUmodelo").val();
+
+        let data = new FormData();
+        data.append('cod',cod);
+        data.append('desc',desc);
+        data.append('modeloUnidad',idModelo);
+        data.append('idObra',$("#idObra").val());
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        
+        fetchS("{% url 'unidadObra_crear' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.id
+            if(vIns >0)
+            {           
+                showToast('Exito','Información guardada','Unidad de obra guardada correctamente.')   
+                $("#trUnidadesVacio").remove();
+                let tipo = $("#selNUtipo option:selected" ).text();
+                let modelo = $("#selNUmodelo option:selected" ).text();
+                let row= "<tr id='trUnidad_"+data.id+"'><td>"+cod+"</td><td>"+desc+"</td><td>"+tipo+"</td><td>"+modelo+"</td>"+
+                         '<td style="text-align:center"><i class="fa fa-minus-circle" style="cursor: pointer;" onclick="removeTr(this,'+vIns+',\'u\')" aria-hidden="true"></i></td>'+
+                         "</tr>"
+                $("#tbUnidades tbody").append(row);
+                //cargarUnidades();
+
+                $("#selBloqUnidad").append("<option value='"+vIns+"'>"+desc+"</option");
+                limpiarForm("frmAddUnidad");      
+                //$("#selNUtipo").val("0");
+                //$("#selNUmodelo").val("0");                  
+            }
+            else{
+                showToast('Error','Error','El código de unidad ingresado ya existe.')   
+            }
+            $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');
+            
+
+        })
+        .catch(function(error){console.log(error); $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+        
+        return false;
+
+    });
+
+    $("#frmAddTipoUnidad").on("submit", function( event ) {
+        $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');
+
+        let cod = $("#txtTUcodigo").val().toUpperCase();
+        let desc =$("#txtTUDescripcion").val().toUpperCase();
+        let med = $("#selTUTipoMedicion").val();
+
+        let data = new FormData();
+        data.append('cod',cod);
+        data.append('desc',desc);
+        data.append('med',med);
+        data.append('mt','INS');
+        data.append('idObra',$("#idObra").val());
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+
+        fetchS("{% url 'tiposUnidad' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.id
+            if(vIns >0)
+            {           
+                showToast('Exito','Información guardada','Unidad de obra guardada correctamente.')   
+                $("#trTUVacio").remove();
+                let tipo = $("#selNUtipo option:selected").text();
+                let med = $("#selTUTipoMedicion option:selected").text();
+                let row= "<tr id='trTipo_"+vIns+"'><td>"+cod+"</td><td>"+desc+"</td><td>"+med+"</td>"+
+                        "<td style='text-align: center;'><i class='fa fa-minus-circle' style='cursor: pointer;' onclick='removeTr(this,"+vIns+",\"t\")'  aria-hidden='true'></i></td>"+
+                        "</tr>"
+                $("#tbTipoUnidad tbody").append(row);
+                //cargarUnidades();
+                $("#selMOtipo").append("<option value='"+vIns+"'>"+desc+"</option>");
+                $("#selNUtipo").append("<option value='"+vIns+"'>"+desc+"</option>");
+                limpiarForm("frmAddTipoUnidad");  
+                //$("#selTUTipoMedicion").val("0");
+                //$("#selMOtipo").val("0");
+                             
+            }
+            else{
+                showToast('Error','Error','El código de unidad ingresado ya existe.')   
+            }
+            $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');
+            
+
+        })
+        .catch(function(error){console.log(error); $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+        return false;
+    });
+
+    $("#frmAddModeloUnidad").on("submit", function( event ) {
+        $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');
+
+        let cod = $("#txtMUcodigo").val().toUpperCase();
+        let desc =$("#txtMUDescripcion").val().toUpperCase();
+        let tipo = $("#selMOtipo").val();
+
+        let data = new FormData();
+        data.append('cod',cod);
+        data.append('desc',desc);
+        data.append('tipo',tipo);
+        data.append('mt','INS');
+        data.append('idObra',$("#idObra").val());
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+
+        fetchS("{% url 'modelosUnidad' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+            vIns = data.id
+            if(vIns >0)
+            {           
+                showToast('Exito','Información guardada','Unidad de obra guardada correctamente.')   
+                $("#trMUVacio").remove();
+                let descTipo = $("#selMOtipo option[value='"+tipo+"']").text();
+                let row= "<tr id='trModelo_"+vIns+"'><td>"+cod+"</td><td>"+descTipo+"</td><td>"+desc+"</td>"+
+                "<td style='text-align: center;'><i class='fa fa-minus-circle' style='cursor: pointer;' onclick='removeTr(this,\""+vIns+"\",\"m\")'  aria-hidden='true'></i></td>"+
+                "</tr>"
+                $("#tbModeloUnidad tbody").append(row);
+                //cargarUnidades();
+                limpiarForm("frmAddModeloUnidad");               
+            }
+            else{
+                showToast('Error','Error','El código de unidad ingresado ya existe.')   
+            }
+            $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');
+            
+
+        })
+        .catch(function(error){console.log(error); $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+        return false;
+    });
+
+    $("#frmAddTrato").on("submit", function( event ) {
+
+        $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+
+
+        let codFam =$("#txtTRCodFam").val();
+        let idCategoria = $("#selTRcategoria").val();
+        let idEspecialidad = $("#selTRespecialidad").val();
+        let idCapataz = $("#selTRcapataz").val();
+        let idUnidadMedida = $("#selTRUnidadMedida").val();
+        let medida = $("#selTRUnidadMedida option:selected" ).text();
+        let partida = $("#txtTRpartida").val().toUpperCase();
+
+        let data = new FormData();
+
+        data.append('codFam',codFam);
+        data.append('idCategoria',idCategoria);
+        data.append('idUnidadMedida',idUnidadMedida);
+        data.append('idEspecialidad',idEspecialidad);
+        data.append('idCapataz',idCapataz);
+        data.append('partida',partida);
+        data.append('idObra',$("#idObra").val());
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        
+        fetchS("{% url 'tratos_crear' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.rsp;
+            if(vIns =="OK")
+            {          
+                vIns = data.id; 
+                showToast('Exito','Información guardada','Trato guardado correctamente.')   
+                $("#trTratosVacio").remove();
+
+                let row= "<tr><td class='celTratos' style='text-align:center'><button type='submit' class='btn btn-sm btn-primary btnTratos tCodPartida' id='btnCod_"+vIns+"' onclick='showDetallePopup(\""+vIns+"\")'>"+data.cod+"</button>"+
+                        "</td><td class='tPartida celTratos' id='tdPartida_"+vIns+"' >"+partida+"</td><td id='tdMedida_"+vIns+"'>"+medida+"</td>"+
+                        "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary btnTratos' style='margin:2px; width: 100%;' onclick='showCuadrillaPopup(this)'><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtNroMaestros_"+vIns+"'>0</small> | <small>$</small><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtSueldoMaestro_"+vIns+"'>0</small></button></td>"+
+                        "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary btnTratos' style='margin:2px; width: 100%;' onclick='showCuadrillaPopup(this)'><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtNroJornales_"+vIns+"'>0</small> | <small>$</small><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtSueldoJornal_"+vIns+"'>0</small></button></td>"+
+                        "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary btnTratos' style='margin:2px; width: 100%;' onclick='showCuadrillaPopup(this)'><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtNroAyudantes_"+vIns+"'>0</small> | <small>$</small><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtSueldoAyudante_"+vIns+"'>0</small></button></td>"+
+                        "<td class='celTratos' id='tdVcuadrilla_"+vIns+"' style='font-size: 13px;text-align: center;'>$0</td>"+
+                        "<td style='text-align: center;' id='modelos_"+vIns+"'><button type='submit' class='btn btn-sm btn-add btnAddModel' onclick='mModelos(this)' id='btnAddModels_"+vIns+"'><i class='fa fa-plus' aria-hidden='true'></i></button></td>"+
+                        "<td class='celTratos' id='txtCanTotal_"+vIns+"' style='font-size: 13px;text-align: center;'>0</td>"+
+                        "<td class='celTratos' id='txtValorTotal_"+vIns+"' style='font-size: 13px;text-align: center;'>$0</td>"+
+                        "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary' onclick='showBloqueosPopup(\""+vIns+"\")'><i style='btn-primary;' class='fa fa-ban' aria-hidden='true'></i></button></td>"+
+                        "<td style='display: none;'>"+
+                            "<input type='hidden' class='inputHidden' id='hId_"+vIns+"' value='"+vIns+"'>"+
+                            '<input type="hidden" class="inputHidden" id="hcf_'+vIns+'" value="'+codFam+'" />'+
+                            '<input type="hidden" class="inputHidden" id="hes_'+vIns+'" value="'+idEspecialidad+'" />'+
+                            '<input type="hidden" class="inputHidden" id="hca_'+vIns+'" value="'+idCategoria+'" />'+
+                            '<input type="hidden" class="inputHidden" id="hcp_'+vIns+'" value="'+idCapataz+'" />'+
+                            '<input type="hidden" class="inputHidden" id="hum_'+vIns+'" value="'+idUnidadMedida+'" />'+
+                        "</td>"+
+                        "</tr>"
+                $("#tbTratos tbody").append(row);
+                limpiarForm("frmAddTrato");
+
+            }
+            else{
+                showToast('Error','Error','El código de trato ingresado ya existe.')   
+            }
+            $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
+        })
+        .catch(function(error){console.log(error); $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading'); showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.')});
+        
+        return false;
+
+    });
+
+    $("#frmAntecedentesTrato").on("submit", function( event ) {
+
+
+        let codFamilia = $("#txtEDCodFam").val();
+        let idCategoria = $("#selEDcategoria").val();
+        let idEspecialidad = $("#selEDespecialidad").val();
+        let idCapataz = $("#selEDcapataz").val();
+        let idUnidadMedida = $("#selEDUnidadMedida").val();
+        let partida = $("#txtEDPartida").val();
+        let idT = $("#hIdTrato").val();
+        let unidadMedida = $("#selEDUnidadMedida option:selected" ).text();
+        let data = new FormData();
+        $("#spAntecedentes").show();
+        
+        $("#btnCerrarAntecedentes").attr("disabled","disabled");
+        $("#btnGuardarAntecedentes").attr("disabled","disabled");
+
+        data.append('codFam',codFamilia);
+        data.append('idCategoria',idCategoria);
+        data.append('idUnidadMedida',idUnidadMedida);
+        data.append('idEspecialidad',idEspecialidad);
+        data.append('idCapataz',idCapataz);
+        data.append('partida',partida);
+        data.append('idT',idT);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        fetchS("{% url 'tratos_actualizar' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+            
+            vIns = data.rsp;
+            if(vIns =="OK")
+            {           
+                vIns = data.id;
+                $("#tdPartida_"+idT).html(partida);
+                $("#tdMedida_"+idT).html(unidadMedida);
+
+                $("#tdPartida_"+idT).html(partida);
+                $("#hcf_"+idT).val(codFamilia);
+                $("#hes_"+idT).val(idEspecialidad);
+                $("#hca_"+idT).val(idCategoria);
+                $("#hcp_"+idT).val(idCapataz);
+                $("#hum_"+idT).val(idUnidadMedida);
+                        
+                showToast('Exito','Información Actualizada','Trato actualizado correctamente.')            
+                
+            }
+            else{
+                showToast('Error','Error','No fue posible actualizar el trato.')   
+            }
+            $("#spAntecedentes").hide();
+            $("#mAntecedentesTrato").modal("hide");
+            $("#btnCerrarAntecedentes").removeAttr("disabled");
+            $("#btnGuardarAntecedentes").removeAttr("disabled");
+        })
+        .catch(function(error){
+                console.log(error); 
+                $("#spAntecedentes").hide();
+                $("#btnCerrarAntecedentes").removeAttr("disabled");
+                $("#btnGuardarAntecedentes").removeAttr("disabled");
+                showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');
+            });
+        
+        
+
+        return false;
+    });
+
+    $("#frmUnidadesBloqueadas").on("submit", function( event ) {
+
+        
+        let idTrato = $("#hIdTrato").val();
+        let idUnidad = $("#selBloqUnidad").val();
+        let motivo = $("#txtMotivoBloq").val();
+        let data = new FormData();
+
+
+        $(".btnBloq").attr("disabled","disabled");
+        $("#spBloqueos").show();
+        data.append('idTrato',idTrato);
+        data.append('idUnidad',idUnidad);
+        data.append('motivo',motivo);
+        data.append('mt','INS');
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        fetchS("{% url 'unidadTrato_bloqueo' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.id
+            if(vIns >0)
+            {           
+                let row = "<tr id='trbl"+vIns+"'><td>"+data.codUnidad+"</td><td>"+data.descUnidad+"</td><td>"+data.motivo+"</td>"+
+                    '<td style="text-align:center"><button type="button" class="btn btn-sm btn-primary btnBloq" onclick="quitarBloqueo('+vIns+')"><i style="btn-primary;" class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                          "</tr>";
+                $("#tbBloqueosAdd").append(row);
+                showToast('Exito','Información guardada','Unidad bloqueada correctamente.')              
+                $("#selBloqUnidad option[value='"+idUnidad+"']").remove();
+                $("#txtMotivoBloq").val("");
+            }
+            else{
+                showToast('Error','Error','No se puede bloquear la unidad.')   
+            }
+            
+            $(".btnBloq").removeAttr("disabled");
+            $("#spBloqueos").hide();
+        })
+        .catch(function(error){
+            console.log(error); 
+            $(".btnBloq").removeAttr("disabled");
+            $("#spBloqueos").hide();
+            showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+        
+        return false;
+
+    });
+
+    $("#frmAntecedentesObra").on("submit", function( event ) {
+
+        let codObra = $("#txtObraCod").val();
+        let obraDesc = $("#txtObraDescripcion").val();
+        let obraTipo = $("#selObraTipo").val();
+        let obraDirCalle = $("#txtObraDirCalle").val();
+        let obraDirNumero = $("#txtObraDirNumero").val();
+        let obraUrlMaps = $("#txtObraMaps").val();
+        let idObra = $("#idObra").val();
+        let data = new FormData();
+        $('#iBoxAntecedentesObra').children('.ibox-content').toggleClass('sk-loading');
+
+        data.append('cod',codObra);
+        data.append('desc',obraDesc);
+        data.append('tipo',obraTipo);
+        data.append('dirCalle',obraDirCalle);
+        data.append('dirNumero',obraDirNumero);
+        data.append('urlMaps',obraUrlMaps);
+        data.append('id',idObra);
+        data.append('mt','UPD');
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+        
+
+        fetchS("{% url 'obras' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.rsp;
+            if(vIns =="OK")
+            {           
+                showToast('Exito','Información actualizada','Antecedentas obra actualizados correctamente.')              
+            }
+            else{
+                showToast('Error','Error','No se puede actualizar los antecedentes.')   
+            }
+            $('#iBoxAntecedentesObra').children('.ibox-content').toggleClass('sk-loading'); 
+        })
+        .catch(function(error){console.log(error); $('#iBoxAntecedentesObra').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+        
+        return false;
+
+    });
+
+    function actualizarEstadoTrato(estado)
+    {
+        let idT =  $("#idtET").val();
+        let obra = $("#idObra").val();
+        let data = new FormData();
+
+        data.append('estado',estado);
+        data.append('idT',idT);
+        data.append('obra',obra);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        fetchS("{% url 'trato_estado_actualizar' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+            
+            vIns = data.rsp;
+            if(vIns =="OK")
+            {           
+                vIns = data.id;
+                $("#trTrato_"+data.id).css("background-color"," #b5b5b5");
+                $("#btnDesactivaTrato_"+data.id).remove();
+                $("#trTrato_"+data.id).find('button').attr("onclick","");
+                showToast('Exito','Información Actualizada','Trato actualizado correctamente.')            
+                
+            }
+            else{
+                showToast('Error','Error','No fue posible actualizar el trato.')   
+            }
+
+            $("#mConfirmEstadoTrato").modal("hide");
+        })
+        .catch(function(error){
+            console.log(error); 
+            showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');
+        });
+
+
+
+        return false;
+    }
+
+    function limpiarForm(idFrm)
+    {
+        $("#"+idFrm+" input[type=text], textarea").val("");
+        $("#"+idFrm+" select").val("");
+    }
+
+    function getUnidades()
+    {
+        let data = new FormData();
+        data.append('idObra',$("#idObra").val());
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        $.ajax({
+        url: "{% url 'unidadObra_obtener' %}",
+        type: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+        async: false, // Hacer la solicitud sincrónica
+        success: function(data) {
+            // Limpiar las opciones existentes
+            $("#selBloqUnidad").empty();
+
+            // Procesar y añadir nuevas opciones
+            $.each(JSON.parse(data), function(i, item) {
+                $("#selBloqUnidad").append("<option value='" + item.pk + "'>" + item.fields.descripcion + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        },
+        complete: function() {
+            // Ocultar el estado de carga después de completar la solicitud
+            $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading');
+        }
+    });
+    }
+
+    function showCuadrillaPopup(btn)
+    {
+        let id = $(btn).parents('tr').find(".inputHidden").val();
+        let codTrato = $(btn).parents('tr').find(".tCodPartida").html();
+        let partida = $("#tdPartida_"+id).html();
+
+        $("#txtMaestroNro").val($("#txtNroMaestros_"+id).html().replaceAll(",",""));
+        $("#txtMaestroSueldo").val($("#txtSueldoMaestro_"+id).html().replaceAll(",",""));
+        $("#txtJornalNro").val($("#txtNroJornales_"+id).html().replaceAll(",",""));
+        $("#txtJornalSueldo").val($("#txtSueldoJornal_"+id).html().replaceAll(",",""));
+        $("#txtAyudanteNro").val($("#txtNroAyudantes_"+id).html().replaceAll(",",""));
+        $("#txtAyudanteSueldo").val($("#txtSueldoAyudante_"+id).html().replaceAll(",",""));
+
+
+        $("#hIdTrato").val(id);
+        $("#mTitlePartidaC").html(partida);
+        $("#mTitleCodC").html("Trato "+codTrato);
+        $("#mCuadrillaTrato").modal("show");
+    }    
+
+    function showDetallePopup(id)
+    {
+        partida = $("#tdPartida_"+id).html();
+        codTrato = $("#btnCod_"+id).html();
+        codFam = $("#hcf_"+id).val();
+        esp = $("#hes_"+id).val();
+        cat = $("#hca_"+id).val();
+        cap = $("#hcp_"+id).val();
+        unm = $("#hum_"+id).val();
+
+        $("#selEDespecialidad").val(esp);
+        $("#selEDcategoria").val(cat);
+        $("#selEDcapataz").val(cap);
+        $("#txtEDCodFam").val(codFam);
+        $("#txtEDPartida").val(partida);
+        $("#selEDUnidadMedida").val(unm);
+        $("#hIdTrato").val(id);
+
+        $("#hIdTrato").val(id);
+        $("#mTitlePartidaA").html(partida);
+        $("#mTitleCodA").html("Trato "+codTrato);
+        $("#mAntecedentesTrato").modal("show");
+    }   
+
+    function showDesactivarTrato(id)
+    {
+        partida = $("#tdPartida_"+id).html();
+        codTrato = $("#btnCod_"+id).html();
+        $("#idtET").val(id);
+        $("#mTitleCodET").html(codTrato);
+        $("#mTitlePartidaET").html(partida);
+        $("#mConfirmEstadoTrato").modal("show");
+
+
+    }
+
+    function showBloqueosPopup(id)
+    {
+        getUnidades();
+        partida = $("#tdPartida_"+id).html();
+        codTrato = $("#btnCod_"+id).html();
+        codFam = $("#hcf_"+id).val();
+        $("#tbBloqueosAdd tbody").empty();
+        $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading'); 
+        $.get("{% url 'unidadTrato_bloqueo' %}?id="+id+"")
+        .then(function(response)
+        {
+            $.each(JSON.parse(response), function(i, item) {
+                row = "<tr id='trbl"+item.id+"'><td>"+item.codUnidad+"</td><td>"+ item.descUnidad+"</td><td>"+ item.motivo +"</td>"+
+                    '<td style="text-align:center"><button type="button" class="btn btn-sm btn-primary" onclick="quitarBloqueo('+item.id+')"><i style="btn-primary;" class="fa fa-times" aria-hidden="true"></i></button></td>'+
+                    "</tr>";
+                $("#tbBloqueosAdd tbody").append(row);
+                $("#selBloqUnidad option[value='" + item.idUnidad + "']").remove();
+            });
+            $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading'); 
+        })
+        .catch(function(error){console.log(error); $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+        
+        
+        $("#trLoadBloq").hide();
+        $("#hIdTrato").val(id);
+        $("#mTitlePartidaU").html(partida);
+        $("#mTitleCodU").html("Trato "+codTrato);
+        $("#mUnidadesBloqueadas").modal("show");
+    }   
+        
+    function quitarBloqueo(id)
+    {
+        let data = new FormData();
+
+        $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading');
+        data.append('idbloqueo',id);
+        data.append('mt','DEL');
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        fetchS("{% url 'unidadTrato_bloqueo' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            vIns = data.id
+            if(vIns >0)
+            {           
+                $("#trbl"+id).remove();
+                showToast('Exito','Información actualizada','bloqueado eliminado correctamente.')              
+                let option = "<option value='"+data.unID+"'>"+data.descUnidad+"</option>"
+                $("#selBloqUnidad").append(option);
+            }
+            else{
+                showToast('Error','Error','No se puede bloquear la unidad.')   
+            }
+            $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading'); 
+        })
+        .catch(function(error){console.log(error); $('#iBoxBloqueos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+        
+        return false;
+    }  
+
+    function removeTr(tr,id,org)
+    {
+        if($(tr).css("color") == "rgb(255, 0, 0)")
+        {
+            if(id > 0)
+            {
+                if(org == "t"){
+                    eliminarTipo(id);
+                }
+                else if(org == "m")
+                {
+                    eliminarModelo(id);
+                }
+                else if(org == "u")
+                {
+                    eliminarUnidad(id);
+                }                    
+            }
+
+        }
+        else{
+            $(tr).css('color','red');
+        }
+    }    
+
+    function eliminarTipo(id)
+    {
+        $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');
+            if(id != "" ){
+                let data = new FormData();
+                data.append('id',id);
+                data.append('mt','DEL');
+                data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+                fetchS("{% url 'tiposUnidad' %}",{method:'POST',body: data})
+                .then((response) =>  response.json())
+                .then((data) => {
+                    if(data.id>0){
+                        showToast("Exito","Registro eliminado","Tipo de unidad eliminado.")
+                        $("#trTipo_"+data.id).remove();
+
+                        $("#selMOtipo option[value='"+id+"']").remove();
+                        $("#selNUtipo option[value='"+id+"']").remove();
+                    }else{
+                        showToast("Error","No se elimino el registro","Verifique que no hayan unidades asociadas a este tipo.")
+
+                    }
+                    $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');
+                })
+                .catch(function(error){console.log(error);$('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+            }else{
+                //error
+                $('#iBoxTiposUnidad').children('.ibox-content').toggleClass('sk-loading');
+            }
+    }
+
+    function eliminarModelo(id)
+    {
+        $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');
+            if(id != "" ){
+                let data = new FormData();
+                data.append('id',id);
+                data.append('mt','DEL');
+
+                
+                data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+                fetchS("{% url 'modelosUnidad_eliminar' %}",{method:'POST',body: data})
+                .then((response) =>  response.json())
+                .then((data) => {
+                    if(data.id>0){
+                        showToast("Exito","Registro eliminado","Modelo de unidad eliminado.")
+                        $("#trModelo_"+data.id).remove();
+                    }else{
+                        showToast("Error","No se elimino el registro","Verifique que no hayan unidades y/o tratos asociadas a este modelo.")
+
+                    }
+                    $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');
+                })
+                .catch(function(error){console.log(error);$('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+            }else{
+                //error
+                $('#iBoxModeloUnidad').children('.ibox-content').toggleClass('sk-loading');
+            }
+    }    
+
+    function eliminarUnidad(id)
+    {
+        $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');
+            if(id != "" ){
+                let data = new FormData();
+                data.append('id',id);
+                data.append('mt','DEL');
+                data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+                fetchS("{% url 'unidadObra_eliminar' %}",{method:'POST',body: data})
+                .then((response) =>  response.json())
+                .then((data) => {
+                    if(data.id>0){
+                        showToast("Exito","Registro eliminado","Modelo de unidad eliminado.")
+                        $("#trUnidad_"+data.id).remove();
+                    }else{
+                        showToast("Error","No se elimino el registro","Verifique que no hayan rebajes asociados a esta unidad.")
+
+                    }
+                    $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');
+                })
+                .catch(function(error){console.log(error);$('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+
+            }else{
+                //error
+                $('#iBoxUnidades').children('.ibox-content').toggleClass('sk-loading');
+            }
+    }       
+
+    function showAgregarPopup(t)
+    {
+        $("#trVal2").hide();
+        $("#txtValorItem").val("");
+        $("#txtValorItem2").val("");
+        $("#tdTitleItem").val("");
+        let item = (t == "E")?"Especialidad":(t == "U")?"Unidad Medida":"";
+        if(t =="C"){
+            item = "Capataz";
+            $("#trVal2").show(); 
+            $("#tdTitleItem").html("Nombre");
+            $("#tdTitleItem2").html("Apellido");
+            
+        }
+        else{
+        if(item != "")
+            $("#tdTitleItem").html(item); 
+        }
+        $("#mTitleItem").html("Agregar "+item);
+        $("#mAgregarItem").modal("show"); 
+
+        $("#hAddItem").val(t);
+
+    }
+
+    function getObrasCategoria(){
+
+        let idObra = $("#idObra").val()       
+         
+        let data = new FormData();
+        data.append('idObra',idObra);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+        $("#tbCategoriasObra").find(':checkbox').prop('checked', false);
+        $("tr.rd").remove()
+        $("#trLoad").show();
+        fetchS("{% url 'obras_categorias_obtener' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+
+            jData = JSON.parse(data)
+            
+            $("#trLoad").hide();
+            $.each(jData, function(i, item) {
+                let checked = (item.check == "1")?"checked":"";
+                row = "<tr class='rd'>"+
+                        "<td id='cod_"+item.id+"'>"+item.cod+"</td><td>"+item.desc+"</td><td><input type='checkbox' id='"+item.id+"' "+checked+" /></td>"+
+                        "</tr>";
+                
+                $("#tbCategoriasObra tbody").append(row);
+            });
+            
+        })
+        .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
+    };    
+
+    function guardarCategorias(){
+       
+       let idObra = $("#idObra").val();
+       let val = "[";
+       let error = 0;
+
+       $('#tbCategoriasObra tr.rd').filter(':has(:checkbox)').each(function() {
+            let id = $(this).find("input[type=checkbox]").attr('id');
+            let checked = ($(this).find("input[type=checkbox]").is(":checked")) ? 1 : 0;
+
+            val +='{"id":"'+id+'","checked":"'+checked+'"},';
+       });
+       val = val.substring(0,val.length - 1)
+       val += "]";
+
+
+        let data = new FormData();
+        data.append('idObra',idObra);
+        data.append('categorias',val);
+        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+        
+        fetchS("{% url 'obras_categorias_actualizar' %}",{method:'POST',body: data})
+        .then((response) =>  response.json())
+        .then((data) => {
+            data = JSON.parse(data)
+            let vObra = data.idObra
+            if(idObra != "")
+            {           
+                $(".cdm").remove();
+                $("#selTRcategoria").empty();
+                $("#selTRcategoria").append('<option value="0" selected="">Categoria</option>');
+                let vCategorias = data.categorias; 
+                if(vCategorias.length>0){
+                    $.each(vCategorias, function(i, item) {
+                        if(item.id != "0"){                                      
+                            //let filterC ="<div class='col filterCategoria cdm' id='ct"+item.id+"' onclick='filtroCategoria"+item.id+",this);'>"+item.desc+"</div>";
+                            //$("#rowCategorias").append(filterC);
+                            $("#selTRcategoria").append('<option value="'+item.id+'">'+item.desc+'</option>');
+                        }
+                    });
+
+                }
+                
+                showToast('Exito','Información Actualizada','Modelo(s) actualizado(s) correctamente.');   
+            }
+
+        })
+        .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');})
+
+        
+   };
+
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    //document.getElementById("defaultOpen").click();    
+</script>
+
+
+<style>
+
+.mPopup
+{
+    max-width: 100%!important;
+    width: 60%;
+}
+@media only screen and (max-width: 768px) {
+    .mPopup
+    {
+        max-width: 100%!important;
+        width: 100%;
+    }
+}
+.inputIns::placeholder {
+    font-size:11px
+}
+.titleTratos > th{
+    font-size: 11px;
+}
+
+#tbTratos{
+    font-size: 11px;
+}
+
+#tbTratos th:first-child, td:first-child
+{
+  position:sticky;
+  left:0px;
+  background-color:white;
+}
+
+.panel-body{
+    background-color: #f3f3f4!important;
+}
+
+.inputNp
+{
+    padding: 3px;
+}
+
+.btnTratos{
+    background-color: #ff930085;
+    color: black;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.celTratos{
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.filterCategoria{
+    border: 1px #ff930085 solid;
+    padding: 5px;
+    background-color:#dee2e6;
+    text-align: center;
+    cursor: pointer;
+    color: black;
+}
+
+.filterActive
+{
+    background-color: #ff930085;
+}
+
+
+.tab {
+  float: left;
+
+  background-color: #f1f1f1;
+  width: 20%;
+  height: 300px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  background-color: white;
+  width: 80%;
+  border-left: none;
+
+}
+
+a{
+    color: #676a6c;
+}
+a:hover{
+    color:black
+}
+
+
+</style>
+
+{% endblock %}

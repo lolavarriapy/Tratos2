@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Http
+ 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hipsuba</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/bootstrap-box.css" />
+    <link rel="stylesheet" href="~/css/intrav2.css" asp-append-version="true" />
+
+    <script src="https://kit.fontawesome.com/7b59231cf8.js" crossorigin="anonymous"></script>
+
+
+
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
+
+    <!-- Ionic icons -->
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="d-flex" id="content-wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-container" class="bg-primary">
+            <div class="logo">
+                <a href="/home/index">  <img src="~/img/hipsubawb.png" width="100%" /><br /><br /></a>
+                <h4 class="text-light font-weight-bold mb-0">Administración</h4>
+            </div>
+            <div class="menu">
+                <a asp-area="" asp-controller="Empresa" asp-action="index" class="d-block text-light p-3 border-0">
+                    <i class="icon ion-md-people lead mr-2"></i>
+                    Clientes
+                </a>
+
+            </div>
+        </div>
+        <!-- Fin sidebar -->
+
+        <div class="w-100">
+
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="container">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <form class="form-inline position-relative d-inline-block my-2">
+                            <input class="form-control" type="search" placeholder="Buscar" aria-label="Buscar">
+                            <button class="btn position-absolute btn-search" type="submit"><i class="icon ion-md-search"></i></button>
+                        </form>
+                        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                            <li class="nav-item dropdown" style="cursor:pointer">
+
+                                <a class="nav-link text-dark dropdown-toggle" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @Context.Session.GetString("usuario")
+                                   
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Mi perfil</a>
+                                    <a class="dropdown-item" href="#">Suscripciones</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="LogOut">Cerrar sesión</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Fin Navbar -->
+            <!-- Page Content -->
+            <div id="content" class="bg-grey w-100">
+
+                <section class="bg-light py-3">
+                    <div class="container">
+                        <section>
+                            <main role="main" class="pb-3">
+                                @RenderBody()
+                            </main>
+                        </section>
+                    </div>
+                </section>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <footer class="border-top footer text-muted">
+
+        <div class="container">
+            Copyright © 2023 Precio Cremación | 
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <div class="modal fade" id="okModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius:40px; margin-top:20%">
+
+                <div class="modal-body dvOk" >
+                    <h4 id="lblOkTitulo"></h4>
+                    <h5 id="lblOkSubTitulo"></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nokModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius:40px; margin-top:20%">
+
+                <div class="modal-body dvNok">
+                    <h4 id="lblNokTitulo"></h4>
+                    <h5 id="lblNokSubTitulo"></h5>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+</html>
+

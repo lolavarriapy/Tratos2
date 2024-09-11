@@ -1,0 +1,293 @@
+{% extends '_Layout.html' %}
+
+{% block content %}
+{% load static %}
+
+ 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0-rc"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <div class="wrapper wrapper-content">
+    <div class="row"style="display: none;">
+
+        <div class="col-md-3 col-sm-6">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-building fa-4x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <span> OBRAS: </span>
+                        <h3 class="font-bold">{{totalObra}}</h3>
+                        <input type="hidden" value="{{obra.id}}" id="idObra" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-handshake-o fa-4x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <span> TOTAL TRATOS: </span>
+                        <h3 class="font-bold"> {{cantTratos}} | ${{totalTratos}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="col-md-3 col-sm-6">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-file-text fa-4x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <span> TOTAL REBAJES: </span>
+                        <h3 class="font-bold"> {{cantRebajes}} | ${{totalRebajes}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>      
+        <div class="col-md-3 col-sm-6">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-cube fa-4x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <span> Total Unidades: </span>
+                        <h3 class="font-bold">{{totalUnidades}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="display: none;">
+                <div class="col-lg-12" >
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Orders</h5>
+                            <div class="ibox-tools">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-white active">Today</button>
+                                    <button type="button" class="btn btn-xs btn-white">Monthly</button>
+                                    <button type="button" class="btn btn-xs btn-white">Annual</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="flot-chart">
+                                        <canvas id="lineChart" ></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <ul class="stat-list">
+                                        <li>
+                                            <h2 class="no-margins">2,346</h2>
+                                            <small>Total colaboradores Talana</small>
+                                            <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 48%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">$44,220,000</h2>
+                                            <small>Total Planilla obra</small>
+                                            <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 60%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">22%</h2>
+                                            <small>Avance de la obra</small>
+                                            <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 22%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+    </div>
+    <div class="row" style="display: none;">
+        <div class="col-lg-7">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Dashboard</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-6 cell"><h4>Tratos por categoria</h4>
+                            <canvas id="chart2" ></canvas></div>
+                        <div class="col-lg-6 cell"><h4>Rebajes por categoria</h4>
+                            <canvas id="chart3" ></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-lg-5">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Ubicación Obra</h5>
+                </div>
+                <div class="ibox-content">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d962.0400866995298!2d-70.57251319901168!3d-33.40438026920232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662ced88b275db3%3A0x3f88a3b52054d14c!2sBanco%20de%20Chile!5e0!3m2!1ses!2scl!4v1716483752839!5m2!1ses!2scl" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+
+
+    </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="float-right">
+            10GB of <strong>250GB</strong> Free.
+        </div>
+        <div>
+            <strong>Copyright</strong> Example Company © 2014-2018
+        </div>
+    </div>
+
+<style>
+    .cell {
+  float: center;
+  min-height: 200px;
+  max-height: 350px;
+  text-align: center;
+  min-width: 100px;
+ 
+}
+</style>
+<script>
+/*
+    Chart.register(ChartDataLabels);
+    Chart.defaults.set('plugins.datalabels', {
+        color: "#fff",
+        //borderColor: "#000",
+        //textStrokeColor: 'black', // <-- added this
+        //textStrokeWidth: 1, // <-- added this
+        font: {
+            size: 11
+            //,weight: "normal"
+        }
+
+    });
+    */
+    $(document).ready(function() {
+
+        var ctx = document.getElementById("lineChart").getContext('2d');
+
+        // Define the data 
+        var barTotalPopulationData = [10125745,	15834918,	14919501,	14797756,	14433147]; // Add data values to array
+        var lineExample1 = [120000, 15000000, 1454210, 240124, 3358452];
+        var lineExample2 = [5024554, 2001424, 4454201, 4565420, 5659888];
+
+        var labels = ["Enero",	"Febrero",	"Marzo",	"Abril",	"Mayo"]; // Add labels to array
+        // End Defining data
+
+        // End Defining data
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Tratos', // Name the series
+                    data: barTotalPopulationData, // Specify the data values array
+                    backgroundColor: [ // Specify custom colors
+                        'rgba(206, 148, 70, 0.9)'
+                    ],
+                    
+                    borderWidth: 1 // Specify bar border width
+                },
+                {
+                    label: 'Rebajes', // Name the series
+                    data: lineExample2, // Specify the data values array
+                    backgroundColor: [ // Specify custom colors
+                        'rgba(235, 137, 6, 0.9)',
+                    ],
+                    
+                    borderWidth: 1 // Specify bar border width
+                }/*,
+                {
+                    label: 'ExampleLine2', // Name the series
+                    data: lineExample2, // Specify the data values array
+                    backgroundColor: 'red',
+                    borderColor: 'red',
+                    
+                    borderWidth: 1, // Specify bar border width
+                    type: 'line', // Set this data to a line chart
+                    fill: false        
+                }*/]
+            },
+            options: {
+            responsive: true, 
+            maintainAspectRatio: false
+            }
+        });
+        
+
+        var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues = [55, 49, 44, 24, 15];
+        var barColors = [
+        "#d39e58",
+        "#ed951e",
+        "#7d521a",
+        "#755832",
+        "#a9a299"
+        ];
+
+
+        new Chart("chart2", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                title: {
+                display: true,
+                text: "World Wide Wine Production"
+                }
+            }
+        });
+
+        new Chart("chart3", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                title: {
+                display: true,
+                text: "World Wide Wine Production"
+                }
+            }
+        });
+        
+    });
+</script>
+{% endblock %}

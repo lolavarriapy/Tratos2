@@ -1,0 +1,145 @@
+{% extends '_Layout.html' %}
+
+
+{% block content %}
+{% csrf_token %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox " id="iboxReporte">
+                <div class="ibox-title">
+                    <h5>Listado</h5>
+                    <input type="hidden" id="vmsj" value="{{mensaje}}" />
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                    <form id="frmFiltrar" method="POST">
+                        <div class="row" style="border-bottom: 1px #dee2e6 solid;padding-bottom: 10px;">
+                            <div class="col-lg-2 col-6" style="padding-left:5px;padding-right: 5px;">
+                                <select id="selObra" name="selObra" class="form-control" required>
+                                    {% for obras in obrasList %}
+                                        <option value="{{obras.obra.id}}">{{obras.obra.descripcion}}</option>
+                                    {% endfor %} 
+                                </select>
+                                <small>Obra</small>
+                            </div>
+                            <div class="col-lg-2 col-6" style="padding-left:5px;padding-right: 5px;">
+
+                            </div>                            
+                            <div class="col-lg-7 col-0" style="padding-left:5px;padding-right: 5px;"></div>
+                            <div class="col-lg-1 col-12" style="text-align: end;">
+                                <!--<button type="button" id="btnReportePDF" class="btn btn-sm btn-primary" onclick="reportePDF()"><i style="btn-primary" class="fa fa-print"></i></button> 
+                                <button type="submit" id="btnBuscarPartidas" class="btn btn-sm btn-primary"><i style="btn-primary" class="fa fa-search"></i></button>-->
+                                
+                            </div>
+                        </div>
+                    </form><br />
+
+  
+                    <div class="table-responsive">
+                    <table id="tbRebajes" class="tb">
+                        <thead>
+                            <!-- Aquí se agregarán dinámicamente las cabeceras de la tabla -->
+                        </thead>
+                        <tbody>
+                            <!-- Aquí se llenarán dinámicamente las filas de la tabla -->
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            getReporte();
+
+            $("#selObra").on("change", function( event ) {
+                getReporte();
+            
+            })
+            .catch(function(error){console.log(error);});
+
+        });
+
+        function getReporte()
+        {
+
+            let data = new FormData();
+            data.append('idObra',$("#selObra").val());
+            data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+
+            fetch("{% url 'reporteRebajes' %}",{method:'POST',body: data})
+            .then((response) =>  response.json())
+            .then((data) => {
+
+                    $('#tbRebajes thead').empty();
+                    $('#tbRebajes tbody').empty();
+
+                    let table = '<table>';
+                    table += '<tr><th>Trato\\Unidad</th>';
+                    
+                    // Genera la cabecera de la tabla con los códigos de las unidades
+                    for (let unidad in data[Object.keys(data)[0]]) {
+                        table += '<th>' + unidad + '</th>';
+                    }
+                    table += '</tr>';
+                    
+                    // Genera las filas de la tabla con los códigos de los tratos y colores de celdas
+                    for (let trato in data) {
+                        table += '<tr><td>' + trato + '</td>';
+                        for (let unidad in data[trato]) {
+                            let valor = data[trato][unidad].valor;
+                            let color = data[trato][unidad].color;
+
+                            let valores = valor.split(',');
+
+                            // Create a jQuery object to hold the <a> tags
+                            let links = "";
+                            if(valores.length > 0){
+                                $.each(valores, function(index, folio) {
+                                    folio = folio.trim();      
+                                    arrFolio=folio.split("|");                           
+                                    let link = '<a href="/Rebajes/informeTrabajo/ver/'+arrFolio[1]+'/" >'+arrFolio[0]+'</a> / ';
+                                    links+=link;
+                                });
+                            }
+
+                            table += '<td style="background-color:' + color + ';color:black">' + links + '</td>';
+                        }
+                        table += '</tr>';
+                    }
+                    table += '</table>';
+                    
+                    $('#tbRebajes').html(table);  // Inserta la tabla en el HTML                    
+            })
+            .catch(function(error){console.log(error);});        
+
+        }
+
+    </script>
+    <style>
+        .tb{
+            border: 1px solid #CE9446;
+            width: 100%;
+            text-align: center;
+        }
+        .tb td{
+            border: 1px solid #CE9446;
+            
+        }        
+    </style>
+{% endblock %}

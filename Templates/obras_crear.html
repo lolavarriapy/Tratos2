@@ -1,0 +1,67 @@
+{% extends '_Layout.html' %}
+
+{% block content %}
+
+    <form action="/obras/crear/" method="POST">
+        {% csrf_token %}
+
+        <div class="row" style="margin-top: 15px;">
+
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <label>Complete el formulario para registrar una obra en el sistema</label>
+
+                    </div>
+                    <div class="ibox-content">
+                        <form method="POST" action="/obras_crear/">
+                            <h4 id="error">{{error}}</h4>
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">Código</label>
+                                <div class="col-lg-9">
+                                    <input type="number" id="cod" name="cod" placeholder="código de obra" class="form-control"> 
+                                    <!--<span class="form-text m-b-none">Example block-level help text here.</span>-->
+                                    <input type="hidden" id="mt" name="mt" value="INS" />
+                                </div>
+                            </div>
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">Descripción</label>
+
+                                <div class="col-lg-9"><input type="text" id="descripcion" name="descripcion" placeholder="descripción de obra" class="form-control"></div>
+                            </div>
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">Tipo</label>
+
+                                <div class="col-lg-9">
+                                    <select class="form-control" id="tipoObra" name="tipoObra">
+                                        <option value="ED">Edificio</option>
+                                        <option value="CA">Casas</option>
+                                    </select>
+                                </div>
+                            </div>                            
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">Dirección Calle</label>
+
+                                <div class="col-lg-9"><input type="text" id="direccionCalle" name="direccionCalle" placeholder="dirección calle" class="form-control"></div>
+                            </div>
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">Dirección Numero</label>
+
+                                <div class="col-lg-9"><input type="text" id="direccionNumero" name="direccionNumero" placeholder="dirección número" class="form-control"></div>
+                            </div>  
+                            <div class="form-group row"><label class="col-lg-3 col-form-label">URL google maps</label>
+
+                                <div class="col-lg-9"><input type="text" id="paramgMaps" name="paramgMaps" placeholder="dirección número" class="form-control"></div>
+                            </div>                                                        
+                            <div class="form-group row">
+                                <div class="col-lg-12" style="text-align: right;" >
+                                    <button class="btn btn-sm btn-primary" type="submit">Guardar</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+
+    </form>
+{% endblock %}

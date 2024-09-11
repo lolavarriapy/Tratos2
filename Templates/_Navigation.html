@@ -1,0 +1,59 @@
+﻿{% load static %}
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="" style="padding:0px 10px">
+                <div class="dropdown profile-element" style="text-align: center;">
+                    <a href="/home/">  <img src="{% static 'img/logo.png' %}" width="60%" style="margin-top: 10px;" /><br /><br /></a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs" style="position: absolute; top: 91px; left: 0px; will-change: top, left;">
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element" style="padding-bottom: 0px; padding-top: 10px;">
+                    <a href="/home/">  <img src="{% static 'img/logo.png' %}" width="100%"  /><br /><br /></a>
+                      
+                </div>
+            </li>
+
+            {% if user.is_authenticated %}
+                {% if request.session.is_admin %}
+                <li>
+                    <a href="/home"><i class="fa fa-home fa-lg"></i><span class="nav-label">Inicio</span> <span class="label label-primary float-right">Main</span></a>
+                </li>
+                <li>
+                    <a href="/obras"><i class="fa fa-building fa-lg"></i><span class="nav-label">Obra</span> </a>
+                </li>            
+                <li>
+                    <a href="/Rebajes/tratos"><i class="fa fa-handshake-o fa-lg"></i><span class="nav-label">Tratos</span> </a>
+                </li>  
+                
+            {% else %}
+                <li>
+                    <a href="/home"><i class="fa fa-home fa-lg"></i><span class="nav-label">Inicio</span> <span class="label label-primary float-right">Main</span></a>
+                </li>
+                <li>
+                    <a href="/Rebajes/tratos"><i class="fa fa-handshake-o fa-lg"></i><span class="nav-label">Tratos</span> </a>
+                </li>  
+            {% endif %}
+
+            {% endif %}
+            <li>
+                 </a>
+            </li>  
+            <li>
+                <a href="#"><i class="fa fa-file-text fa-lg"></i><span class="nav-label">Reportes</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="/Reportes/capataz">Informe Capataz</a></li>
+                    {% if user.is_authenticated %}
+                        {% if request.session.is_admin %}
+                            <li><a href="/Reportes/rebajes">Rebajes Obra</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </li>
+
+
+        </ul>
+    </div>
+</nav>
