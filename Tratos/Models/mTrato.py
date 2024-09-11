@@ -33,7 +33,8 @@ class Trato(models.Model):
     idUsuario = models.ForeignKey(User, on_delete=models.PROTECT) #(User, on_delete=models.CASCADE)
     obra = models.ForeignKey(Obra, on_delete=models.PROTECT)
     orden = models.IntegerField(unique=True, blank=True, null=True)
-
+    estado = models.IntegerField(default=1) #1 activo / 0 inactivo  
+    
     def valorTrato_sep(self):
         if self.valorTrato != "" and self.valorTrato != "null":
             res = '{:,}'.format(self.valorTrato)
