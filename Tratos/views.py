@@ -104,7 +104,7 @@ def tratos_crear(request):
             oUnidadMedida = UnidadMedida.objects.get(id=idUnidadMedida)
 
             try:
-                ultimoTrato = Trato.objects.filter(categoria_id=oCategoria,obra=oObra,estado=1).latest("orden")
+                ultimoTrato = Trato.objects.filter(categoria_id=oCategoria,obra=oObra).latest("orden")
             except ObjectDoesNotExist:
                 ultimoTrato = None
             
