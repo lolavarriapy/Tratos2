@@ -45,7 +45,6 @@ jobs:
           path: |
             release.zip
             !venv/
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -69,4 +68,4 @@ jobs:
         with:
           app-name: 'tratosweb'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_244B9DAA90AA4A49B906CAB0115630EA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_49F73B55A64D4CC4B3CED6A5463B48E0 }}
