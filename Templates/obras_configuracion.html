@@ -1782,7 +1782,7 @@
                 showToast('Exito','Información guardada','Trato guardado correctamente.')   
                 $("#trTratosVacio").remove();
 
-                let row= "<tr><td class='celTratos' style='text-align:center'><button type='submit' class='btn btn-sm btn-primary btnTratos tCodPartida' id='btnCod_"+vIns+"' onclick='showDetallePopup(\""+vIns+"\")'>"+data.cod+"</button>"+
+                let row= "<tr id='trTrato_"+vIns+"'><td class='celTratos' style='text-align:center'><button type='submit' class='btn btn-sm btn-primary btnTratos tCodPartida' id='btnCod_"+vIns+"' onclick='showDetallePopup(\""+vIns+"\")'>"+data.cod+"</button>"+
                         "</td><td class='tPartida celTratos' id='tdPartida_"+vIns+"' >"+partida+"</td><td id='tdMedida_"+vIns+"'>"+medida+"</td>"+
                         "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary btnTratos' style='margin:2px; width: 100%;' onclick='showCuadrillaPopup(this)'><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtNroMaestros_"+vIns+"'>0</small> | <small>$</small><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtSueldoMaestro_"+vIns+"'>0</small></button></td>"+
                         "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary btnTratos' style='margin:2px; width: 100%;' onclick='showCuadrillaPopup(this)'><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtNroJornales_"+vIns+"'>0</small> | <small>$</small><small style='font-size: 12px;font-weight: 600;margin: 0;' id='txtSueldoJornal_"+vIns+"'>0</small></button></td>"+
@@ -1791,7 +1791,8 @@
                         "<td style='text-align: center;' id='modelos_"+vIns+"'><button type='submit' class='btn btn-sm btn-add btnAddModel' onclick='mModelos(this)' id='btnAddModels_"+vIns+"'><i class='fa fa-plus' aria-hidden='true'></i></button></td>"+
                         "<td class='celTratos' id='txtCanTotal_"+vIns+"' style='font-size: 13px;text-align: center;'>0</td>"+
                         "<td class='celTratos' id='txtValorTotal_"+vIns+"' style='font-size: 13px;text-align: center;'>$0</td>"+
-                        "<td class='celTratos'><button type='submit' class='btn btn-sm btn-primary' onclick='showBloqueosPopup(\""+vIns+"\")'><i style='btn-primary;' class='fa fa-ban' aria-hidden='true'></i></button></td>"+
+                        "<td class='celTratos' style='text-align:center'><button type='submit' class='btn btn-sm btn-primary' onclick='showBloqueosPopup(\""+vIns+"\")'><i style='btn-primary;' class='fa fa-ban' aria-hidden='true'></i></button></td>"+
+                        "<td class='celTratos' style='text-align:center'><button type='submit' id='btnDesactivaTrato_f55f49b2-f4d0-4ffa-bb71-ba711dcd4517' class='btn btn-sm btn-primary' onclick='showDesactivarTrato(\""+vIns+"\")' style='background-color:rgb(253, 150, 150);'><i class='fa fa-times' aria-hidden='true'></i></button></td>"+
                         "<td style='display: none;'>"+
                             "<input type='hidden' class='inputHidden' id='hId_"+vIns+"' value='"+vIns+"'>"+
                             '<input type="hidden" class="inputHidden" id="hcf_'+vIns+'" value="'+codFam+'" />'+
