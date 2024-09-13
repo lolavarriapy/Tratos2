@@ -1,12 +1,15 @@
 
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
+from .views import CustomPasswordChangeView
 
 urlpatterns = [
     path('home/', views.home, name='home'),
-    path('signup/', views.signup, name='signup'),
+ 
     path('logout/', views.signout, name='logout'),
     path('', views.signin, name='signin'),
+    path('cambiarContrasena/', CustomPasswordChangeView.as_view(), name='cambiarContrasena'),
     path('signin/', views.signin, name='signin'),
     path('check-session/', views.check_session, name='check_session'),
     path('obras/', views.obras, name='obras'),

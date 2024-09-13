@@ -8,18 +8,21 @@ class AdminGroupMiddleware:
     def __call__(self, request):
         # Obtener la URL de la página de inicio de sesión
         login_url = reverse('signin')
-        
-        # Evitar el bucle de redirección para la URL de inicio de sesión
-        if request.path != login_url and request.path != "/signin/" and request.path != "/":
+
+        if request.path != login_url and request.path != "/signin/" and request.path != "/" and request.path != "/logout/":
             # Verificar si el usuario está autenticado
             if request.user.is_authenticated:
+                if not request.user.userextend.primerAcceso:
+                   if request.path != reverse('cambiarContrasena') and request.path != reverse('logout'):
+                        return redirect('cambiarContrasena')  # Redirige a la página de cambio de contraseña   
+                        
                 request.session['is_admin'] = request.user.groups.filter(name='Administrador').exists()
             else:
                 request.session['is_admin'] = False
 
         else:
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and request.path != "/logout/": 
                 return redirect('home')
-        # Pasar la solicitud al siguiente middleware o vista
+
         response = self.get_response(request)
         return response

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -17,6 +18,7 @@ from .Models.mUnidadMedida import UnidadMedida
 from .Models.mObraUsuario import ObraUsuario
 from .Models.mObraCategoria import ObraCategoria
 from .Models.mTratoUnidadBloqueada import TratoUnidadBloqueada
+from .Models.mUserExtend import UserExtend
 from Rebajes.Models import InformeTrabajo, InformeTrabajo_detalle
 from django.core import serializers 
 from django.http import JsonResponse
@@ -26,6 +28,7 @@ import json
 from decimal import Decimal
 from django.db.models import Q, Sum
 import math
+from django.urls import reverse_lazy
 
 @login_required
 def home(request):
@@ -48,31 +51,6 @@ def home(request):
     return render(request,'home.html',{'title':'Home','totalObra':totalObras,'totalTratos': sumTratos,
                                        'totalRebajes': sumRebajes,
                                        'cantTratos':cantTratos, 'cantRebajes':cantRebajes})
-
-def signup(request):
-    if request.method == "GET":
-        return render(request,'signup.html',{
-            'form':UserCreationForm
-            })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.create_user(username=request.POST['username'],
-                                    password=request.POST['password2'])
-                user.save()
-                login(request,user)
-                return redirect('tratos')
-            
-            except IntegrityError:
-                 return render(request,'signup.html',{
-                'form':UserCreationForm,
-                'error':'Usuario ya existe'
-                })
-                
-        return render(request,'signup.html',{
-        'form':UserCreationForm,
-        'error':'Contraseñas no coinciden'
-        })
 
 @permission_required('Tratos.create_trato',raise_exception=True)
 def tratos_crear(request):
@@ -379,9 +357,8 @@ def tratos_modelos_actualizar(request):
             error = 1
             rsp = "NOK"
             
-        valorTratoModelo = math.ceil(valorTrato / 100) * 100
+        valorTratoModelo = math.ceil(valorTrato / 10) * 10
         if error == 0:
-            
             
             try:
                 vTratoModelo = TratoModelo.objects.get(trato=oTrato, modelo = vUnidadModelo)
@@ -656,7 +633,6 @@ def obras_categorias_actualizar(request):
             try:
                 vTratoModelo = ObraCategoria.objects.get(obra=oObra, categoria = categoriaTrato)
                 vTratoModelo.estado = vCategoria["checked"]
-
                 vTratoModelo.save()
 
             except ObjectDoesNotExist:
@@ -1018,10 +994,12 @@ def signin(request):
         return render(request,'signin.html',{
             'form':AuthenticationForm
         })
+
     else:
         user = authenticate(request, 
                      username=request.POST["username"],
                      password=request.POST["password"])
+               
         if user is None:
             return render(request,'signin.html',{
             'form':AuthenticationForm,
@@ -1031,6 +1009,17 @@ def signin(request):
             login(request,user)
             return redirect('home')
         
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'passwordChange.html'  # tu template de cambio de contraseña
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        # Actualizar el campo 'primerAcceso' a False después de cambiar la contraseña
+        response = super().form_valid(form)
+        user_extend = UserExtend.objects.get(user=self.request.user)
+        user_extend.primerAcceso = True
+        user_extend.save()
+        return redirect('home')
         
 def check_session(request):
     if request.user.is_authenticated:
