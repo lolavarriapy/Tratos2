@@ -726,7 +726,7 @@ def modelosUnidad(request):
             
             try:
                 oObra = Obra.objects.get(id=rObra)
-                oTipo = TipoUnidad.objects.get(id=rTipo,estado=1,obra=oObra)
+                oTipo = TipoUnidad.objects.get(id=rTipo,estado=1)
             
                 modelosList = UnidadModelo.objects.filter(tipo=oTipo,estado=1)
                 
