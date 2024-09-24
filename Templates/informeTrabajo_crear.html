@@ -1,7 +1,16 @@
 {% extends '_Layout.html' %}
 
-
 {% block content %}
+{% load static %}
+<!--<link rel="stylesheet" href="{% static '/css/plugins/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static '/css/plugins/select2/select2-bootstrap4.min.css' %}">
+-->
+
+<link rel="stylesheet" href="{% static '/css/plugins/chosen/chosen.css' %}">
+
+
+
+
 {% csrf_token %}
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -50,7 +59,11 @@
                                                     <medium>Obra:</medium>
                                                     <select id="selITobra" class="form-control" required>
                                                         {% for obras in obrasU %}
-                                                            <option value="{{obras.obra.id}}">{{obras.obra.descripcion}}</option>
+                                                            {% if obraSelect == obras.obra.id %}
+                                                                <option value="{{obras.obra.id}}" selected>{{obras.obra.descripcion}}</option>
+                                                            {% else %}
+                                                                <option value="{{obras.obra.id}}">{{obras.obra.descripcion}}</option>
+                                                            {% endif %}    
                                                         {% endfor %} 
                                                     </select>
                                                 </div>
@@ -161,8 +174,9 @@
 
                                                 </div>
                                             </div>
-                                            <br />
-                                          
+
+                                            
+                                            <br />                                          
                                             
                                        
                                             {% endif %}
@@ -197,7 +211,7 @@
                                                                     <td style="vertical-align: middle;">{{dInforme.unidad.idModelo.tipo.descripcion}}</td>
                                                                     <td><input type="text" id="cantidad_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" class="form-control ec" value="{{dInforme.cantidad}}" disabled /></td>
                                                                     <td><input type="number" id="avance_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" class="form-control ea" value="{{dInforme.avance}}" disabled /></td>
-                                                                    <td style="vertical-align: middle;"><label id="valorTrato_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{dInforme.trato.valorTrato_sep}}</label></td>
+                                                                    <td style="vertical-align: middle;"><label id="valorTrato_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{ dInforme.obtener_valor_trato_modelo }}</label></td>
                                                                     <td style="vertical-align: middle;"><label id="aPagar_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{dInforme.valor_sep}}</label></td>
                                                                     <td><medium style="color: red;" class="cmsje" id="cmsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium><medium style="color: red;" class="smsje" id="smsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium></td>
                                                                     {% if itCabecera.idEstado.cod != "FIN" %}
@@ -433,6 +447,8 @@
             border-right-color: red!important;
         }
     </style>
+    <!--<script src="{% static 'js/plugins/select2/select2.full.min.js' %}"></script>-->
+    <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
     <script>
 
         $("#frmCabecera").on("submit", function( event ) {
@@ -1101,6 +1117,12 @@
 
         $(document).ready(function(){
             $('[data-toggle="popover"]').popover(); 
+            $(document).ready(function() {
+                $('.chosen-select').chosen({
+                    placeholder_text_multiple: 'Selecciona las unidades',
+                    width: '100%'
+                });
+            });
         });
     </script>
 

@@ -254,6 +254,7 @@ def informeTrabajo_detalle_guardar(request):
                 oInforme = InformeTrabajo.objects.get(id=vItrabajo)
                 oTrato = Trato.objects.get(cod=row["codTrato"],obra=oObra)
                 oUnidad = UnidadObra.objects.get(cod=row["codUnidad"],idObra = oObra,estado=1)
+                oTratoModelo = TratoModelo.objects.get(trato=oTrato,modelo=oUnidad.idModelo)
                 idReg = row["id"]
                 med = row["med"]
                 
@@ -265,11 +266,12 @@ def informeTrabajo_detalle_guardar(request):
             
                 valorTotal = 0
                 if med == "UNI":
-                    valorTotal = (oTrato.valorTrato / 100) * float(row["porcentaje"])
-                    valorTotal = round(valorTotal / 100) * 100  # Redondear a la centena más cercana
+                    valorTotal = (oTratoModelo.valorTratoModelo / 100) * float(row["porcentaje"])
+                    valorTotal = round(valorTotal / 10) * 10  # Redondear a la decima más cercana
                 if med == "CAN":
-                    valorTotal = (oTrato.valorTrato / oTrato.cantidad) * float(row["cantidad"])
-                    valorTotal = round(valorTotal / 100) * 100  # Redondear a la centena más cercana            
+                    #valorTotal = (oTratoModelo.valorTratoModelo / oTratoModelo.cantidad) * float(row["cantidad"])
+                    valorTotal = (oTratoModelo.valorTratoModelo) * float(row["cantidad"])
+                    valorTotal = round(valorTotal / 10) * 10  # Redondear a la decima más cercana            
             
             
                 if idReg == "0":
@@ -454,7 +456,10 @@ def informeTrabajo_crear(request):
         itCabecera = None 
         user = request.user
         obras = ObraUsuario.objects.filter(usuario=user).select_related('obra')
-        return render(request, 'informeTrabajo_crear.html',{'title':'Trato > crear','obrasU':obras,'itCabecera':itCabecera})
+        obra = obras.exclude(obra__cod=999).first()
+        obraSelect = obra.obra.id
+        unidadesList = UnidadObra.objects.filter(idObra=obra.obra)
+        return render(request, 'informeTrabajo_crear.html',{'title':'Trato > crear','obrasU':obras,'itCabecera':itCabecera,'obraSelect':obraSelect,'unidadesList':unidadesList})
     
     elif request.method == "POST":
         
