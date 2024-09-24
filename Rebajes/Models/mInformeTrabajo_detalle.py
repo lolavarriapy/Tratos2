@@ -4,6 +4,7 @@ from .mInformeTrabajo import InformeTrabajo
 from Tratos.Models import Trato
 from Tratos.Models import UnidadObra
 from decimal import Decimal
+from Tratos.Models import TratoModelo
 
 class InformeTrabajo_detalle(models.Model):
     itrabajo = models.ForeignKey(InformeTrabajo, on_delete=models.PROTECT)
@@ -26,3 +27,10 @@ class InformeTrabajo_detalle(models.Model):
     def valor_sep(self):
         res = '{:,}'.format(self.total)
         return res
+    
+    def obtener_valor_trato_modelo(self):
+        # Filtramos TratoModelo por el trato y la unidad relacionada
+        trato_modelo = TratoModelo.objects.filter(trato=self.trato, modelo=self.unidad.idModelo).first()
+        if trato_modelo:
+            return trato_modelo.valorTratoModelo_sep()
+        return 'N/A'  # Si no se encuentra el TratoModelo
