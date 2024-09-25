@@ -134,7 +134,7 @@ def informeTrabajo_cabecera_guardar(request):
         if vIdInforme == '':
             
             try:
-                ultimoInforme = InformeTrabajo.objects.latest('fechaCreacion') 
+                ultimoInforme = InformeTrabajo.objects.filter(obra=oObra).latest('fechaCreacion')
                 if ultimoInforme.folio is not None and ultimoInforme.folio.strip() != "":
                     maxId = int(ultimoInforme.folio.split("-")[1])
                 else:
