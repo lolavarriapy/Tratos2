@@ -1,0 +1,51 @@
+# Python and Django related files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+*.log
+
+TratosPY/settings.py
+
+# Django secret key and settings
+.env
+*.env
+
+# Local development files
+db.sqlite3
+local_settings.py
+
+# VSCode specific (if you are using VSCode)
+.vscode/
+.code-workspace
+
+# macOS specific
+.DS_Store
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Static and media files
+/staticfiles/
+/media/
+
+# Migrations (optional, if you don't want to commit migrations)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+
+# pytest
+.pytest_cache/
+.cache
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+.dmypy.json.5
