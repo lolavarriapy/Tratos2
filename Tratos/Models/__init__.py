@@ -11,5 +11,7 @@ from .mTratoUnidadBloqueada import TratoUnidadBloqueada
 from .mUnidadMedida import UnidadMedida
 from .mTratoCapataz import TratoCapataz
 from .mObraUsuario import ObraUsuario
+from .mUserExtend import UserExtend
 
-__all__ = ['UnidadModelo', 'Obra', 'TipoUnidad','UnidadObra','Trato','TratoCategoria','TratoModelo','TratoEspecialidad','TratoUnidadBloqueada','UnidadMedida','TratoCapataz','ObraUsuario']
+__all__ = ['UnidadModelo', 'Obra', 'TipoUnidad','UnidadObra','Trato','TratoCategoria','TratoModelo',
+           'TratoEspecialidad','TratoUnidadBloqueada','UnidadMedida','TratoCapataz','ObraUsuario','UserExtend','mPrueba']
