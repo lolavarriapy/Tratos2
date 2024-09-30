@@ -84,22 +84,23 @@
                                             </div>   
                                             <div class="hr-line-dashed"></div>  
                                             <div class="row">
-                                                <div class="col-lg-3 col-6">
+                                                <div class="col-lg-3 col-6" style="display: none;">
                                                     <medium>Estado:</medium>
                                                         <input type="text" class="form-control" id="txtEstadoIt" style="text-transform:uppercase" value="{{itCabecera.idEstado.descripcion}}" disabled="disabled" />
                                                 </div>
-                                                <div class="col-lg-3 col-6">
+                                                
+                                                <div class="col-lg-3 col-6" style="display: none;">
                                                     <medium>Fecha Ingreso:</medium>
                                                         <input type="text" class="form-control" id="txtFechaIngresoIt" style="text-transform:uppercase" value="{{ itCabecera.fechaCreacion|date:"Y-m-d" }}" disabled="disabled" />
                                                 </div>
-                                                <div class="col-lg-3 col-6">
+                                                <div class="col-lg-3 col-6" style="display: none;">
                                                     <medium>Fecha Finalizado:</medium>
                                                         <input type="text" class="form-control" id="txtFechaFinalizadoIt" style="text-transform:uppercase" value="{{ itCabecera.fechaFinalizado|date:"Y-m-d" }}" disabled="disabled" />
                                                 </div>         
-                                                <div class="col-lg-2 col-6" ></div>                                       
-                                                <div class="col-lg-1 col-12" style="text-align: end;">
+                                                <div class="col-lg-10 col-6" ></div>                                       
+                                                <div class="col-lg-2 col-12" style="text-align: end;">
                                                     {% if itCabecera.idEstado.cod != "FIN" %}
-                                                    <button type="submit" class="btn btn-sm btn-save"><i style="font-size: 1.2rem;" class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                                                    <button type="submit" class=" btn btn-sm btn-save"><i style="font-size: 1.4rem;" class="fa fa-floppy-o" aria-hidden="true"></i></button>
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -118,70 +119,51 @@
                                         <form id="frmDetalle">
                                             {% if itCabecera.idEstado.cod != "FIN" %}
 
-                                            <div style="padding-top:5px;padding-bottom:5px;background-color: #f5f5f5; border: 1px solid #ce9446">
+                                            <div style="padding-top:5px;padding-bottom:5px;background-color: #f5f5f5; border: 1px solid #ce9446;">
                                                 <div class="row" style="margin-left: 0px;">
-                                                    <div class="col-lg-1 col-12 d-flex align-items-center"><b><h3 style="text-align: center;">AGREGAR REBAJE</h3></b></div>
-                                                    <div class="col-lg-9 col-12">
+                                                    <div class="col-lg-12 col-12">
                                                         <div class="row">
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" ><span class="align-middle">COD. TRATO:</span></div>
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" ><input type="hidden" id="hValorTrato" value="0" />
+                                                            <div class="col-lg-1 col-6 d-flex align-items-center" ><span class="align-middle">COD. TRATO:</span></div>
+                                                            <div class="col-lg-1 col-6 d-flex align-items-center" ><input type="hidden" id="hValorTrato" value="0" />
                                                                 <input type="text" class="form-control" id="txtITcodTrato" style="text-transform:uppercase" placeholder="" value="">
                                                             </div>
-                                                            <div class="col-lg-8 col-12 d-flex align-items-center">
-                                                                <b><span style="vertical-align: sub;" id="lblPartida">-</span> </b>
+                                                            <div class="col-lg-3 col-12 d-flex align-items-center">
+                                                                <b><span style="vertical-align: sub;" id="lblPartida">-</span></b>
                                                                 <div class="sk-spinner sk-spinner-three-bounce" id="loadingPartida" style="margin: 0px; display: none; height: 10px;">
                                                                     <div class="sk-bounce1"></div>
                                                                     <div class="sk-bounce2"></div>
                                                                     <div class="sk-bounce3"></div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-lg-1 col-6 d-flex align-items-center" style="padding:0px;" ><span class="align-middle">COD. UNIDAD:</span></div>                                          
+                                                            <div class="col-lg-5 col-6" style="margin-top: 3px;" >
+                                                                <select data-placeholder="Selecciona unidad(es) de obra para agregar a rebaje" multiple class="chosen-select" tabindex="18" id="multiple-label-example">
+   
+                                                                </select>                               
+                                                            </div>
+                                                            <div class="col-lg-1 col-6" >
+                                                                {% if itCabecera.idEstado.cod != "FIN" %}
+                                                                    <button type="button" class="btn btn-add" onclick="rebajeAgregarMultiple()" id="btnAddRebaje0" ><i class="fa fa-plus fa-1x"></i></button>
+                                                                {% endif %}
+                                                            </div>
+
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" ><span class="align-middle">COD. UNIDAD:</span></div>                                          
-                                                            <div class="col-lg-2 col-6" >
-                                                                <input type="text" class="form-control" id="txtITcodUnidad" placeholder="" value="" data-toggle="popover" data-trigger="manual" data-placement="right" data-content="" style="text-transform:uppercase">
-                                                            </div>
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" >
 
-                                                                <span class="align-middle col" style="padding:0px;">CANTIDAD:</span ><span id="spCantMax" style="font-size: 12px; display: none;">(disp.<span id="lblCantMax" style="padding:0px;"></span>)</span> 
-
-                                                                <medium style="display: none;" id="lblMsjeUnidad">
-                                                                    <b><medium id="lblTipoUnidad" style="display: none;">-</medium></b><b><medium id="lblmsjDisp" style="display: none;">-</medium> </b></medium><input type="hidden" id="unidadMedicion" value="" />    
-                                                                <div class="sk-spinner sk-spinner-three-bounce" id="loadingTipoUnidad" style="margin: 0px; display: none; height: 10px">
-                                                                    <div class="sk-bounce1"></div>
-                                                                    <div class="sk-bounce2"></div>
-                                                                    <div class="sk-bounce3"></div>
-                                                                </div>
-                                                            </div>  
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" >
-                                                                <input type="number" class="form-control" id="txtITcantidad" style="text-transform:uppercase" placeholder="0" value="">
-                                                                
-                                                            </div>
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" style="text-align: center;"><span class="align-middle">% AVANCE:</span><span id="spAvanceMax" style="font-size: 12px; display: none;">  (disp: <span id="lblAvanceDisp" style="padding:0px;"></span>%)</span> </div>
-                                                            <div class="col-lg-2 col-6 d-flex align-items-center" >
-                                                                <input type="number" class="form-control" id="txtITporcentaje" placeholder="0" value="" min="1" max="100">
-                                                                
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-2 col-12 d-flex align-items-center">
-                                                        {% if itCabecera.idEstado.cod != "FIN" %}
-                                                            <button type="button" class="btn btn-add" onclick="rebajeAgregar()" id="btnAddRebaje" ><i class="fa fa-plus fa-1x"></i></button>
-                                                        {% endif %}
 
-                                                        <label id="msjeRebaje" style="margin-left: 10px;"></label>
-                                                    </div>
 
                                                 </div>
                                             </div>
 
-                                            
                                             <br />                                          
                                             
                                        
                                             {% endif %}
                                             <h4>Rebajes Informe de trabajo</h4>
                                             <div class="row">
+
+                                                <div class="table-responsive"></div>
                                                 <div class="table-responsive" style="overflow: auto; height:auto;margin-left: 20px; margin-right: 20px;">
                                                     <table class="table table-bordered table-hover dataTables-example dataTable" id="tbRebajeTrato">
                                                     <thead style="position: sticky;top:0;background-color: white;">
@@ -192,9 +174,9 @@
                                                         <th >Tipo Unidad</th>
                                                         <th style="width: 10%;">Cantidad</th>
                                                         <th style="width: 10%;">% de Avance</th>
-                                                        <th style="width: 10%;">Valor Trato</th>
-                                                        <th style="width: 10%;">Total a pagar</th>
-                                                        <th style="width: 10%;">Observación</th>
+                                                        <th style="width: 10%;">Valor Trato ($)</th>
+                                                        <th style="width: 10%;">Total a pagar($)</th>
+                                                        <th style="width: 10%;">Validación</th>
                                                         {% if itCabecera.idEstado.cod != "FIN" %}
                                                         <th style="width: 7%; text-align:center"></th>
                                                         {% endif %}
@@ -211,9 +193,9 @@
                                                                     <td style="vertical-align: middle;">{{dInforme.unidad.idModelo.tipo.descripcion}}</td>
                                                                     <td><input type="text" id="cantidad_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" class="form-control ec" value="{{dInforme.cantidad}}" disabled /></td>
                                                                     <td><input type="number" id="avance_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" class="form-control ea" value="{{dInforme.avance}}" disabled /></td>
-                                                                    <td style="vertical-align: middle;"><label id="valorTrato_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{ dInforme.obtener_valor_trato_modelo }}</label></td>
-                                                                    <td style="vertical-align: middle;"><label id="aPagar_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{dInforme.valor_sep}}</label></td>
-                                                                    <td><medium style="color: red;" class="cmsje" id="cmsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium><medium style="color: red;" class="smsje" id="smsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium></td>
+                                                                    <td style="vertical-align: middle;text-align: center;"><label id="valorTrato_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{ dInforme.obtener_valor_trato_modelo }}</label></td>
+                                                                    <td style="vertical-align: middle;text-align: center;"><label id="aPagar_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}" style="margin: 0px;">{{dInforme.valor_sep}}</label></td>
+                                                                    <td id='colV_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}' class="colValidate" style="vertical-align:middle; text-align: center;"><i class="fa fa-check-circle" style="color: green; font-size: 1.4rem;"></i><medium style="color: white;" class="cmsje" id="cmsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium><medium style="color: white;" class="smsje" id="smsje_{{dInforme.trato.cod}}_{{dInforme.unidad.cod}}"></medium></td>
                                                                     {% if itCabecera.idEstado.cod != "FIN" %}
                                                                     <td style='vertical-align:middle;text-align:center'>
                                                                         <i class="fa fa-edit" onclick="editTr(this,'{{dInforme.unidad.idModelo.tipo.medicion}}')" aria-hidden="true"></i> | <i class="fa fa-minus-circle" style="cursor:pointer" onclick="removeTr(this,{{dInforme.id}},'d')" aria-hidden="true"></i>
@@ -446,8 +428,10 @@
         .bs-popover-right > .arrow::after{
             border-right-color: red!important;
         }
+
+     
     </style>
-    <!--<script src="{% static 'js/plugins/select2/select2.full.min.js' %}"></script>-->
+
     <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
     <script>
 
@@ -528,15 +512,28 @@
                 .catch(function(error){console.log(error);$('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
             }
         }
+        
+        function limpiar_detalleRebaje()
+        {
+            $('.chosen-select').empty();
+            $(".chosen-results").empty();
+            $(".search-choice").remove();
+            $('.chosen-select').val('').trigger('chosen:updated');
+            $(".chosen-select").trigger('chosen:updated');
+            $("#txtITcodTrato").val('');
+            $("#lblPartida").html("");
+        }
 
         function guardar_detalle()
         {
+            limpiar_detalleRebaje();
             $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
             let vidInforme  = $("#hIdInforme").val();
             let vidObra  = $("#hIdObra").val();
             $(".smsje").html("");
             $(".cmsje").html("");
             $(".ed").removeAttr("style");
+            $(".colValidate").css("background-color","");
             if(vidInforme != "" ){
 
                 let rData = "";
@@ -573,8 +570,6 @@
                     data.append('data',"["+rData.substring(0,rData.length - 1)+"]");
                     data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
 
-
-                    
                     fetchS("{% url 'informeTrabajo_detalle_guardar' %}",{method:'POST',body: data})
                     .then((response) =>  response.json())
                     .then((data) => {
@@ -585,6 +580,10 @@
                                         $(this).val('P');
                                     }
                                 });
+
+                                $(".colValidate > i").remove();
+                                $(".ea").removeAttr("style");
+                                $(".colValidate").append('<i class="fa fa-check-circle" style="color: green; font-size: 1.4rem;"></i>');
                                 showToast("Exito","Registro guardado","Detalle rebaje(s) de informe de trabajo guardado.")
                                 $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
                                 $("#hTotalRebajes").html(Intl.NumberFormat("es-MX").format(data.sumTotal));
@@ -592,6 +591,7 @@
                                 $("#txtITporcentaje").val("");
                                 $("#txtITcodTrato").val("");
                                 $("#txtITcodUnidad").val("");
+
                             }
                         }
                         else
@@ -600,16 +600,25 @@
 
                             $.each(arrMsj, function(i, item) {
                                 let msjeError = "";
+                                $("#colV_"+item.trato+"_"+item.unidad +" > i").remove();
+                                $("#colV_"+item.trato+"_"+item.unidad).css("background-color","#df5858");
+                                $("#colV_"+item.trato+"_"+item.unidad).css("color","white");
                                 if(item.medicion =="uni"){
+                                    $("#avance_"+item.trato+"_"+item.unidad).css("border-color","red");
 
-                                    $("#avance_"+item.trato).css("border-color","red");
-                                    $("#smsje_"+item.trato+"_"+item.unidad).html("Rebaje en folio:"+item.folio+"|| disp:"+item.disp);
+                                    if(item.disp > 100)
+                                    {
+                                        $("#smsje_"+item.trato+"_"+item.unidad).html("El % de Avance no puede ser mayor a 100.");
+                                    }
+                                    else{
+                                        $("#smsje_"+item.trato+"_"+item.unidad).html("Rebaje "+item.folio+" <br>disponible: "+item.disp);
+                                    }
 
                                 }
                                 if(item.medicion=="can"){
 
                                     $("#cantidad_"+item.trato).css("border-color","red");
-                                    msjeError = (item.folio != "" && item.folio != undefined)?"R. Folio:"+item.folio+"||disp:"+item.disp:"CantMax:"+item.max;    
+                                    msjeError = (item.folio != "" && item.folio != undefined)?"R. Folio:"+item.folio+" <br>disponible: "+item.disp : "<br>disponible: "+item.max;    
                                     $("#cmsje_"+item.trato+"_"+item.unidad).html(msjeError);
 
                                 }
@@ -767,86 +776,62 @@
             }
         }
 
-        function rebajeAgregar(){
 
-            let codTrato = $("#txtITcodTrato").val();
-            let codUnidad = $("#txtITcodUnidad").val().toUpperCase();
-            let cantidad = $("#txtITcantidad").val();
-            let porcentaje = $("#txtITporcentaje").val();
+        function rebajeAgregarMultiple() {
+
+            let codTrato = $("#txtITcodTrato").val().toUpperCase();
+            let arrUnidades = $('.chosen-select').chosen().val();
             let partida = $("#lblPartida").html();
-            let tipoUnidad = $("#lblTipoUnidad").html();
-            let avanceDisp = $("#lblAvanceDisp").html();
-            let cantDisp = $("#lblCantMax").html();
-            let unidadMedicion = $("#unidadMedicion").val();
-            let valorTrato = ($("#hValorTrato").val() == "")?"0":$("#hValorTrato").val();
+            let tipoUnidad = "";
+            let avanceDisp = "";
+            let cantDisp = "";
+            
+            let cantidad = "1";
+            let porcentaje = "100";
+            let aPago = "";
             let arr = true;
-
-            if(unidadMedicion == "UNI" && parseFloat(porcentaje) > parseFloat(avanceDisp)){
-                showToast("Error","Error!","El avance ingresado no puede ser mayor al disponible.");
-                arr = false;
-            }
-            else if(unidadMedicion == "CAN" && parseFloat(cantidad) > parseFloat(avanceDisp))
-            {
-                showToast("Error","Error!","La cantidad ingresada no puede ser mayor al disponible.");
-                arr = false;
-            }
-
-            if(arr)
-            {
-                //inputUnidad = $("#tbRebajeTrato tbody tr").find("input[value='"+codUnidad+"']");
-                inputUnidad = $("#row_"+codTrato.toUpperCase()+"_"+codUnidad.toUpperCase()).attr("id");
-                if(inputUnidad == undefined)
-                {
-
-                    if(cantidad != "" && porcentaje != ""){
-                        if(parseInt(cantidad)>0 && parseInt(porcentaje)>0){
-                            let aPago = parseInt(valorTrato)*parseInt(porcentaje)/100;
-                            let row = "<tr id='row_"+codTrato.toUpperCase()+"_"+codUnidad.toUpperCase()+"'>"+
-                                        "<td><input type='text' class='form-control dd' id='codTrato_"+codTrato.toUpperCase()+"_"+codUnidad+"' disabled='disabled' value='"+codTrato.toUpperCase()+"' /> </td>"+
-                                        "<td style='vertical-align:middle'><label>"+partida+"</label></td>"+
-                                        "<td><input type='text' class='form-control' id='codUnidad_"+codTrato.toUpperCase()+"_"+codUnidad+"' disabled='disabled' value='"+codUnidad.toUpperCase()+"' /> </td>"+
-                                        "<td style='vertical-align:bottom'><label>"+tipoUnidad+"</label></td>"+
-                                        "<td><input type='text' class='form-control ec' id='cantidad_"+codTrato.toUpperCase()+"_"+codUnidad+"' disabled='disabled' value='"+cantidad.toUpperCase()+"' /></td>"+
-                                        "<td><input type='number' class='form-control ea' id='avance_"+codTrato.toUpperCase()+"_"+codUnidad+"'  disabled='disabled' value='"+porcentaje.toUpperCase()+"' /> </td>"+
-                                        "<td id='valorTrato_"+codTrato.toUpperCase()+"_"+codUnidad+"'>"+Intl.NumberFormat("es-MX").format(valorTrato)+"</td>"+
-                                        "<td id='aPagar_"+codTrato.toUpperCase()+"_"+codUnidad+"'>"+Intl.NumberFormat("es-MX").format(aPago)+"</td>"+
-                                        "<td><medium style='color: red;' class='cmsje' id='cmsje_"+codTrato.toUpperCase()+"_"+codUnidad+"'></medium><medium style='color: red;' class='smsje' id='smsje_"+codTrato.toUpperCase()+"_"+codUnidad+"'></medium></td>"+
-                                        "<td style='vertical-align:middle;text-align:center'><i class='fa fa-edit' onclick='editTr(this,\""+unidadMedicion+"\")'></i> | <i class='fa fa-minus-circle' style='cursor:pointer' onclick='removeTr(this,0,\"d\")'></i>"+
-                                        "<td style='display: none;''><input type='hidden' class='vRebaje' id='informe_"+codTrato.toUpperCase()+"_"+codUnidad+"' value='0'>"+
-                                        '<input type="hidden" id="rMedicion_'+codTrato.toUpperCase()+'_'+codUnidad+'" name="rMedicion_{{dInforme.id}}" value="'+unidadMedicion+'" />'
-                                        "</td>"+
-                                        "</tr>";
-
-                            $("#tbRebajeTrato tbody").append(row);
-                            $("#trItvacio").remove();
-                            $("#txtITcodTrato").val('');
-                            $("#txtITcodUnidad").val('');
-                            $("#txtITcantidad").val('');
-                            $("#txtITporcentaje").val('');
-                            $("#lblTipoUnidad").html('-');
-                            $("#lblAvanceDisp").html('-')
-                            $("#txtITcantidad").prop("disabled",false);
-                            $("#spCantMax").hide();
-                            $("#spAvanceMax").hide();  
-                            $("#msjeRebaje").html("");
-                        }
-                        else
-                        {
-                            showToast("Error","Error!","cantidad y porcentaje debe ser mayor a 0.")
-                        }
-                    }
-                    else
+            
+            if (arrUnidades.length > 0 && codTrato !== "") {
+                $("#trItvacio").remove();
+                $.each(arrUnidades, function(index, codUnidadValor) {
+                    let codUnidad = codUnidadValor.split("|")[0].toUpperCase();
+                    let valorTrato = codUnidadValor.split("|")[1];
+                    let unidadMedicion = codUnidadValor.split("|")[2];
+                    if($("#row_"+codTrato+"_"+codUnidad).length == 0)
                     {
-                        showToast("Error","Error!","cantidad y porcentaje debe ser mayor a 0.")
-                    }
-                }
-                else
-                {
-                    showToast("Error","Error!","Ya se a gregó un rebaje para el trato/unidad ingresado.")
-                }
-            }
+                        let row = $('<tr>', { id: `row_${codTrato}_${codUnidad}` });
+                        row.append(
+                            $('<td>').append($('<input>', { type: 'text', class: 'form-control dd', disabled: true, value: codTrato })),
+                            $('<td>', { style: 'vertical-align:middle' }).append($('<label>').text(partida)),
+                            $('<td>').append($('<input>', { type: 'text', class: 'form-control', disabled: true, value: codUnidad })),
+                            $('<td>', { style: 'vertical-align:bottom' }).append($('<label>').text(tipoUnidad)),
+                            $('<td>').append($('<input>', { id:"cantidad_"+codTrato+"_"+codUnidad, type: 'text',style: "text-align:center;vertical-align:middle", class: 'form-control ec', disabled: true, value: cantidad })),
+                            $('<td>').append($('<input>', { id:"avance_"+codTrato+"_"+codUnidad, type: 'number',style: "text-align:center;vertical-align:middle", class: 'form-control ea', disabled: true, value: porcentaje })),
+                            $('<td>').text(Intl.NumberFormat("es-MX").format(valorTrato)),
+                            $('<td>').text(Intl.NumberFormat("es-MX").format(valorTrato)),
+                            $('<td>',{ class: "colValidate" ,style: 'vertical-align:middle; text-align:center',id: `colV_${codTrato}_${codUnidad}`}).append(
+                                $('<medium>', { class: 'cmsje', style: 'color: white;', id: 'cmsje_'+codTrato+'_'+codUnidad }),
+                                $('<medium>', { class: 'smsje', style: 'color: white;', id: 'smsje_'+codTrato+'_'+codUnidad })
+                            ),
+                            $('<td>', { style: 'vertical-align:middle;text-align:center' }).append(
+                                $('<i>', { class: 'fa fa-edit', onclick: `editTr(this,"${unidadMedicion}")` }),
+                                " | ",
+                                $('<i>', { class: 'fa fa-minus-circle', style: 'cursor:pointer', onclick: `removeTr(this,0,"d")` })
+                            ),
+                            $('<td>', { style: 'display:none' }).append(
+                                $('<input>', { type: 'hidden', class: 'vRebaje', id: `informe_${codTrato.toUpperCase()}_${codUnidad}`, value: 0 }),
+                                $('<input>', { type: 'hidden', id: `rMedicion_${codTrato.toUpperCase()}_${codUnidad}`, value: unidadMedicion })
+                            )
+                        );
 
-        };
+                        $("#tbRebajeTrato tbody").append(row);
+                    }
+                });
+
+                limpiar_detalleRebaje();
+
+            }
+        }
 
         function cuadrillaAgregar()
         {
@@ -896,12 +881,11 @@
             $("#txtTotalDias").val('');
             
         }
+        
         $("#txtITcodTrato").change(function(){
             obtenerPartida();
         });
-        $("#txtITcodUnidad").change(function(){
-            obtenerTipoUnidad();
-        });
+
         function obtenerPartida()
         {
             let data = new FormData();
@@ -932,6 +916,7 @@
                     //$("#lblCantMax").html(data.max);
                     $("#btnAddRebaje").removeAttr("disabled");
                     $("#txtITcodUnidad").removeAttr("disabled");
+                    obtenerUnidadTrato();
                 }else
                 {
                     $("#loadingPartida").hide();
@@ -943,75 +928,53 @@
             .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
         }
         
-        function obtenerTipoUnidad()
+        function obtenerUnidadTrato()
         {
-            $("#txtITcodUnidad").popover("hide");
-            $("#txtITcantidad").val('');
-            $("#txtITcantidad").prop("disabled",false);
-            $("#txtITcantidad").val("");
-            $("#txtITporcentaje").val("");
-            let data = new FormData();
-            let codUnidad = $("#txtITcodUnidad").val();
             let codTrato = $("#txtITcodTrato").val();
-            let vidInforme  = $("#hIdInforme").val();
-            data.append('idObra',$("#selITobra").val());
-            data.append('codUnidad',codUnidad.toUpperCase());
-            data.append('codTrato',codTrato.toUpperCase());
-            data.append('idInforme',vidInforme);
-            data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
-            $("#loadingTipoUnidad").show();
-            $("#lblMsjeUnidad").hide();
-            fetchS("{% url 'unidadObra_tipo_obtener' %}",{method:'POST',body: data})
-            .then((response) =>  response.json())
-            .then((data) => {
-                $("#loadingTipoUnidad").hide();
-                $("#lblTipoUnidad").html(data.tipoUnidad);
-                let codTrato = $("#txtITcodTrato").val().toUpperCase();
-                let nAvance = $("#avance_"+codTrato).val();
-                let informe = $("#informe_"+codTrato).val();
-                let avDisp = data.avancedisp;
-                $("#btnAddRebaje").removeAttr("disabled");
-                if(data.medicion != "N"){
-                    if(parseFloat(nAvance) && informe == "0")
-                    avDisp -=parseFloat(nAvance);
+            let obra = $("#selITobra").val()
+            if(codTrato != "" && obra != ""){
+                let data = new FormData();
                 
-                    avDisp = Math.round(avDisp * 100) / 100;
-                    $("#lblAvanceDisp").html(avDisp);
-                    $("#lblCantMax").html(avDisp);
-                }
-                else
-                {
-                    popover_err("txtITcodUnidad",data.tipoUnidad);                    
-                    $("#txtITcodUnidad")
-                    $("#lblAvanceDisp").html("-");
-                    $("#btnAddRebaje").attr("disabled","disabled");
-                }
+                data.append('idObra',obra);
+                data.append('codTrato',codTrato);
+                data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
+                fetchS("{% url 'unidadTrato_obtener' %}",{method:'POST',body: data})
+                .then((response) =>  response.json())
+                .then((data) => {
 
-                $("#txtITporcentaje").attr({"max" : data.avancedisp});
-                $("#lblMsjeUnidad").show();
+                    if(data.unidades.length > 0){
+                        const $select = $('.chosen-select');
+                        $select.empty(); // Limpiar las opciones existentes
+                        $.each(data.unidades, function(index, unidad) {
 
-                if(data.medicion == "UNI")
-                {
-                    $("#spAvanceMax").show();
-                    $("#spCantMax").hide();
-                    $("#lblmsjDisp").html("Avance disponible:");
-                    $("#txtITcantidad").val('1');
-                    $("#txtITcantidad").prop("disabled",true);
+                            let option = $('<option></option>');
+                            let descripcion = unidad.descripcion
+                            // Desactivar la opción si la unidad está inactiva
+                            if (unidad.estado == '0') {
+                                option.prop('disabled', true);
+                                descripcion+= " - (NO aplica para trato [ "+codTrato.toUpperCase()+" ])";
+                            }
+                            // Desactivar la opción si la unidad ya fue rebajada
+                            if($("#row_"+codTrato.toUpperCase()+"_"+unidad.cod).length > 0)
+                            {
+                                option.prop('disabled', true);
+                                descripcion+= " - (NO aplica - Ya fue rebajada)";
+                            }
+                            
+                            option.val(unidad.cod+"|"+unidad.valorTrato)
+                            option.text(descripcion); // Asigna la descripción como texto visible
+                            // Añadir el <option> al <select>
+                            $select.append(option);
+
+                        });
+                        $(".chosen-select").trigger('chosen:updated');
+                    }
+                })
+                .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
                 }
-                else if(data.medicion == "CAN")
-                {
-                    $("#spAvanceMax").hide();
-                    $("#spCantMax").show();
-                    $("#lblmsjDisp").html("Cantidad disponible:");
-                    $("#txtITporcentaje").val("100");
-                    $("#txtITporcentaje").prop("disabled",true);
-                }
-                $("#msjeRebaje").html(data.msj);
-                $("#unidadMedicion").val(data.medicion);
-                $("#hValorTrato").val(data.valorTrato);
-            })
-            .catch(function(error){console.log(error);showToast('Error','Error','Ocurrió un error o no tiene autorización, comuniquese con Soporte.');});
-        }      
+            
+        }
+    
         function removeTr(tr,id, org)
         {
             if($(tr).css("color") == "rgb(255, 0, 0)")
@@ -1117,12 +1080,12 @@
 
         $(document).ready(function(){
             $('[data-toggle="popover"]').popover(); 
-            $(document).ready(function() {
-                $('.chosen-select').chosen({
-                    placeholder_text_multiple: 'Selecciona las unidades',
-                    width: '100%'
-                });
+
+            $('.chosen-select').chosen({
+                placeholder_text_multiple: 'Selecciona las unidades',
+                width: '100%'
             });
+
         });
     </script>
 

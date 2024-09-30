@@ -30,6 +30,9 @@ from django.db.models import Q, Sum
 import math
 from django.urls import reverse_lazy
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+
 @login_required
 def home(request):
     totalObras = Obra.objects.all().count()
