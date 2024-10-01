@@ -70,7 +70,7 @@
                                                 
                                                 <div class="col-lg-3 col-12" style="padding-left:5px;padding-right: 5px;">
                                                     <medium>Folio:</medium>
-                                                        <input type="text" class="form-control" id="txtITfolio" style="text-transform:uppercase" value="{{itCabecera.folio}}" disabled="disabled" />
+                                                    <input type="text" class="form-control" id="txtITfolio" style="text-transform:uppercase" value="{{itCabecera.folio}}" disabled="disabled" />
                                                 </div>
                                                 <div class="col-lg-3 col-6" style="padding-left:5px;padding-right: 5px;">
                                                     <medium>Fecha de Inicio:</medium>
@@ -108,7 +108,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-default" >
+
+
+                            {% if itCabecera != None %}
+                            <div class="panel panel-default" id="dvDetalle" >
+                            {% else %}
+                            <div class="panel panel-default" style="display: none;" id="dvDetalle" >
+                            {% endif %}
+                            
                                 <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" style="cursor: pointer;">
                                     <h4 class="panel-title">
                                         <a><i class="fa fa-handshake-o fa-2x" style="margin-right: 10px;width: 30px; color: #ce9446;"></i>DETALLE REBAJE</a>
@@ -119,33 +126,28 @@
                                         <form id="frmDetalle">
                                             {% if itCabecera.idEstado.cod != "FIN" %}
 
-                                            <div style="padding-top:5px;padding-bottom:5px;background-color: #f5f5f5; border: 1px solid #ce9446;">
+                                            <!--<div style="padding-top:5px;padding-bottom:5px;background-color: #f5f5f5; border: 1px solid #ce9446;">-->
+                                            <div style="background-color: #f5f5f5; padding: 10px;">
                                                 <div class="row" style="margin-left: 0px;">
                                                     <div class="col-lg-12 col-12">
+                                                        <div class="row"><h3>Agregar Rebajes</h3></div>
                                                         <div class="row">
-                                                            <div class="col-lg-1 col-6 d-flex align-items-center" ><span class="align-middle">COD. TRATO:</span></div>
-                                                            <div class="col-lg-1 col-6 d-flex align-items-center" ><input type="hidden" id="hValorTrato" value="0" />
+                                                            
+                                                            <div class="col-lg-1 col-6" style="padding: 0;" ><input type="hidden" id="hValorTrato" value="0" />
+                                                                <medium>Cod. Trato:</medium>
                                                                 <input type="text" class="form-control" id="txtITcodTrato" style="text-transform:uppercase" placeholder="" value="">
                                                             </div>
-                                                            <div class="col-lg-3 col-12 d-flex align-items-center">
-                                                                <b><span style="vertical-align: sub;" id="lblPartida">-</span></b>
-                                                                <div class="sk-spinner sk-spinner-three-bounce" id="loadingPartida" style="margin: 0px; display: none; height: 10px;">
-                                                                    <div class="sk-bounce1"></div>
-                                                                    <div class="sk-bounce2"></div>
-                                                                    <div class="sk-bounce3"></div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-1 col-6 d-flex align-items-center" style="padding:0px;" ><span class="align-middle">COD. UNIDAD:</span></div>                                          
-                                                            <div class="col-lg-5 col-6" style="margin-top: 3px;" >
+                                     
+                                                            <div class="col-lg-10 col-6" >
+                                                                <medium>Codigo(s) unidad(es):</medium>
                                                                 <select data-placeholder="Selecciona unidad(es) de obra para agregar a rebaje" multiple class="chosen-select" tabindex="18" id="multiple-label-example">
    
-                                                                </select>                               
+                                                                </select>             
+               
                                                             </div>
-                                                            <div class="col-lg-1 col-6" >
-                                                                {% if itCabecera.idEstado.cod != "FIN" %}
+                                                        
+                                                            <div class="col-lg-1 col-6" style="display: flex;align-items: center;" >
                                                                     <button type="button" class="btn btn-add" onclick="rebajeAgregarMultiple()" id="btnAddRebaje0" ><i class="fa fa-plus fa-1x"></i></button>
-                                                                {% endif %}
                                                             </div>
 
                                                         </div>
@@ -154,13 +156,21 @@
 
 
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-12">
+                                                        <medium>Partida:</mediumm>
+                                                        
+                                                        <b><span style="vertical-align: sub;" class="form-control" id="lblPartida">-</span></b>
+                                                        <div class="sk-spinner sk-spinner-three-bounce" id="loadingPartida" style="margin: 0px; display: none; height: 10px;">
+                                                            <div class="sk-bounce1"></div>
+                                                            <div class="sk-bounce2"></div>
+                                                            <div class="sk-bounce3"></div>
+                                                        </div>  
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <br />                                          
-                                            
-                                       
                                             {% endif %}
-                                            <h4>Rebajes Informe de trabajo</h4>
+                                            
                                             <div class="row">
 
                                                 <div class="table-responsive"></div>
@@ -211,7 +221,7 @@
                                                             <tr id="trItvacio"><td colspan="10" style="text-align:center">Ingrese rebaje(s) de trato(s).</td></tr>
                                                         {% endif %}
                                                     </tbody>
-            
+                                                    
                                                     </table>
                                                 </div>
                                             </div>
@@ -231,7 +241,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+
+                            {% if itCabecera != None %}
+                            <div class="panel panel-default" id="dvCuadrilla" >
+                            {% else %}
+                            <div class="panel panel-default" style="display: none;" id="dvCuadrilla" >
+                            {% endif %}
                                 <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed" style="cursor: pointer;">
                                     <h4 class="panel-title">
                                         <a><i class="fa fa-users fa-2x" style="margin-right: 10px;width: 30px; color: #ce9446;"></i>DETALLE CUADRILLA</a>
@@ -240,65 +255,7 @@
                                 <div id="collapseThree" class="panel-collapse collapse" >
                                     <div class="panel-body">
                                         <form id="frmCuadrilla">
-                                            {% if itCabecera.idEstado.cod != "FIN" %}
-                                            <div class="hr-line-dashed" style="margin-top: 3px;"></div>
-                                            <div class="row" style="padding-top:5px">
-                                                
-                                                <div class="col-lg-2 col-xs-12" style="padding-left:5px;padding-right: 5px;">
-                                                    <medium>Cod. Talana:</medium>
-                                                    <input type="text" class="form-control" id="txtCodTalana" style="text-transform: uppercase;" placeholder="Cod. Talana" value="">
-                                                    
-                                                </div>
-                                                
-                                                <div class="col-lg-2 col-xs-12" style="padding-left:5px;padding-right: 5px;">
-                                                    <medium>Nombre Trabajador:</medium>
-                                                    <input type="text" class="form-control" id="txtNombreTrabajador" style="text-transform: uppercase;" placeholder="Nombre Trabajador" value="">
-                                                </div>
-            
-                                                <div class="col-lg-3 col-xs-12" style="padding-left:5px;padding-right: 5px; text-align: center;">
-                                                    <fieldset>
-                                                        <p style="margin-bottom: 0px;">
-                                                            Días trabajados
-                                                        </p>
-                                                        <div class="form-check abc-checkbox form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" id="checkTRlunes">
-                                                            <label class="form-check-label" for="checkTRlunes"> L </label>
-                                                        </div>
-                                                        <div class="form-check abc-checkbox abc-checkbox-success form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" id="checkTRmartes">
-                                                            <label class="form-check-label" for="checkTRmartes"> M </label>
-                                                        </div>
-                                                        <div class="form-check abc-checkbox form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" id="checkTRmiercoles">
-                                                            <label class="form-check-label" for="checkTRmiercoles"> Mi </label>
-                                                        </div>
-                                                        <div class="form-check abc-checkbox form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" id="checkTRjueves">
-                                                            <label class="form-check-label" for="checkTRjueves"> J </label>
-                                                        </div>
-                                                        <div class="form-check abc-checkbox form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" id="checkTRviernes">
-                                                            <label class="form-check-label" for="checkTRviernes"> V </label>
-                                                        </div>
-                                                    </fieldset> 
-                                                </div>
-                                                <div class="col-lg-2 col-xs-12" style="padding-left:5px;padding-right: 5px;">
-                                                    <medium>Total días:</medium>
-                                                    <input type="number" class="form-control" id="txtTotalDias" style="text-transform:uppercase" placeholder="Total Días" value="">
-                                                </div>   
-                                                <div class="col-lg-2 col-xs-12" style="padding-left:5px;padding-right: 5px;">
-                                                    <medium>Valor día($):</medium>
-                                                    <input type="number" class="form-control" id="txtValorDia" style="text-transform:uppercase" placeholder="Valor día ($)" value="">
-                                                </div> 
-                              
-                                                <div class="col-lg-1 col-xs-12" style="text-align: end; margin-top: 5px;">
-                                                    <button type="button" class="btn btn-add" onclick="cuadrillaAgregar()" style="text-align: end;"><i class="fa fa-plus fa-1x" aria-hidden="true"></i></button>
-                                                </div>
-                                            
-                                            </div>
-                                           
-                                            <div class="hr-line-dashed"></div>  
-                                            {% endif %}
+
                                             <div class="row">
                                                 <div class="table-responsive" style="overflow: auto; height:auto; margin-left: 20px; margin-right: 20px">
                                                     <table class="table table-bordered table-hover dataTables-example dataTable" id="tbCuadrillaTrato">
@@ -309,16 +266,16 @@
                                                         <th colspan="4" style="background-color: white;border-color: white;"></th>
                                                     </tr>                                        
                                                     <tr role="row">
-                                                        <th>Cod. Talana</th>
+                                                        <th style="width: 8%; text-align: center;" >Cod. Talana</th>
                                                         <th >Nombre Trabajador</th>
-                                                        <th>L</th>
-                                                        <th>M</th>
-                                                        <th>Mi</th>
-                                                        <th>J</th>
-                                                        <th>V</th>
-                                                        <th >Total días</th>
-                                                        <th>Valor día</th>
-                                                        <th>Total</th>
+                                                        <th style="text-align: center;">L</th>
+                                                        <th style="text-align: center;">M</th>
+                                                        <th style="text-align: center;">Mi</th>
+                                                        <th style="text-align: center;">J</th>
+                                                        <th style="text-align: center;">V</th>
+                                                        <th style="width: 8%;">Total días</th>
+                                                        <th style="width: 10%;">Valor día ($)</th>
+                                                        <th style="width: 10%;">Total ($)</th>
                                                         {% if itCabecera.idEstado.cod != "FIN" %}
                                                         <th style="width: 7%; text-align:center"></th>
                                                         {% endif %}
@@ -328,33 +285,33 @@
                                                         {% if iCuadrilla|length > 0 %}
                                                             {% for cuadrilla in iCuadrilla %}
                                                                 <tr>
-                                                                    <td><input type="text" class="form-control dd" value="{{cuadrilla.codTalana}}" disabled /></td>
+                                                                    <td><input type="text" class="form-control dd" style="text-align: center;" value="{{cuadrilla.codTalana}}" disabled /></td>
                                                                     <td><input type="text" class="form-control" value="{{cuadrilla.nomTrab}}" disabled /></td>
 
                                                                     {% if cuadrilla.lunTrab %}
-                                                                        <td><input type="checkbox" checked disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" checked disabled /></td>
                                                                     {% else %}
-                                                                        <td><input type="checkbox" disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" disabled /></td>
                                                                     {% endif %}
                                                                     {% if cuadrilla.marTrab %}
-                                                                        <td><input type="checkbox" checked disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" checked disabled /></td>
                                                                     {% else %}
-                                                                        <td><input type="checkbox" disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" disabled /></td>
                                                                     {% endif %}
                                                                     {% if cuadrilla.mieTrab == True %}
-                                                                        <td><input type="checkbox" checked disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" checked disabled /></td>
                                                                     {% else %}
-                                                                        <td><input type="checkbox" disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" disabled /></td>
                                                                     {% endif %}
                                                                     {% if cuadrilla.jueTrab %}
-                                                                        <td><input type="checkbox" checked disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" checked disabled /></td>
                                                                     {% else %}
-                                                                        <td><input type="checkbox" disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" disabled /></td>
                                                                     {% endif %}
                                                                     {% if cuadrilla.vieTrab %}
-                                                                        <td><input type="checkbox" checked disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" checked disabled /></td>
                                                                     {% else %}
-                                                                        <td><input type="checkbox" disabled /></td>
+                                                                        <td style="text-align: center;"><input type="checkbox" disabled /></td>
                                                                     {% endif %}
 
                                                                     <td><input type="text" class="form-control" value="{{cuadrilla.totalDias}}" disabled /></td>
@@ -373,7 +330,51 @@
                                                         {% endif %}
                                                         
                                                     </tbody>
-            
+                                                    {% if itCabecera.idEstado.cod != "FIN" %}
+
+                                                    <tfoot style="background-color: #f5f5f6;">
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" class="form-control" id="txtCodTalana" style="text-transform: uppercase;" placeholder="Cod. Talana" value="">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" id="txtNombreTrabajador" style="text-transform: uppercase;" placeholder="Nombre Trabajador" value=""> 
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <input type="checkbox" id="checkTRlunes">
+    
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <input type="checkbox" id="checkTRmartes">
+    
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <input type="checkbox" id="checkTRmiercoles">
+    
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <input  type="checkbox" id="checkTRjueves">
+    
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <input type="checkbox" id="checkTRviernes">
+    
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" id="txtTotalDias" style="text-transform:uppercase" placeholder="Total Días" value="">
+                                                            </td>
+                                                            <td><input type="number" class="form-control" id="txtValorDia" style="text-transform:uppercase" placeholder="Valor día ($)" value=""></td>
+                                                            <td></td>
+                                                           
+                                                            <td style="width: 7%; text-align:center">
+                                                                <button type="button" class="btn btn-add" onclick="cuadrillaAgregar()" style="text-align: end;"><i class="fa fa-plus fa-1x" aria-hidden="true"></i></button>
+                                                            </td>
+                                                            </tr>
+                                                    </tfoot>
+                                                    {% endif %}
+                                                    </table>
+                                                    <table class="table table-bordered table-hover dataTables-example dataTable">
+
                                                     </table>
                                                 </div>
                                             </div>
@@ -393,11 +394,17 @@
                                     </div>
                                 </div>
                             </div>
+                           
                         </div>
                         <div>
                             {% load humanize %}
                         <div class="hr-line-dashed"></div>  
-                        <div class="row">
+
+                        {% if itCabecera != None %}
+                        <div class="row" id="dvTotales" >
+                        {% else %}
+                        <div class="row" style="display: none;" id="dvTotales" >
+                        {% endif %}
                             <div class="col-lg-3 col-xs-12"></div>
                             <div class="col-lg-3 col-xs-12" style="text-align: end;">
                                 <h3>TOTAL REBAJES ($) </h3><h3 id="hTotalRebajes">{{ totalRebaje|floatformat:0|intcomma }}</h3>
@@ -410,8 +417,7 @@
                                 <input type="button" class="form-control btn btn-sm btn-primary" id="btnFinalizarInforme" onclick="finalizar_informe(this)" value="Finalizar Informe" />
                                 {% endif %}
                             </div>
-                        </div> 
-                                              
+                        </div>                
                         </div>
 
                     </div>
@@ -496,16 +502,13 @@
                         $("#hIdObra").val(vObra);
                         $("#txtITfolio").val(data.folio);
                         $("#txtEstadoIt").val("Ingresado");
+                        $("#dvDetalle").show();
+                        $("#dvCuadrilla").show();
+                        $("#dvTotales").show();
+                        $("#hTitlePage").html("Trato > ver: Folio "+data.folio);
                     }
                     else{
-                        if(data.folio == "rep")
-                        {
-                            showToast("Error","Error","Este folio ya se encuentra ingresado en otro informe de trabajo.")
-                        }
-                        else
-                        {
-                            showToast("Error","Error","Comuniquese con un administrador.")
-                        }
+                        showToast("Error","Error","Comuniquese con un administrador.")
                     }
                     $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
                 })
@@ -785,18 +788,29 @@
             let tipoUnidad = "";
             let avanceDisp = "";
             let cantDisp = "";
-            
-            let cantidad = "1";
-            let porcentaje = "100";
+            let cantidad = 0;
+            let porcentaje = 0;
             let aPago = "";
             let arr = true;
             
             if (arrUnidades.length > 0 && codTrato !== "") {
                 $("#trItvacio").remove();
                 $.each(arrUnidades, function(index, codUnidadValor) {
-                    let codUnidad = codUnidadValor.split("|")[0].toUpperCase();
-                    let valorTrato = codUnidadValor.split("|")[1];
-                    let unidadMedicion = codUnidadValor.split("|")[2];
+                    let arrOption = codUnidadValor.split("|");
+                    let codUnidad = arrOption[0].toUpperCase();
+                    let valorTrato = arrOption[1];
+                    let unidadMedicion = arrOption[2];
+                    let disp = arrOption[3];
+
+                    if(unidadMedicion == "CAN"){
+                        cantidad = disp;
+                        porcentaje = "100";
+                    }else if(unidadMedicion == "UNI")
+                    {
+                        cantidad = 1;
+                        porcentaje = disp;
+                    }
+
                     if($("#row_"+codTrato+"_"+codUnidad).length == 0)
                     {
                         let row = $('<tr>', { id: `row_${codTrato}_${codUnidad}` });
@@ -944,15 +958,15 @@
 
                     if(data.unidades.length > 0){
                         const $select = $('.chosen-select');
-                        $select.empty(); // Limpiar las opciones existentes
+                        $select.empty(); 
                         $.each(data.unidades, function(index, unidad) {
 
                             let option = $('<option></option>');
                             let descripcion = unidad.descripcion
-                            // Desactivar la opción si la unidad está inactiva
+                            // Desactivar la opción si la unidad no tiene avance disponible
                             if (unidad.estado == '0') {
                                 option.prop('disabled', true);
-                                descripcion+= " - (NO aplica para trato [ "+codTrato.toUpperCase()+" ])";
+                                descripcion+= " - ( AVANCE DISPONIBLE: 0 )";
                             }
                             // Desactivar la opción si la unidad ya fue rebajada
                             if($("#row_"+codTrato.toUpperCase()+"_"+unidad.cod).length > 0)
@@ -962,8 +976,7 @@
                             }
                             
                             option.val(unidad.cod+"|"+unidad.valorTrato)
-                            option.text(descripcion); // Asigna la descripción como texto visible
-                            // Añadir el <option> al <select>
+                            option.text(descripcion);
                             $select.append(option);
 
                         });

@@ -447,7 +447,7 @@ def informeTrabajo_ver(request,vid):
             obras = None
             obraSelect = None
             
-        return render(request, './informeTrabajo_crear_new.html',{'title':'Trato > ver','obrasU':obras,'itCabecera':itCabecera,'idDetalle':idDetalle,'iCuadrilla':iCuadrilla,'totalRebaje':totalRebaje,'totalCuadrilla':totalCuadrilla,'obraSelect':obraSelect,'unidadesList':unidadesList})
+        return render(request, './informeTrabajo_crear.html',{'title':'Trato > ver: Folio '+ itCabecera.folio ,'obrasU':obras,'itCabecera':itCabecera,'idDetalle':idDetalle,'iCuadrilla':iCuadrilla,'totalRebaje':totalRebaje,'totalCuadrilla':totalCuadrilla,'obraSelect':obraSelect,'unidadesList':unidadesList})
     
 @permission_required_custom('Tratos.create_informeTrabajo', redirect_to='home')
 def informeTrabajo_crear(request):
@@ -460,7 +460,7 @@ def informeTrabajo_crear(request):
         obra = obras.exclude(obra__cod=999).first()
         obraSelect = obra.obra.id
         unidadesList = UnidadObra.objects.filter(idObra=obra.obra)
-        return render(request, 'informeTrabajo_crear_new.html',{'title':'Trato > crear','obrasU':obras,'itCabecera':itCabecera,'obraSelect':obraSelect,'unidadesList':unidadesList})
+        return render(request, 'informeTrabajo_crear.html',{'title':'Trato > crear','obrasU':obras,'itCabecera':itCabecera,'obraSelect':obraSelect,'unidadesList':unidadesList})
     
     elif request.method == "POST":
         
@@ -510,35 +510,55 @@ def informeTrabajo_crear(request):
 def unidadTrato_obtener(request):
     
     vIdObra = request.POST['idObra']
-    vCodTrato = request.POST['codTrato']
     user = request.user 
     vUsuariObra = ObraUsuario.objects.filter(usuario=user, obra=vIdObra)
         
     if vUsuariObra.exists():
         
-        vCodTrato = request.POST['codTrato']
+        vCodTrato = request.POST['codTrato'].upper()
         oObra = Obra.objects.get(id=vIdObra)
-        oTrato = Trato.objects.get(cod=vCodTrato,estado=1)
+        oTrato = Trato.objects.get(cod=vCodTrato,estado=1,obra=oObra)
 
-        unidadesList = UnidadObra.objects.filter(idObra=oObra)
+        
         modelosTratoList = TratoModelo.objects.filter(trato=oTrato, estado=True)
 
         # Obtener los IDs de los modelos presentes en modelosTratoList
         modelos_ids = modelosTratoList.values_list('modelo__id', flat=True)
-        
+        unidadesList = UnidadObra.objects.filter(idObra=oObra,idModelo__id__in=modelos_ids)
         # Crear un diccionario para un acceso rápido a los objetos TratoModelo por modelo ID
-        modelo_trato_dict = {modelo.modelo.id: str(modelo.valorTratoModelo)+"|"+modelo.modelo.tipo.medicion for modelo in modelosTratoList}
+        modelo_trato_dict = {modelo.modelo.id: str(modelo.valorTratoModelo)+"|"+str(modelo.cantidad) for modelo in modelosTratoList}
 
         # Crear un listado en formato JSON
         unidades_json = []
         for unidad in unidadesList:
+            
+            #vUnidad = 0 
+            avanzado = 0
+            rebajesList = InformeTrabajo_detalle.objects.filter(unidad=unidad,trato=oTrato)
+            
+            medicion = unidad.idModelo.tipo.medicion
             valor_trato = modelo_trato_dict.get(unidad.idModelo.id, 0)  # Obtiene el valorTrato, 0 si no existe
+            cant_trato = valor_trato.split("|")[1]
+            
+            disp = 0
+            if medicion == "UNI":
+                avanzado = rebajesList.aggregate(Sum('avance'))['avance__sum'] or 0
+                disp = 100 - avanzado
+                #vUnidad = 1 if avanzado < 100 else 0
+            if medicion == "CAN":
+                avanzado = rebajesList.aggregate(Sum('cantidad'))['cantidad__sum'] or 0   
+                disp = int(cant_trato) - avanzado
+                #vUnidad = 1 if avanzado < int(cant_trato) else 0 
+
+            #if vUnidad == 1: 
+                
             unidad_json = {
                 'cod': unidad.cod,
                 'descripcion': unidad.descripcion,
-                'estado': '1' if unidad.idModelo.id in modelos_ids else '0',
-                'valorTrato': valor_trato
-                
+                #'estado': '1' if unidad.idModelo.id in modelos_ids else '0',
+                'estado': '1' if disp > 0 else '0',
+                'valorTrato': valor_trato.split("|")[0]+"|"+medicion+"|"+str(disp),
+                'disp': str(disp)
             }
             unidades_json.append(unidad_json)
 
