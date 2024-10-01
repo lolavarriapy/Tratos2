@@ -97,35 +97,35 @@ WSGI_APPLICATION = 'TratosPY.wsgi.application'
 #    }   
 #}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'TratosObra',
-        'USER': 'desarrollo',
-        'PASSWORD': 'D4de.#@2020',
-        'HOST': '172.18.10.182',  # O la dirección IP de tu servidor SQL
-        'PORT': '',           # El puerto predeterminado de SQL Server es 1433
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Asegúrate de que el controlador ODBC esté instalado
-        },
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'mssql',
+#        'NAME': 'TratosObra',
+#        'USER': 'desarrollo',
+#        'PASSWORD': 'D4de.#@2020',
+#        'HOST': '172.18.10.182',  # O la dirección IP de tu servidor SQL
+#        'PORT': '',           # El puerto predeterminado de SQL Server es 1433
+#        'OPTIONS': {
+#            'driver': 'ODBC Driver 17 for SQL Server',  # Asegúrate de que el controlador ODBC esté instalado
+#        },
+#    }
+#}
 
 
 #POSTGRESQL PROD
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'bdtratos',
-#        'HOST': 'tratosbd.postgres.database.azure.com',
-#        'USER': 'usrtratos',
-#        'PASSWORD': 'Trfgy72q###',
-#        'PORT': '5432',
-#        'OPTIONS': {
-#            'sslmode': 'require',
-#        },
-#   }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bdtratos',
+        'HOST': 'tratosbd.postgres.database.azure.com',
+        'USER': 'usrtratos',
+        'PASSWORD': 'Trfgy72q###',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+   }
+}
 
 
 #POSTGRESQL TEST
