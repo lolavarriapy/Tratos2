@@ -20,7 +20,7 @@ from Tratos.Models.mObra import Obra
 from django.db.models import Q, Sum, Max
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.paginator import EmptyPage, PageNotAnInteger
 
 @permission_required_custom('Tratos.view_informeTrabajo', redirect_to='home')
 def tratos(request):
@@ -28,22 +28,36 @@ def tratos(request):
     # Obtener las obras asignadas al usuario
     obras_asignadas = ObraUsuario.objects.filter(usuario=user).values_list('obra', flat=True)
     informe_trabajo_list = InformeTrabajo.objects.filter(obra__in=obras_asignadas).order_by('-orden')
+    
+    obras_list = Obra.objects.filter(id__in=obras_asignadas)
+    
     estados_list = InformeTrabajo_estado.objects.all()
     categorias_list = TratoCategoria.objects.all()
-    
+
     
     # Configurar la paginación
-    paginator = Paginator(informe_trabajo_list, 30)  # 10 informes por página
-    page_number = request.GET.get('page')  # Obtener el número de página de la solicitud GET
-    page_obj = paginator.get_page(page_number)  # Obtener la página actual
+    paginator = Paginator(informe_trabajo_list, 30)  # 30 informes por página
+    page_number = request.GET.get('page')
     
-    
-    
-    return render(request, 'tratos.html',{'title':'Tratos','informesTrabajo':page_obj,'categorias':categorias_list,'estados':estados_list})
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return render(request, 'tratos.html', {
+        'title': 'Tratos',
+        'informesTrabajo': page_obj,
+        'categorias': categorias_list,
+        'estados': estados_list,
+        'obras':obras_list,
+    })
 
 @permission_required_custom('Tratos.view_informeTrabajo', redirect_to='home')
 def informeTrabajo_buscar(request):
 
+    obra = request.POST['obra']
     folio = request.POST['folio']
     categoria = request.POST['categoria']
     fechaInicio = request.POST['fechaInicio']
@@ -58,11 +72,13 @@ def informeTrabajo_buscar(request):
     user = request.user
     obras_asignadas = ObraUsuario.objects.filter(usuario=user).values_list('obra', flat=True)
     filters = Q(obra_id__in=obras_asignadas)
-        
+
+    if obra:
+        filters &= Q(obra_id=obra)        
     if folio:
-        filters &= Q(cod__icontains=folio)
+        filters &= Q(folio__icontains=folio)
     if categoria:
-        filters &= Q(categoria__descripcion__icontains=categoria)
+        filters &= Q(informetrabajo_detalle__trato__categoria__cod__icontains=categoria)
     if fechaInicio:
         filters &= Q(fecha__gte=fechaInicio)
     if fechatermino:
@@ -89,10 +105,12 @@ def informeTrabajo_buscar(request):
     for informe in page_obj:
         
         rebajes = InformeTrabajo_detalle.objects.filter(itrabajo=informe)
-        tratos_codigos = [rebaje.trato.cod for rebaje in rebajes]
+        tratos_codigos = [rebaje.trato.cod + " : " + rebaje.unidad.cod for rebaje in rebajes]
+
         tratos_concatenados = ', '.join(tratos_codigos)
 
         informes.append({
+                'obra':informe.obra,
                 'folio': informe.folio,
                 'obra': informe.obra.descripcion,  
                 'fechaInicio': informe.fechaInicio.strftime('%d-%m-%Y'), 
