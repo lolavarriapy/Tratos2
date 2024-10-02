@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'Reportes',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Asegúrate de que esté aquí
@@ -95,22 +97,51 @@ WSGI_APPLICATION = 'TratosPY.wsgi.application'
 #    }   
 #}
 
-#TO-DO update db to use the postgresql / Azure and ElephantDb
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bdtratos',
-        'HOST': 'tratosbd.postgres.database.azure.com',
-        'USER': 'usrtratos',
-        'PASSWORD': 'Trfgy72q###',
-        'PORT': '5432',
+        'ENGINE': 'mssql',
+        'NAME': 'TratosObra',
+        'USER': 'desarrollo',
+        'PASSWORD': 'D4de.#@2020',
+        'HOST': '172.18.10.182',  # O la dirección IP de tu servidor SQL
+        'PORT': '',           # El puerto predeterminado de SQL Server es 1433
         'OPTIONS': {
-            'sslmode': 'require',
+            'driver': 'ODBC Driver 17 for SQL Server',  # Asegúrate de que el controlador ODBC esté instalado
         },
-   }
+    }
 }
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+
+#POSTGRESQL PROD
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'bdtratos',
+#        'HOST': 'tratosbd.postgres.database.azure.com',
+#        'USER': 'usrtratos',
+#        'PASSWORD': 'Trfgy72q###',
+#        'PORT': '5432',
+#        'OPTIONS': {
+#            'sslmode': 'require',
+#        },
+#   }
+#}
+
+
+#POSTGRESQL TEST
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'bdtratostest',
+#        'HOST': 'tratosbd.postgres.database.azure.com',
+#        'USER': 'usrtratos',
+#        'PASSWORD': 'Trfgy72q###',
+#        'PORT': '5432',
+#        'OPTIONS': {
+#            'sslmode': 'require',
+#        },
+#   }
+#}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

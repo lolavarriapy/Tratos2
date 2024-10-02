@@ -20,42 +20,51 @@
                 <div class="ibox-content">
                     <form id="frmBuscarTrato">
                         <div class="row" style="border-bottom: 1px #dee2e6 solid;padding-bottom: 10px;">
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
+                                <small>Obra</small>
+                                <select id="selObra" class="form-control inputNp">
+                                    <option value="" selected>Obra</option>
+                                    {% for obra in obras %}
+                                        <option value="{{obra.id}}">{{obra.descripcion}}</option>
+                                    {% endfor %}  
+                                </select>
+                            </div>                            
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Folio</small>
                                 <input type="text" class="form-control inputNp" id="txtFolio" placeholder="Folio" value="">
                             </div>
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Categoría</small>
                                 <select id="selCategoria" class="form-control inputNp">
                                     <option value="" selected>Categoria</option>
                                     {% for categoria in categorias %}
-                                    <option value="{{categoria.id}}">{{categoria.descripcion}}</option>
+                                    <option value="{{categoria.cod}}">{{categoria.descripcion}}</option>
                                     {% endfor %}   
                                 </select>
                             </div>
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Fecha inicio</small>
                                 <input type="date" class="form-control inputNp" id="txtFechaInicio" placeholder="Fecha Inicio" style="padding: 0px;" value="">
                                 
                             </div>
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Fecha termino</small>
                                 <input type="date" class="form-control inputNp" id="txtFechaTermino" placeholder="Fecha Termino" style="padding: 0px;" value="">
                                 
                             </div>
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Trato</small>
                                 <input type="text" class="form-control inputNp" id="txtTrato" placeholder="cod. Trato" value="">
                             </div>      
-                            <div class="col-6 col-sm-3 col-md-3" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-2" style="padding-left:5px;padding-right: 5px;">
                                 <small>Partida</small>
                                 <input type="text" class="form-control inputNp" id="txtPartida" placeholder="Partida" value="">
                             </div>                                                                                          
-                            <div class="col-6 col-sm-3 col-md-2" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-2" style="padding-left:5px;padding-right: 5px;">
                                 <small>Trabajador</small>
                                 <input type="text" class="form-control inputNp" id="txtTrabajador" placeholder="Trabajador Cuadrilla" value="">
                             </div>
-                            <div class="col-6 col-sm-3 col-md-1" style="padding-left:5px;padding-right: 5px;">
+                            <div class="col-6 col-sm-3 col-lg-1" style="padding-left:5px;padding-right: 5px;">
                                 <small>Estado</small>
                                 <select id="selEstado" class="form-control inputNp">
                                     <option value="" selected>Estado</option>
@@ -116,7 +125,7 @@
                             {% if informeTrabajo.informetrabajo_detalle_set.all|length > 0 %}
                                 {% for m in informeTrabajo.informetrabajo_detalle_set.all %}
                                     {% if m.trato.cod %}
-                                       {{m.trato.cod}} /
+                                       {{m.trato.cod}} : {{m.unidad.cod}} , 
                                     {% endif %}    
                                 {% endfor %}    
                             {% else %}
@@ -166,8 +175,9 @@
                     let partida = $("#txtPartida").val();
                     let trabajador = $("#txtTrabajador").val();
                     let estado = $("#selEstado").val();
+                    let obra = $("#selObra").val();
                     let page = currentPage - 1;
-                    buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+                    buscar(obra,folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
                 }
             });
 
@@ -183,8 +193,9 @@
                     let partida = $("#txtPartida").val();
                     let trabajador = $("#txtTrabajador").val();
                     let estado = $("#selEstado").val();
+                    let obra = $("#selObra").val();
                     let page = currentPage + 1;
-                    buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+                    buscar(obra,folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
                 }
             });
 
@@ -203,18 +214,21 @@
        let partida = $("#txtPartida").val();
        let trabajador = $("#txtTrabajador").val();
        let estado = $("#selEstado").val();
+       let obra = $("#selObra").val();
+       
        let page = 1;
-       $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
-       buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
+       
+       buscar(obra,folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page);
        
        return false;
     });
 
 
-    function buscar(folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page)
+    function buscar(obra,folio,categoria,fechaInicio,fechatermino,codTrato,partida,trabajador,estado,page)
     {
 
        let data = new FormData();
+       data.append('obra',obra);
        data.append('folio',folio);
        data.append('categoria',categoria);
        data.append('fechaInicio',fechaInicio);
@@ -225,7 +239,7 @@
        data.append('estado',estado);
        data.append('page',page);
        data.append('csrfmiddlewaretoken',$("input[name=csrfmiddlewaretoken]").val());
-
+       $('#iboxTratos').children('.ibox-content').toggleClass('sk-loading');
        
        fetch("{% url 'informeTrabajo_buscar' %}",{method:'POST',body: data})
        .then((response) =>  response.json())

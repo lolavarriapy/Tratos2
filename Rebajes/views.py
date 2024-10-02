@@ -20,7 +20,7 @@ from Tratos.Models.mObra import Obra
 from django.db.models import Q, Sum, Max
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.paginator import EmptyPage, PageNotAnInteger
 
 @permission_required_custom('Tratos.view_informeTrabajo', redirect_to='home')
 def tratos(request):
@@ -28,23 +28,36 @@ def tratos(request):
     # Obtener las obras asignadas al usuario
     obras_asignadas = ObraUsuario.objects.filter(usuario=user).values_list('obra', flat=True)
     informe_trabajo_list = InformeTrabajo.objects.filter(obra__in=obras_asignadas).order_by('-orden')
+    
+    obras_list = Obra.objects.filter(id__in=obras_asignadas)
+    
     estados_list = InformeTrabajo_estado.objects.all()
     categorias_list = TratoCategoria.objects.all()
-    
+
     
     # Configurar la paginación
-    paginator = Paginator(informe_trabajo_list, 30)  # 10 informes por página
-    page_number = request.GET.get('page')  # Obtener el número de página de la solicitud GET
-    page_obj = paginator.get_page(page_number)  # Obtener la página actual
+    paginator = Paginator(informe_trabajo_list, 30)  # 30 informes por página
+    page_number = request.GET.get('page')
     
-    
-    
-    return render(request, 'tratos.html',{'title':'Tratos','informesTrabajo':page_obj,'categorias':categorias_list,'estados':estados_list})
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
 
+    return render(request, 'tratos.html', {
+        'title': 'Tratos',
+        'informesTrabajo': page_obj,
+        'categorias': categorias_list,
+        'estados': estados_list,
+        'obras':obras_list,
+    })
 
 @permission_required_custom('Tratos.view_informeTrabajo', redirect_to='home')
 def informeTrabajo_buscar(request):
 
+    obra = request.POST['obra']
     folio = request.POST['folio']
     categoria = request.POST['categoria']
     fechaInicio = request.POST['fechaInicio']
@@ -59,11 +72,13 @@ def informeTrabajo_buscar(request):
     user = request.user
     obras_asignadas = ObraUsuario.objects.filter(usuario=user).values_list('obra', flat=True)
     filters = Q(obra_id__in=obras_asignadas)
-        
+
+    if obra:
+        filters &= Q(obra_id=obra)        
     if folio:
-        filters &= Q(cod__icontains=folio)
+        filters &= Q(folio__icontains=folio)
     if categoria:
-        filters &= Q(categoria__descripcion__icontains=categoria)
+        filters &= Q(informetrabajo_detalle__trato__categoria__cod__icontains=categoria)
     if fechaInicio:
         filters &= Q(fecha__gte=fechaInicio)
     if fechatermino:
@@ -90,10 +105,12 @@ def informeTrabajo_buscar(request):
     for informe in page_obj:
         
         rebajes = InformeTrabajo_detalle.objects.filter(itrabajo=informe)
-        tratos_codigos = [rebaje.trato.cod for rebaje in rebajes]
+        tratos_codigos = [rebaje.trato.cod + " : " + rebaje.unidad.cod for rebaje in rebajes]
+
         tratos_concatenados = ', '.join(tratos_codigos)
 
         informes.append({
+                'obra':informe.obra,
                 'folio': informe.folio,
                 'obra': informe.obra.descripcion,  
                 'fechaInicio': informe.fechaInicio.strftime('%d-%m-%Y'), 
@@ -110,7 +127,6 @@ def informeTrabajo_buscar(request):
         'num_pages': paginator.num_pages,
         'current_page': page_obj.number,
     })    
-
 
 @permission_required_custom('Tratos.create_informeTrabajo', redirect_to='home')
 def informeTrabajo_cabecera_guardar(request):
@@ -213,8 +229,8 @@ def informeTrabajo_detalle_guardar(request):
             #VALIDA MEDICION // PUEDE SER POR UNIDAD O CANTIDAD, SI ES UNIDAD VALIDA EL % DE AVANCE
             if medicion =="UNI":
                 if Decimal(row["cantidad"]) > 1:
-                    vError = '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"0","medicion":"uni"},'
-                    break
+                    vError += '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"0","medicion":"uni","err":"Cantidad no puede ser mayor a 1"},'
+                    #break
                 
                 avanzado = 0
                 if rebajes.exists():
@@ -223,14 +239,16 @@ def informeTrabajo_detalle_guardar(request):
                     
                     if vPorcentaje > 100:
                         avanDisp = 100-avanzado['avance__sum']
-                        vError = '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"'+rebajes[0].itrabajo.folio+'","medicion":"uni","disp":"'+str(avanDisp)+'"},'
-                        break
+                        folios_concatenated = '<br /> '.join([str(detalle.itrabajo.folio) for detalle in rebajes])
+                        vError += '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"'+folios_concatenated+'","medicion":"uni","disp":"'+str(int(avanDisp))+'","err":"% de avance no puede ser mayor a 100"},'
+                        #break
                 else:
                     vPorcentaje = Decimal(row["porcentaje"])
                     if vPorcentaje > 100:
-                        avanDisp = 100-avanzado['avance__sum']
-                        vError = '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'","medicion":"uni","disp":"'+str(avanDisp)+'"},'
-                        break
+                        #avanDisp = 100-avanzado['avance__sum']
+                        avanDisp = vPorcentaje
+                        vError += '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'","medicion":"uni","disp":"'+str(int(avanDisp))+'","err":"% No puede ser Mayor a 100"},'
+                        #break
                         
             elif medicion == "CAN":
                 
@@ -241,13 +259,14 @@ def informeTrabajo_detalle_guardar(request):
                     
                     if vCantidad > rebajes[0].trato.cantidad:
                         cantDisp = rebajes[0].trato.cantidad-cantidad['cantidad__sum']
-                        vError = '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"'+rebajes[0].itrabajo.folio+'","medicion":"can","max":"'+str(rebajes[0].trato.cantidad)+'","disp":"'+str(cantDisp)+'"},'
+                        folios_concatenated = '<br /> '.join([str(detalle.itrabajo.folio) for detalle in rebajes])
+                        vError += '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'", "folio":"'+rebajes[0].itrabajo.folio+'","medicion":"can","max":"'+str(int(rebajes[0].trato.cantidad))+'","disp":"'+str(cantDisp)+'","err":"Cantidad no puede ser mayor al máximo disponible"},'
                 else:
                     trato = Trato.objects.get(cod=row["codTrato"])
                     cantidad = Decimal(row["cantidad"])
                     if cantidad > trato.cantidad:
                         cantDisp = trato.cantidad-cantidad['cantidad__sum']
-                        vError = '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'","medicion":"can","max":"'+str(trato.cantidad)+'","disp":"'+str(cantDisp)+'"},'
+                        vError += '{"unidad":"'+row["codUnidad"]+'","trato":"'+row["codTrato"]+'","medicion":"can","max":"'+str(trato.cantidad)+'","disp":"'+str(int(cantDisp))+'","err":"Cantidad no puede ser mayor al máximo disponible"},'
         sumtotal = 0
         if vError == "":
             for row in jdata: 
@@ -258,12 +277,7 @@ def informeTrabajo_detalle_guardar(request):
                 idReg = row["id"]
                 med = row["med"]
                 
-                #valorTotal = 0
-                #if med == "UNI":
-                #    valorTotal = (oTrato.valorTrato/100)*float(row["porcentaje"])
-                #if med == "CAN":
-                #    valorTotal = (oTrato.valorTrato/oTrato.cantidad)*float(row["cantidad"])
-            
+
                 valorTotal = 0
                 if med == "UNI":
                     valorTotal = (oTratoModelo.valorTratoModelo / 100) * float(row["porcentaje"])
@@ -429,6 +443,7 @@ def informeTrabajo_ver(request,vid):
     if request.method == "GET":
         
         if vid != None:
+            user = request.user
             itCabecera = InformeTrabajo.objects.get(id=vid)
             idDetalle = InformeTrabajo_detalle.objects.filter(itrabajo = itCabecera)
             totalRebaje = idDetalle.aggregate(Sum('total'))['total__sum']
@@ -437,17 +452,21 @@ def informeTrabajo_ver(request,vid):
             iCuadrilla = InformeTrabajo_cuadrilla.objects.filter(itrabajo = itCabecera)
             totalCuadrilla = iCuadrilla.aggregate(Sum('total'))['total__sum']
             totalCuadrilla = totalCuadrilla if totalCuadrilla is not None else 0
-            obras = ObraUsuario.objects.filter(obra=itCabecera.obra).select_related('obra')
+            obras = ObraUsuario.objects.filter(usuario=user).select_related('obra')
+            
+            obra = obras.exclude(obra__cod=999).first()
+            obraSelect = obra.obra.id
+            unidadesList = UnidadObra.objects.filter(idObra=obra.obra)
+                
         else:
             itCabecera = None 
             idDetalle = None
             iCuadrilla = None
             obras = None
+            obraSelect = None
             
-        return render(request, './informeTrabajo_crear.html',{'title':'Trato > ver','obrasU':obras,'itCabecera':itCabecera,'idDetalle':idDetalle,'iCuadrilla':iCuadrilla,'totalRebaje':totalRebaje,'totalCuadrilla':totalCuadrilla})
+        return render(request, './informeTrabajo_crear.html',{'title':'Trato > ver: Folio '+ itCabecera.folio ,'obrasU':obras,'itCabecera':itCabecera,'idDetalle':idDetalle,'iCuadrilla':iCuadrilla,'totalRebaje':totalRebaje,'totalCuadrilla':totalCuadrilla,'obraSelect':obraSelect,'unidadesList':unidadesList})
     
-# Create your views here.
-
 @permission_required_custom('Tratos.create_informeTrabajo', redirect_to='home')
 def informeTrabajo_crear(request):
     
@@ -505,74 +524,63 @@ def informeTrabajo_crear(request):
             unidad = {'id':0,'desc':0}
             return JsonResponse(unidad)
         
-
 @permission_required_custom('Tratos.view_informeTrabajo', redirect_to='home')
-def unidadObra_tipo_obtener(request):
+def unidadTrato_obtener(request):
     
     vIdObra = request.POST['idObra']
     user = request.user 
     vUsuariObra = ObraUsuario.objects.filter(usuario=user, obra=vIdObra)
         
-    if vUsuariObra.exists():     
-        vIdUnidad = request.POST['codUnidad']
-        vObra = Obra.objects.get(id = vIdObra)
-        vCodTrato = request.POST['codTrato']
-        vIdInforme = request.POST['idInforme']
+    if vUsuariObra.exists():
+        
+        vCodTrato = request.POST['codTrato'].upper()
+        oObra = Obra.objects.get(id=vIdObra)
+        oTrato = Trato.objects.get(cod=vCodTrato,estado=1,obra=oObra)
 
-        vTrato = Trato.objects.get(cod=vCodTrato,obra=vObra)
-        try:
+        
+        modelosTratoList = TratoModelo.objects.filter(trato=oTrato, estado=True)
 
-            vTrato = Trato.objects.get(cod = vCodTrato,obra = vObra)
-            unidadObra = UnidadObra.objects.get(cod=vIdUnidad, idObra = vObra, estado=1)
+        # Obtener los IDs de los modelos presentes en modelosTratoList
+        modelos_ids = modelosTratoList.values_list('modelo__id', flat=True)
+        unidadesList = UnidadObra.objects.filter(idObra=oObra,idModelo__id__in=modelos_ids)
+        # Crear un diccionario para un acceso rápido a los objetos TratoModelo por modelo ID
+        modelo_trato_dict = {modelo.modelo.id: str(modelo.valorTratoModelo)+"|"+str(modelo.cantidad) for modelo in modelosTratoList}
+
+        # Crear un listado en formato JSON
+        unidades_json = []
+        for unidad in unidadesList:
             
-            tratoModelo = TratoModelo.objects.filter(modelo = unidadObra.idModelo, trato = vTrato, estado = True)
+            #vUnidad = 0 
+            avanzado = 0
+            rebajesList = InformeTrabajo_detalle.objects.filter(unidad=unidad,trato=oTrato)
             
-            bloqueo = TratoUnidadBloqueada.objects.filter(trato = vTrato, unidad = unidadObra, estado = 1)
-            msj = ""
-            if not bloqueo.exists():
-                if tratoModelo.exists():
-                    
-                    medicion = unidadObra.idModelo.tipo.medicion            
-                    rebajes = InformeTrabajo_detalle.objects.filter(unidad=unidadObra,itrabajo__obra=vObra,trato=vTrato)
+            medicion = unidad.idModelo.tipo.medicion
+            valor_trato = modelo_trato_dict.get(unidad.idModelo.id, 0)  # Obtiene el valorTrato, 0 si no existe
+            cant_trato = valor_trato.split("|")[1]
+            
+            disp = 0
+            if medicion == "UNI":
+                avanzado = rebajesList.aggregate(Sum('avance'))['avance__sum'] or 0
+                disp = 100 - avanzado
+                #vUnidad = 1 if avanzado < 100 else 0
+            if medicion == "CAN":
+                avanzado = rebajesList.aggregate(Sum('cantidad'))['cantidad__sum'] or 0   
+                disp = int(cant_trato) - avanzado
+                #vUnidad = 1 if avanzado < int(cant_trato) else 0 
 
-                    if rebajes.exists():
-                        folios = InformeTrabajo_detalle.objects.filter(unidad=unidadObra,
-                                                                       itrabajo__obra=vObra,
-                                                                       trato=vTrato).values_list('itrabajo__folio', flat=True).distinct()
-                        
-                        folios_concatenados = ', '.join(folios)
-                        
-                        if folios_concatenados != "":
-                            msj="rebajado en folio(s): <br />["+folios_concatenados+"]"
-                        
-                        if medicion == "UNI":
-                            avanceDisp = 100
-                            avanzado = rebajes.aggregate(Sum('avance'))
-                            avanceDisp = avanceDisp - avanzado['avance__sum']
-                        
-                            tipoUnidad = {'tipoUnidad':unidadObra.idModelo.tipo.descripcion,'v':'1','avancedisp':avanceDisp,'medicion':medicion,'valorTrato':str(tratoModelo[0].valorTratoModelo),'msj':msj}
-                        elif medicion == "CAN":
-                            cantDisp = rebajes[0].trato.cantidad
-                            cantUs = rebajes.aggregate(Sum('cantidad'))
-                            cantDisp = cantDisp - cantUs['cantidad__sum']
-                        
-                            tipoUnidad = {'tipoUnidad':unidadObra.idModelo.tipo.descripcion,'v':'1','avancedisp':cantDisp,'medicion':unidadObra.idModelo.tipo.medicion,'valorTrato':str(tratoModelo[0].valorTratoModelo),'msj':msj}
-                    else:
-                        if medicion == "UNI":
-                            avanceDisp = 100
-                            tipoUnidad = {'tipoUnidad':unidadObra.idModelo.tipo.descripcion,'v':'1','avancedisp':avanceDisp,'medicion':unidadObra.idModelo.tipo.medicion,'valorTrato':str(tratoModelo[0].valorTratoModelo),'msj':msj}
-                            
-                        elif medicion == "CAN":
-                            cantDisp = vTrato.cantidad            
-                            tipoUnidad = {'tipoUnidad':unidadObra.idModelo.tipo.descripcion,'v':'1','avancedisp':cantDisp,'medicion':unidadObra.idModelo.tipo.medicion,'valorTrato':str(tratoModelo[0].valorTratoModelo),'msj':msj}
-                else:
-                    tipoUnidad = {'tipoUnidad':'No se encontro cod de unidad para el trato ingresado.','v':'0','avancedisp':0,'medicion':'N','valorTrato':'0','msj':'error'}
-            else:
-                tipoUnidad = {'tipoUnidad':'unidad bloqueada para el trato ingresado.','v':'0','avancedisp':0,'medicion':'N','valorTrato':'0','msj':'error'}
-        except:
-            tipoUnidad = {'tipoUnidad':'No se encontro Unidad. Verifique el código de unidad.','v':'0','avancedisp':0,'medicion':'N','valorTrato':'0','msj':'error'}
+            #if vUnidad == 1: 
+                
+            unidad_json = {
+                'cod': unidad.cod,
+                'descripcion': unidad.descripcion,
+                #'estado': '1' if unidad.idModelo.id in modelos_ids else '0',
+                'estado': '1' if disp > 0 else '0',
+                'valorTrato': valor_trato.split("|")[0]+"|"+medicion+"|"+str(disp),
+                'disp': str(disp)
+            }
+            unidades_json.append(unidad_json)
 
-        return JsonResponse(tipoUnidad)
-    else:
-        tipoUnidad = {'tipoUnidad':'No se encontro Unidad. Verifique el código de unidad.','v':'0','avancedisp':0,'medicion':'N','valorTrato':'0','msj':'error'}
-        return JsonResponse(tipoUnidad)
+        # Retornar el JSON con los datos
+        return JsonResponse({'unidades': unidades_json})
+        
+        
